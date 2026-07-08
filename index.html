@@ -75,7 +75,7 @@
       At inference time, the energy model provides gradient signals for bounded trust-region refinement of the generated action chunk&mdash;correcting it toward contact-safe trajectories without retraining the base policy. Additionally, the same foresight model can regularize policy training by penalizing actions that produce unfavorable predicted contact.
     </p>
     <p class="abstract-text">
-      We evaluate ForeTac on real-robot contact-rich tasks including board wiping and peg insertion, comparing against visual diffusion policies, reactive tactile fusion, candidate reranking, and foresight-only baselines. ForeTac reduces contact failures while maintaining task success, demonstrating that predicted tactile consequences are an effective and efficient action guidance signal.
+      We evaluate ForeTac on real-robot contact-rich tasks including board wiping, vase wiping, card swiping, and chip grasping, comparing against visual diffusion policies, reactive tactile fusion, and state-of-the-art tactile prediction methods. ForeTac reduces contact failures while maintaining task success, demonstrating that predicted tactile consequences are an effective and efficient action guidance signal.
     </p>
   </div>
 </section>
@@ -137,22 +137,23 @@
     <h2 class="section-title">Results</h2>
 
     <h3>Main Comparison</h3>
+    <p class="section-lead">We compare ForeTac against visual-only Diffusion Policy, reactive tactile fusion, and state-of-the-art tactile prediction methods (OmniVTA, TacForeSight) across all four tasks.</p>
     <div class="content-card">
-      <div class="placeholder"><span>Main results table/figure<br>Base DP vs. Tactile Fusion vs. Reranking vs. ForeTac Guidance vs. Full ForeTac</span></div>
+      <div class="placeholder"><span>Main results table<br>Methods: Base DP | DP+TacVAE Fusion | OmniVTA | TacForeSight | ForeTac (Independent) | ForeTac (Full)<br>Tasks: Board Wiping | Vase Wiping | Card Swiping | Chip Grasping<br>Metrics: Success Rate | Contact Failure Rate</span></div>
     </div>
-    <p class="fig-caption"><strong>Table 1.</strong> Success rate comparison across contact-rich tasks.</p>
+    <p class="fig-caption"><strong>Table 1.</strong> Success rate and contact failure rate comparison. ForeTac consistently outperforms both reactive fusion and tactile prediction baselines.</p>
 
     <h3>Ablation Study</h3>
     <div class="content-card">
-      <div class="placeholder"><span>Ablation results</span></div>
+      <div class="placeholder"><span>Ablation results<br>w/o failure negatives in energy training | w/o trust-region (unconstrained) | guidance vs. reranking | foresight horizon sweep (H=4/8/16)</span></div>
     </div>
     <p class="fig-caption"><strong>Table 2.</strong> Ablation study showing the contribution of each component.</p>
 
     <h3>Foresight Prediction Quality</h3>
     <div class="content-card">
-      <div class="placeholder"><span>Foresight prediction visualization</span></div>
+      <div class="placeholder"><span>Foresight metrics<br>Latent MAE | Cosine Similarity | Marker Reconstruction Error<br>Across prediction horizons H=4, 8, 16</span></div>
     </div>
-    <p class="fig-caption"><strong>Figure 4.</strong> Tactile foresight prediction accuracy.</p>
+    <p class="fig-caption"><strong>Figure 4.</strong> Tactile foresight prediction accuracy across different horizons.</p>
   </div>
 </section>
 
@@ -160,37 +161,66 @@
 <section id="demos">
   <div class="container">
     <h2 class="section-title">Real-Robot Demonstrations</h2>
-    <p class="section-lead">Videos show the robot executing guided actions with real-time tactile foresight and energy scoring.</p>
+    <p class="section-lead">ForeTac is evaluated on four contact-rich tasks. Each row shows the real robot execution (left) and real-time inference visualization with predicted contact consequences (right).</p>
 
     <h3>Board Wiping</h3>
+    <p class="task-desc">The robot must maintain consistent contact pressure while sweeping across the board. ForeTac steers actions to avoid excessive force or contact loss.</p>
     <div class="video-grid">
       <div class="video-card">
-        <div class="placeholder placeholder-video"><span>Board wiping: ForeTac guided</span></div>
-        <div class="caption">ForeTac Guided Policy</div>
+        <div class="placeholder placeholder-video"><span>Board wiping: real robot execution</span></div>
+        <div class="caption">Real Execution</div>
       </div>
       <div class="video-card">
-        <div class="placeholder placeholder-video"><span>Board wiping: Base DP</span></div>
-        <div class="caption">Base Diffusion Policy</div>
+        <div class="placeholder placeholder-video"><span>Board wiping: real-time inference visualization</span></div>
+        <div class="caption">Inference Visualization</div>
       </div>
     </div>
 
-    <h3>Peg Insertion</h3>
+    <h3>Vase Wiping</h3>
+    <p class="task-desc">Wiping a curved vase surface requires adaptive contact force control. ForeTac predicts contact consequences on complex geometry and adjusts accordingly.</p>
     <div class="video-grid">
       <div class="video-card">
-        <div class="placeholder placeholder-video"><span>Peg insertion: ForeTac guided</span></div>
-        <div class="caption">ForeTac Guided Policy</div>
+        <div class="placeholder placeholder-video"><span>Vase wiping: real robot execution</span></div>
+        <div class="caption">Real Execution</div>
       </div>
       <div class="video-card">
-        <div class="placeholder placeholder-video"><span>Peg insertion: Base DP</span></div>
-        <div class="caption">Base Diffusion Policy</div>
+        <div class="placeholder placeholder-video"><span>Vase wiping: real-time inference visualization</span></div>
+        <div class="caption">Inference Visualization</div>
       </div>
     </div>
 
-    <h3>Guidance Visualization</h3>
+    <h3>Card Swiping</h3>
+    <p class="task-desc">Swiping a card through a reader requires precise alignment and sustained contact. ForeTac guides the action to maintain proper insertion angle and force.</p>
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="placeholder placeholder-video"><span>Card swiping: real robot execution</span></div>
+        <div class="caption">Real Execution</div>
+      </div>
+      <div class="video-card">
+        <div class="placeholder placeholder-video"><span>Card swiping: real-time inference visualization</span></div>
+        <div class="caption">Inference Visualization</div>
+      </div>
+    </div>
+
+    <h3>Chip Grasping</h3>
+    <p class="task-desc">Grasping fragile chips requires delicate force control to avoid crushing. ForeTac predicts contact outcomes and prevents excessive grip force.</p>
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="placeholder placeholder-video"><span>Chip grasping: real robot execution</span></div>
+        <div class="caption">Real Execution</div>
+      </div>
+      <div class="video-card">
+        <div class="placeholder placeholder-video"><span>Chip grasping: real-time inference visualization</span></div>
+        <div class="caption">Inference Visualization</div>
+      </div>
+    </div>
+
+    <h3>Foresight Prediction Visualization</h3>
+    <p class="task-desc">Visualizing how the foresight model predicts future tactile states: predicted marker displacement fields vs. ground-truth observations.</p>
     <div class="video-grid single">
       <div class="video-card">
-        <div class="placeholder placeholder-video"><span>Guidance process visualization</span></div>
-        <div class="caption">Trust-Region Refinement Visualization</div>
+        <div class="placeholder placeholder-video"><span>Foresight prediction: predicted vs. actual tactile evolution</span></div>
+        <div class="caption">Tactile Foresight Prediction Quality</div>
       </div>
     </div>
   </div>
