@@ -228,7 +228,83 @@
 <!-- ============ BIBTEX ============ -->
 <section id="bibtex" class="section-alt">
   <div class="container">
-    <h2 class="section-title">BibTeX</h2>
+    <h2 class="section-title">Comparison with Steering Methods</h2>
+    <p class="section-lead">
+      We survey recent inference-time policy steering methods and compare their capabilities. ForeTac is among the few that validates cross-architecture generalization (both DDPM-based Diffusion Policy and Flow Matching-based π0.5).
+    </p>
+
+    <div class="content-card" style="overflow-x:auto; padding:24px;">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Guidance Signal</th>
+            <th>Guidance Mechanism</th>
+            <th>Base Policy (Validated)</th>
+            <th>Cross-Architecture?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DynaGuide</strong> <span class="year">2025</span></td>
+            <td>Visual dynamics model</td>
+            <td>Classifier guidance during denoising</td>
+            <td>Diffusion Policy only</td>
+            <td><span class="badge badge--no">No</span> <span class="note">Theoretically applicable to FM, but not validated</span></td>
+          </tr>
+          <tr>
+            <td><strong>TouchGuide</strong> <span class="year">2026</span></td>
+            <td>Tactile CPM (contrastive)</td>
+            <td>Classifier guidance during denoising</td>
+            <td>DP3 + π₀.₅</td>
+            <td><span class="badge badge--yes">Yes</span> <span class="note">Validated on both DDPM (DP3) and FM (π₀.₅)</span></td>
+          </tr>
+          <tr>
+            <td><strong>VLS</strong> <span class="year">2026</span></td>
+            <td>VLM-synthesized reward</td>
+            <td>Classifier guidance + MCMC refinement</td>
+            <td>DP + OpenVLA + π0 + π0.5</td>
+            <td><span class="badge badge--yes">Yes</span> <span class="note">Most extensive: diffusion, flow-matching, and autoregressive VLAs</span></td>
+          </tr>
+          <tr>
+            <td><strong>ViTaL-Steering</strong> <span class="year">2026</span></td>
+            <td>Visual (ROBOMETER) + Tactile (AnyTouch2)</td>
+            <td>Sampling-verification + SDEdit</td>
+            <td>Diffusion Policy only (U-Net, DDIM)</td>
+            <td><span class="badge badge--no">No</span> <span class="note">Only validated on DDPM-based DP</span></td>
+          </tr>
+          <tr>
+            <td><strong>TacForeSight</strong> <span class="year">2026</span></td>
+            <td>Force-conditioned tactile prediction</td>
+            <td>Prediction injected into policy (internal)</td>
+            <td>Flow Matching only (custom)</td>
+            <td><span class="badge badge--no">No</span> <span class="note">Custom FM policy, not validated on DDPM</span></td>
+          </tr>
+          <tr>
+            <td><strong>OmniGuide</strong> <span class="year">2026</span></td>
+            <td>3D energy fields (collision + semantic + human demo)</td>
+            <td>Gradient guidance on FM velocity field</td>
+            <td>GR00T N1.6 (sim) + π0.5 (real)</td>
+            <td><span class="badge badge--partial">Partial</span> <span class="note">Two FM-based VLAs, no DDPM validation</span></td>
+          </tr>
+          <tr class="row-ours">
+            <td><strong>ForeTac (Ours)</strong> <span class="year">2026</span></td>
+            <td>Predicted tactile consequences (energy model)</td>
+            <td>Trust-region gradient refinement</td>
+            <td>Diffusion Policy + π0.5</td>
+            <td><span class="badge badge--yes">Yes</span> <span class="note">Validated on both DDPM (DP) and FM (π0.5)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="fig-caption" style="margin-top:16px;">
+      <strong>Table: Inference-Time Steering Methods Comparison.</strong>
+      Among tactile-based steering methods, only TouchGuide and ForeTac validate cross-architecture generalization.
+      ForeTac uniquely combines <em>predictive</em> tactile guidance (future consequence prediction) with policy-agnostic trust-region refinement, without requiring multi-candidate sampling or VLM inference.
+    </p>
+
+    <h2 class="section-title" style="margin-top:48px;">BibTeX</h2>
     <div class="bibtex-block">
       <button class="copy-btn" onclick="copyBibtex()"><i class="fas fa-copy"></i> Copy</button>
 <pre>@article{foretac2026,

@@ -439,6 +439,70 @@ h3 {
   background: var(--gray-100);
 }
 
+/* ============ COMPARISON TABLE ============ */
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.comp-table th,
+.comp-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--gray-200);
+  text-align: left;
+  vertical-align: top;
+}
+
+.comp-table th {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--gray-600);
+  background: var(--gray-100);
+  position: sticky;
+  top: 0;
+}
+
+.comp-table td:first-child { font-weight: 600; white-space: nowrap; }
+
+.comp-table .year {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gray-400);
+  margin-left: 4px;
+}
+
+.comp-table .note {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  font-style: italic;
+}
+
+.comp-table .badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.badge--yes { background: #ECFDF5; color: #059669; }
+.badge--no { background: #FEF2F2; color: #DC2626; }
+.badge--partial { background: #FFFBEB; color: #D97706; }
+
+.comp-table .row-ours {
+  background: linear-gradient(90deg, rgba(234,88,12,0.04), rgba(124,58,237,0.04));
+}
+
+.comp-table .row-ours td {
+  border-bottom: 2px solid var(--orange);
+}
+
 /* ============ BIBTEX ============ */
 .bibtex-block {
   background: var(--navy);
