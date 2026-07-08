@@ -333,8 +333,9 @@ h3 {
   padding: 28px 22px;
   border-radius: var(--radius);
   text-align: center;
-  border: 1px solid rgba(255,255,255,0.08);
-  transition: transform var(--transition), box-shadow var(--transition);
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 
 .pillar:hover {
@@ -343,31 +344,22 @@ h3 {
 
 .pillar-icon { font-size: 30px; margin-bottom: 14px; }
 .pillar h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
-.pillar p { font-size: 13px; color: var(--gray-400); margin: 0; line-height: 1.65; }
+.pillar p { font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.65; }
 
-.pillar--orange {
-  background: rgba(234, 88, 12, 0.08);
-  border-color: rgba(234, 88, 12, 0.2);
-}
-.pillar--orange:hover { box-shadow: 0 12px 40px var(--orange-glow); }
-.pillar--orange .pillar-icon { color: var(--orange); text-shadow: 0 0 12px var(--orange-glow); }
-.pillar--orange h4 { color: var(--orange); }
+.pillar--orange { border-color: rgba(234, 88, 12, 0.25); }
+.pillar--orange:hover { box-shadow: 0 12px 40px rgba(234, 88, 12, 0.15); border-color: var(--orange); }
+.pillar--orange .pillar-icon { color: var(--orange); }
+.pillar--orange h4 { color: var(--orange-dark); }
 
-.pillar--purple {
-  background: rgba(124, 58, 237, 0.08);
-  border-color: rgba(124, 58, 237, 0.2);
-}
-.pillar--purple:hover { box-shadow: 0 12px 40px var(--purple-glow); }
-.pillar--purple .pillar-icon { color: var(--purple); text-shadow: 0 0 12px var(--purple-glow); }
-.pillar--purple h4 { color: var(--purple); }
+.pillar--purple { border-color: rgba(124, 58, 237, 0.25); }
+.pillar--purple:hover { box-shadow: 0 12px 40px rgba(124, 58, 237, 0.15); border-color: var(--purple); }
+.pillar--purple .pillar-icon { color: var(--purple); }
+.pillar--purple h4 { color: var(--purple-dark); }
 
-.pillar--green {
-  background: rgba(16, 185, 129, 0.08);
-  border-color: rgba(16, 185, 129, 0.2);
-}
-.pillar--green:hover { box-shadow: 0 12px 40px var(--green-glow); }
-.pillar--green .pillar-icon { color: var(--green); text-shadow: 0 0 12px var(--green-glow); }
-.pillar--green h4 { color: var(--green); }
+.pillar--green { border-color: rgba(16, 185, 129, 0.25); }
+.pillar--green:hover { box-shadow: 0 12px 40px rgba(16, 185, 129, 0.12); border-color: var(--green); }
+.pillar--green .pillar-icon { color: var(--green); }
+.pillar--green h4 { color: #059669; }
 
 /* ============ CONTENT CARDS ============ */
 .content-card {
