@@ -262,7 +262,8 @@ body {
   margin: 0 auto;
   border-radius: var(--radius);
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
+  background: #FFFFFF;
+  border: 1px solid rgba(255,255,255,0.15);
   box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   transition: transform var(--transition), box-shadow var(--transition);
   position: relative;
@@ -274,30 +275,6 @@ body {
 }
 
 .teaser video, .teaser img { width: 100%; display: block; }
-
-/* Hide fallback when video loads */
-.teaser video + .teaser-fallback { display: none; }
-
-.teaser-fallback {
-  background: var(--navy-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gray-400);
-  font-size: 13px;
-  text-align: center;
-  min-height: 320px;
-  padding: 32px;
-  line-height: 1.7;
-}
-
-.teaser-fallback code {
-  background: rgba(255,255,255,0.08);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-}
 
 /* ============ SECTIONS (LIGHT) ============ */
 section { padding: 64px 0; }

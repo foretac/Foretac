@@ -56,15 +56,9 @@
       <a class="btn btn-glass" href="javascript:void(0)" title="Coming soon"><i class="fab fa-github"></i> Code (coming soon)</a>
     </div>
 
-    <!-- Teaser Video (like ViTaL) -->
+    <!-- Teaser -->
     <div class="teaser">
-      <video autoplay muted loop playsinline preload="auto" poster="static/images/teaser_poster.jpg">
-        <source src="static/videos/teaser.mp4" type="video/mp4">
-      </video>
-      <!-- Fallback: shown when video not available -->
-      <div class="teaser-fallback" id="teaser-fallback">
-        <span>Teaser video: left-to-right animated pipeline<br>Observation → Diffusion Policy → Foresight Predict → Energy Score → Trust-Region Guide → Execution<br><br><em>Add <code>static/videos/teaser.mp4</code> to replace this placeholder</em></span>
-      </div>
+      <img src="static/images/teaser.svg" alt="ForeTac overview: Predict → Score → Guide">
     </div>
   </div>
 </section>
@@ -282,24 +276,6 @@ window.addEventListener('scroll', () => {
     if (link.getAttribute('href') === '#' + current) link.classList.add('active');
   });
 });
-
-// Teaser video fallback
-const teaserVideo = document.querySelector('.teaser video');
-const teaserFallback = document.getElementById('teaser-fallback');
-if (teaserVideo && teaserFallback) {
-  teaserVideo.addEventListener('error', () => {
-    teaserVideo.style.display = 'none';
-    teaserFallback.style.display = 'flex';
-  });
-  // Also show fallback if source fails
-  const src = teaserVideo.querySelector('source');
-  if (src) {
-    src.addEventListener('error', () => {
-      teaserVideo.style.display = 'none';
-      teaserFallback.style.display = 'flex';
-    });
-  }
-}
 </script>
 
 </body>
