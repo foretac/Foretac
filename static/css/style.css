@@ -262,16 +262,17 @@ body {
   margin: 0 auto;
   border-radius: var(--radius);
   overflow: hidden;
-  background: #FFFFFF;
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   transition: transform var(--transition), box-shadow var(--transition);
   position: relative;
 }
 
 .teaser:hover {
   transform: translateY(-4px) scale(1.005);
-  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  border-color: rgba(234, 88, 12, 0.2);
 }
 
 .teaser video, .teaser img { width: 100%; display: block; }

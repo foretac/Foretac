@@ -1,89 +1,108 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 320" font-family="Inter, -apple-system, sans-serif">
-  <!-- White background — displayed inside white teaser card on dark hero -->
-  <rect width="1100" height="320" fill="#FFFFFF" rx="4"/>
+  <!-- Dark blue-gray background — blends with hero but distinguishable -->
+  <rect width="1100" height="320" fill="#1E293B" rx="8"/>
 
-  <!-- Robot Observation -->
-  <rect x="20" y="100" width="110" height="120" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
-  <text x="75" y="130" text-anchor="middle" font-size="11" font-weight="700" fill="#1E293B">Robot</text>
-  <text x="75" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="#1E293B">Observation</text>
-  <text x="75" y="172" text-anchor="middle" font-size="9" fill="#64748B">Vision</text>
-  <text x="75" y="186" text-anchor="middle" font-size="9" fill="#64748B">Proprioception</text>
-  <text x="75" y="200" text-anchor="middle" font-size="9" fill="#64748B">Tactile (marker)</text>
-
-  <!-- Arrow -->
-  <path d="M 130 160 L 165 160" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-t)"/>
-
-  <!-- Diffusion Policy -->
-  <rect x="170" y="110" width="130" height="100" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
-  <text x="235" y="145" text-anchor="middle" font-size="12" font-weight="700" fill="#1D4ED8">Diffusion</text>
-  <text x="235" y="163" text-anchor="middle" font-size="12" font-weight="700" fill="#1D4ED8">Policy</text>
-  <text x="235" y="190" text-anchor="middle" font-size="9" fill="#64748B">DDPM denoising</text>
-  <text x="235" y="203" text-anchor="middle" font-size="9" fill="#64748B">→ action chunk</text>
-
-  <!-- Arrow -->
-  <path d="M 300 160 L 335 160" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-t)"/>
-  <text x="317" y="148" text-anchor="middle" font-size="8" fill="#94A3B8">clean</text>
-  <text x="317" y="159" text-anchor="middle" font-size="8" fill="#94A3B8">action</text>
-
-  <!-- Predict block -->
-  <rect x="340" y="90" width="160" height="140" rx="10" fill="#FFF7ED" stroke="#EA580C" stroke-width="2"/>
-  <text x="420" y="115" text-anchor="middle" font-size="10" font-weight="700" fill="#EA580C">① PREDICT</text>
-  <text x="420" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#C2410C">Tactile Foresight</text>
-  <text x="420" y="158" text-anchor="middle" font-size="11" font-weight="600" fill="#C2410C">Transformer</text>
-  <text x="420" y="182" text-anchor="middle" font-size="9" fill="#64748B">Action + Obs</text>
-  <text x="420" y="196" text-anchor="middle" font-size="9" fill="#64748B">→ Future tactile latent</text>
-  <text x="420" y="210" text-anchor="middle" font-size="9" fill="#64748B">(H=16 steps)</text>
-  <text x="420" y="225" text-anchor="middle" font-size="8" fill="#94A3B8">❄ frozen</text>
-
-  <!-- Arrow -->
-  <path d="M 500 160 L 535 160" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-t)"/>
-
-  <!-- Score block -->
-  <rect x="540" y="90" width="160" height="140" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="620" y="115" text-anchor="middle" font-size="10" font-weight="700" fill="#7C3AED">② SCORE</text>
-  <text x="620" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#6D28D9">Contact Quality</text>
-  <text x="620" y="158" text-anchor="middle" font-size="11" font-weight="600" fill="#6D28D9">Energy Model</text>
-  <text x="620" y="182" text-anchor="middle" font-size="9" fill="#64748B">Predicted tactile</text>
-  <text x="620" y="196" text-anchor="middle" font-size="9" fill="#64748B">+ action → score</text>
-  <text x="620" y="214" text-anchor="middle" font-size="9" fill="#7C3AED">∂score / ∂action</text>
-  <text x="620" y="225" text-anchor="middle" font-size="8" fill="#94A3B8">❄ frozen</text>
-
-  <!-- Arrow -->
-  <path d="M 700 160 L 735 160" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-t)"/>
-
-  <!-- Guide block -->
-  <rect x="740" y="90" width="160" height="140" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
-  <text x="820" y="115" text-anchor="middle" font-size="10" font-weight="700" fill="#059669">③ GUIDE</text>
-  <text x="820" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#047857">Trust-Region</text>
-  <text x="820" y="158" text-anchor="middle" font-size="11" font-weight="600" fill="#047857">Refinement</text>
-  <text x="820" y="182" text-anchor="middle" font-size="9" fill="#64748B">Bounded gradient</text>
-  <text x="820" y="196" text-anchor="middle" font-size="9" fill="#64748B">ascent on action</text>
-  <text x="820" y="210" text-anchor="middle" font-size="9" fill="#64748B">(4 steps, δ≤0.02)</text>
-
-  <!-- Arrow -->
-  <path d="M 900 160 L 935 160" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arr-t)"/>
-
-  <!-- Output -->
-  <rect x="940" y="120" width="130" height="80" rx="8" fill="#EA580C"/>
-  <text x="1005" y="155" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">Guided</text>
-  <text x="1005" y="173" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">Action</text>
-  <text x="1005" y="192" text-anchor="middle" font-size="9" fill="#FED7AA">→ Robot Execution</text>
-
-  <!-- Iterative feedback loop -->
-  <path d="M 820 230 L 820 270 L 420 270 L 420 230" stroke="#10B981" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-green-t)"/>
-  <text x="620" y="288" text-anchor="middle" font-size="9" fill="#059669">Iterative: refined action → re-predict → re-score (×4)</text>
-
-  <!-- Title -->
-  <text x="550" y="35" text-anchor="middle" font-size="16" font-weight="800" fill="#0F172A">ForeTac: Predict → Score → Guide</text>
-  <text x="550" y="57" text-anchor="middle" font-size="11" fill="#64748B">Steering robot actions with predicted contact consequences at inference time</text>
-
-  <!-- Defs -->
+  <!-- Subtle grid pattern for depth -->
   <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+    </pattern>
     <marker id="arr-t" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-      <path d="M 0 0 L 7 3.5 L 0 7 Z" fill="#94A3B8"/>
+      <path d="M 0 0 L 7 3.5 L 0 7 Z" fill="#64748B"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M 0 0 L 7 3.5 L 0 7 Z" fill="#EA580C"/>
     </marker>
     <marker id="arr-green-t" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M 0 0 L 7 3.5 L 0 7 Z" fill="#10B981"/>
     </marker>
   </defs>
+  <rect width="1100" height="320" fill="url(#grid)" rx="8"/>
+
+  <!-- Robot Observation -->
+  <rect x="20" y="100" width="110" height="120" rx="8" fill="rgba(255,255,255,0.04)" stroke="#475569" stroke-width="1.5"/>
+  <text x="75" y="130" text-anchor="middle" font-size="11" font-weight="700" fill="#E2E8F0">Robot</text>
+  <text x="75" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="#E2E8F0">Observation</text>
+  <text x="75" y="172" text-anchor="middle" font-size="9" fill="#94A3B8">Vision</text>
+  <text x="75" y="186" text-anchor="middle" font-size="9" fill="#94A3B8">Proprioception</text>
+  <text x="75" y="200" text-anchor="middle" font-size="9" fill="#94A3B8">Tactile (9×9×2)</text>
+
+  <!-- Arrow: Obs → DP -->
+  <path d="M 130 160 L 165 160" stroke="#64748B" stroke-width="1.5" marker-end="url(#arr-t)"/>
+
+  <!-- Diffusion Policy -->
+  <rect x="170" y="110" width="130" height="100" rx="8" fill="rgba(59,130,246,0.1)" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="235" y="145" text-anchor="middle" font-size="12" font-weight="700" fill="#93C5FD">Diffusion</text>
+  <text x="235" y="163" text-anchor="middle" font-size="12" font-weight="700" fill="#93C5FD">Policy</text>
+  <text x="235" y="190" text-anchor="middle" font-size="9" fill="#94A3B8">DDPM → clean</text>
+  <text x="235" y="203" text-anchor="middle" font-size="9" fill="#94A3B8">action chunk</text>
+
+  <!-- Arrow: DP → Predict -->
+  <path d="M 300 160 L 335 160" stroke="#EA580C" stroke-width="2" marker-end="url(#arr-orange)"/>
+  <text x="317" y="148" text-anchor="middle" font-size="8" font-weight="600" fill="#FDBA74">action</text>
+
+  <!-- ① PREDICT block (Orange) -->
+  <rect x="340" y="85" width="160" height="150" rx="10" fill="rgba(234,88,12,0.12)" stroke="#EA580C" stroke-width="2"/>
+  <!-- Glow effect -->
+  <rect x="342" y="87" width="156" height="146" rx="9" fill="none" stroke="rgba(234,88,12,0.2)" stroke-width="4"/>
+  <text x="420" y="110" text-anchor="middle" font-size="10" font-weight="800" fill="#FDBA74">① PREDICT</text>
+  <text x="420" y="135" text-anchor="middle" font-size="12" font-weight="700" fill="#FED7AA">Tactile Foresight</text>
+  <text x="420" y="153" text-anchor="middle" font-size="12" font-weight="700" fill="#FED7AA">Transformer</text>
+  <text x="420" y="178" text-anchor="middle" font-size="9" fill="#CBD5E1">Obs + Action Chunk</text>
+  <text x="420" y="193" text-anchor="middle" font-size="9" fill="#CBD5E1">→ Future Tactile Latent</text>
+  <text x="420" y="208" text-anchor="middle" font-size="9" fill="#CBD5E1">(H = 16 steps)</text>
+  <text x="420" y="227" text-anchor="middle" font-size="8" fill="#64748B">❄ frozen weights</text>
+
+  <!-- Arrow: Predict → Score -->
+  <path d="M 500 160 L 535 160" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-purple)"/>
+  <defs>
+    <marker id="arr-purple" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M 0 0 L 7 3.5 L 0 7 Z" fill="#7C3AED"/>
+    </marker>
+  </defs>
+  <text x="517" y="148" text-anchor="middle" font-size="8" font-weight="600" fill="#C4B5FD">latent</text>
+
+  <!-- ② SCORE block (Purple) -->
+  <rect x="540" y="85" width="160" height="150" rx="10" fill="rgba(124,58,237,0.12)" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="542" y="87" width="156" height="146" rx="9" fill="none" stroke="rgba(124,58,237,0.2)" stroke-width="4"/>
+  <text x="620" y="110" text-anchor="middle" font-size="10" font-weight="800" fill="#C4B5FD">② SCORE</text>
+  <text x="620" y="135" text-anchor="middle" font-size="12" font-weight="700" fill="#DDD6FE">Contact Quality</text>
+  <text x="620" y="153" text-anchor="middle" font-size="12" font-weight="700" fill="#DDD6FE">Energy Model</text>
+  <text x="620" y="178" text-anchor="middle" font-size="9" fill="#CBD5E1">Pred. Tactile + Action</text>
+  <text x="620" y="193" text-anchor="middle" font-size="9" fill="#CBD5E1">→ Quality Score</text>
+  <text x="620" y="208" text-anchor="middle" font-size="10" font-weight="600" fill="#C4B5FD">∂score / ∂action</text>
+  <text x="620" y="227" text-anchor="middle" font-size="8" fill="#64748B">❄ frozen weights</text>
+
+  <!-- Arrow: Score → Guide -->
+  <path d="M 700 160 L 735 160" stroke="#10B981" stroke-width="2" marker-end="url(#arr-green-t)"/>
+  <text x="717" y="148" text-anchor="middle" font-size="8" font-weight="600" fill="#6EE7B7">∇</text>
+
+  <!-- ③ GUIDE block (Green) -->
+  <rect x="740" y="85" width="160" height="150" rx="10" fill="rgba(16,185,129,0.1)" stroke="#10B981" stroke-width="2"/>
+  <rect x="742" y="87" width="156" height="146" rx="9" fill="none" stroke="rgba(16,185,129,0.15)" stroke-width="4"/>
+  <text x="820" y="110" text-anchor="middle" font-size="10" font-weight="800" fill="#6EE7B7">③ GUIDE</text>
+  <text x="820" y="135" text-anchor="middle" font-size="12" font-weight="700" fill="#A7F3D0">Trust-Region</text>
+  <text x="820" y="153" text-anchor="middle" font-size="12" font-weight="700" fill="#A7F3D0">Refinement</text>
+  <text x="820" y="178" text-anchor="middle" font-size="9" fill="#CBD5E1">Bounded gradient</text>
+  <text x="820" y="193" text-anchor="middle" font-size="9" fill="#CBD5E1">ascent on action</text>
+  <text x="820" y="208" text-anchor="middle" font-size="9" fill="#CBD5E1">(4 steps, δ ≤ 0.02)</text>
+  <text x="820" y="227" text-anchor="middle" font-size="8" fill="#64748B">accept only if improved</text>
+
+  <!-- Arrow: Guide → Output -->
+  <path d="M 900 160 L 935 160" stroke="#F97316" stroke-width="2" marker-end="url(#arr-orange)"/>
+
+  <!-- Output: Guided Action (solid orange) -->
+  <rect x="940" y="115" width="135" height="90" rx="10" fill="#EA580C"/>
+  <rect x="940" y="115" width="135" height="90" rx="10" fill="none" stroke="#FDBA74" stroke-width="1" opacity="0.5"/>
+  <text x="1007" y="150" text-anchor="middle" font-size="13" font-weight="800" fill="#FFFFFF">Guided</text>
+  <text x="1007" y="170" text-anchor="middle" font-size="13" font-weight="800" fill="#FFFFFF">Action</text>
+  <text x="1007" y="195" text-anchor="middle" font-size="9" fill="#FED7AA">→ Robot Execution</text>
+
+  <!-- Iterative feedback loop (green dashed) -->
+  <path d="M 820 235 L 820 275 L 420 275 L 420 235" stroke="#10B981" stroke-width="1.5" stroke-dasharray="6,4" fill="none" marker-end="url(#arr-green-t)"/>
+  <text x="620" y="295" text-anchor="middle" font-size="9" font-weight="500" fill="#6EE7B7">Iterative: refined action → re-predict → re-score (×4)</text>
+
+  <!-- Title -->
+  <text x="550" y="30" text-anchor="middle" font-size="16" font-weight="800" fill="#F1F5F9">ForeTac: Predict → Score → Guide</text>
+  <text x="550" y="52" text-anchor="middle" font-size="11" fill="#94A3B8">Steering robot actions with predicted contact consequences at inference time</text>
 </svg>
