@@ -7,7 +7,7 @@
   <meta name="description" content="ForeTac predicts the tactile consequences of candidate actions and converts predictions into differentiable energy guidance for safer, contact-aware robot manipulation.">
   <meta name="keywords" content="Tactile, Foresight, Guidance, Diffusion Policy, Contact-Rich Manipulation, Robot Learning">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="static/css/style.css">
 </head>
@@ -31,31 +31,30 @@
   </div>
 </header>
 
-<!-- ============ HERO ============ -->
+<!-- ============ HERO (DARK) ============ -->
 <section class="hero">
-  <div class="container">
+  <div class="hero-bg"></div>
+  <div class="container hero-content">
     <span class="venue">Under Review</span>
-    <h1>ForeTac: Steering Robot Actions with Predicted Contact Consequences</h1>
-    <p class="subtitle">Predictive tactile guidance for contact-rich robot manipulation</p>
 
-    <p class="authors">
-      <a href="#">Anonymous Authors</a>
-    </p>
+    <div class="hero-title-wrap">
+      <h1 class="hero-title">
+        <span class="title-fore">Fore</span><span class="title-tac">Tac</span>
+      </h1>
+      <div class="hero-bar"></div>
+    </div>
+
+    <p class="hero-subtitle">Steering Robot Actions with Predicted Contact Consequences</p>
+    <p class="hero-desc">Predictive tactile guidance for contact-rich robot manipulation</p>
+
+    <p class="authors"><a href="#">Anonymous Authors</a></p>
     <p class="affiliations">Anonymous Institution</p>
 
     <div class="btn-row">
-      <a class="btn" href="#" target="_blank">
-        <i class="fas fa-file-pdf"></i> Paper
-      </a>
-      <a class="btn" href="#" target="_blank">
-        <i class="fas fa-arrow-up-right-from-square"></i> arXiv
-      </a>
-      <a class="btn btn-outline" href="#" target="_blank">
-        <i class="fab fa-github"></i> Code (coming soon)
-      </a>
-      <a class="btn btn-outline" href="#demos">
-        <i class="fas fa-video"></i> Videos
-      </a>
+      <a class="btn btn-primary" href="#" target="_blank"><i class="fas fa-file-pdf"></i> Paper</a>
+      <a class="btn btn-primary" href="#" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i> arXiv</a>
+      <a class="btn btn-glass" href="#" target="_blank"><i class="fab fa-github"></i> Code (coming soon)</a>
+      <a class="btn btn-glass" href="#demos"><i class="fas fa-video"></i> Videos</a>
     </div>
 
     <!-- Teaser -->
@@ -68,7 +67,7 @@
 <!-- ============ ABSTRACT ============ -->
 <section id="abstract">
   <div class="container">
-    <h2>Abstract</h2>
+    <h2 class="section-title">Abstract</h2>
     <p class="abstract-text">
       Contact-rich manipulation demands policies that anticipate contact consequences before committing to actions. We present <strong>ForeTac</strong>, a framework that steers robot actions with predicted contact consequences. ForeTac learns an action-conditioned tactile foresight model that predicts future contact states from candidate action chunks, and a contact quality energy model that scores predicted outcomes for physical plausibility.
     </p>
@@ -82,21 +81,21 @@
 </section>
 
 <!-- ============ KEY IDEA ============ -->
-<section id="key-idea" class="section-alt">
+<section id="key-idea" class="section-dark">
   <div class="container">
-    <h2>Key Idea</h2>
+    <h2 class="section-title section-title--light">Key Idea</h2>
     <div class="pillars">
-      <div class="pillar predict">
-        <div class="pillar-icon"><i class="fas fa-crystal-ball"></i></div>
+      <div class="pillar pillar--orange">
+        <div class="pillar-icon"><i class="fas fa-eye"></i></div>
         <h4>Predict</h4>
         <p>Action-conditioned tactile foresight model predicts future contact states from candidate action chunks.</p>
       </div>
-      <div class="pillar score">
-        <div class="pillar-icon"><i class="fas fa-chart-line"></i></div>
+      <div class="pillar pillar--purple">
+        <div class="pillar-icon"><i class="fas fa-bolt"></i></div>
         <h4>Score</h4>
         <p>Contact quality energy model evaluates predicted tactile outcomes&mdash;higher score means safer, more effective contact.</p>
       </div>
-      <div class="pillar guide">
+      <div class="pillar pillar--green">
         <div class="pillar-icon"><i class="fas fa-route"></i></div>
         <h4>Guide</h4>
         <p>Energy gradient drives bounded trust-region refinement of the action chunk at inference time, without retraining the policy.</p>
@@ -108,138 +107,99 @@
 <!-- ============ METHOD ============ -->
 <section id="method">
   <div class="container">
-    <h2>Method Overview</h2>
-
+    <h2 class="section-title">Method Overview</h2>
     <p class="section-lead">
       ForeTac is a three-stage framework: <em>predict</em> future tactile consequences, <em>score</em> them with a learned energy model, and <em>guide</em> the action via bounded gradient ascent.
     </p>
 
-    <!-- Architecture figure -->
-    <div class="method-fig">
+    <div class="content-card">
       <img src="static/images/architecture.svg" alt="ForeTac Architecture">
     </div>
     <p class="fig-caption"><strong>Figure 1.</strong> ForeTac architecture. The base Diffusion Policy generates a clean action chunk. The Foresight Transformer predicts its future tactile consequences. The Contact Quality Energy Model scores these predictions. Trust-region gradient ascent refines the action toward higher contact quality.</p>
 
-    <!-- Training pipeline -->
     <h3>Training Pipeline</h3>
-    <div class="method-fig">
+    <div class="content-card">
       <img src="static/images/training_pipeline.svg" alt="Training Pipeline">
     </div>
-    <p class="fig-caption"><strong>Figure 2.</strong> Four-stage training pipeline. Each stage builds on frozen modules from previous stages. TacVAE provides tactile representations; Foresight learns to predict future latents; DP generates actions; Energy Scorer learns contact quality assessment.</p>
+    <p class="fig-caption"><strong>Figure 2.</strong> Four-stage training pipeline. Each stage builds on frozen modules from previous stages.</p>
 
-    <!-- Guidance mechanism -->
     <h3>Inference-Time Guidance</h3>
-    <div class="method-fig">
+    <div class="content-card">
       <img src="static/images/guidance_mechanism.svg" alt="Guidance Mechanism">
     </div>
-    <p class="fig-caption"><strong>Figure 3.</strong> Trust-region guided refinement. The energy score gradient with respect to the action provides a direction of improvement. Each step is projected back into a bounded trust region around the original action, ensuring stability.</p>
+    <p class="fig-caption"><strong>Figure 3.</strong> Trust-region guided refinement. The energy gradient provides a direction of improvement; each step is projected back into a bounded trust region around the original action.</p>
   </div>
 </section>
 
 <!-- ============ RESULTS ============ -->
 <section id="results" class="section-alt">
   <div class="container">
-    <h2>Results</h2>
+    <h2 class="section-title">Results</h2>
 
     <h3>Main Comparison</h3>
-    <div class="method-fig">
-      <div class="placeholder">
-        <span>Main results table/figure<br>Base DP vs. Tactile Fusion vs. Reranking vs. ForeTac Guidance vs. Full ForeTac</span>
-      </div>
-      <!-- Replace with: <img src="static/images/main_results.png" alt="Main Results"> -->
+    <div class="content-card">
+      <div class="placeholder"><span>Main results table/figure<br>Base DP vs. Tactile Fusion vs. Reranking vs. ForeTac Guidance vs. Full ForeTac</span></div>
     </div>
-    <p class="fig-caption"><strong>Table 1.</strong> Success rate comparison across contact-rich tasks. ForeTac guidance consistently improves over the base policy and outperforms reranking and reactive fusion baselines.</p>
+    <p class="fig-caption"><strong>Table 1.</strong> Success rate comparison across contact-rich tasks.</p>
 
     <h3>Ablation Study</h3>
-    <div class="method-fig">
-      <div class="placeholder">
-        <span>Ablation results<br>w/o energy negatives, w/o trust-region, guidance vs reranking, foresight horizon sweep</span>
-      </div>
-      <!-- Replace with: <img src="static/images/ablation.png" alt="Ablation Study"> -->
+    <div class="content-card">
+      <div class="placeholder"><span>Ablation results</span></div>
     </div>
     <p class="fig-caption"><strong>Table 2.</strong> Ablation study showing the contribution of each component.</p>
 
     <h3>Foresight Prediction Quality</h3>
-    <div class="method-fig">
-      <div class="placeholder">
-        <span>Foresight prediction visualization<br>Predicted vs. ground-truth tactile latent over time</span>
-      </div>
-      <!-- Replace with: <img src="static/images/foresight_quality.png" alt="Foresight Quality"> -->
+    <div class="content-card">
+      <div class="placeholder"><span>Foresight prediction visualization</span></div>
     </div>
-    <p class="fig-caption"><strong>Figure 4.</strong> Tactile foresight prediction accuracy. Left: latent cosine similarity over prediction horizon. Right: qualitative comparison of predicted vs. actual marker displacement fields.</p>
+    <p class="fig-caption"><strong>Figure 4.</strong> Tactile foresight prediction accuracy.</p>
   </div>
 </section>
 
 <!-- ============ DEMOS ============ -->
 <section id="demos">
   <div class="container">
-    <h2>Real-Robot Demonstrations</h2>
-
-    <p class="section-lead">
-      ForeTac is evaluated on real-robot contact-rich tasks. Videos show the robot executing guided actions with real-time tactile foresight and energy scoring.
-    </p>
+    <h2 class="section-title">Real-Robot Demonstrations</h2>
+    <p class="section-lead">Videos show the robot executing guided actions with real-time tactile foresight and energy scoring.</p>
 
     <h3>Board Wiping</h3>
-    <p class="task-desc">The robot must maintain consistent contact pressure while sweeping across the board surface. ForeTac predicts contact consequences and steers the action to avoid excessive force or contact loss.</p>
-
     <div class="video-grid">
       <div class="video-card">
-        <div class="placeholder placeholder-video">
-          <span>Board wiping: ForeTac guided</span>
-        </div>
-        <!-- Replace with: <video autoplay muted loop playsinline><source src="static/videos/board_foretac.mp4" type="video/mp4"></video> -->
+        <div class="placeholder placeholder-video"><span>Board wiping: ForeTac guided</span></div>
         <div class="caption">ForeTac Guided Policy</div>
       </div>
       <div class="video-card">
-        <div class="placeholder placeholder-video">
-          <span>Board wiping: Base DP (no guidance)</span>
-        </div>
-        <!-- Replace with: <video autoplay muted loop playsinline><source src="static/videos/board_baseline.mp4" type="video/mp4"></video> -->
-        <div class="caption">Base Diffusion Policy (no guidance)</div>
+        <div class="placeholder placeholder-video"><span>Board wiping: Base DP</span></div>
+        <div class="caption">Base Diffusion Policy</div>
       </div>
     </div>
 
     <h3>Peg Insertion</h3>
-    <p class="task-desc">Tight-clearance insertion requires detecting and avoiding jamming. ForeTac's predictive guidance steers actions away from predicted high-force outcomes.</p>
-
     <div class="video-grid">
       <div class="video-card">
-        <div class="placeholder placeholder-video">
-          <span>Peg insertion: ForeTac guided</span>
-        </div>
-        <!-- Replace with: <video autoplay muted loop playsinline><source src="static/videos/insertion_foretac.mp4" type="video/mp4"></video> -->
+        <div class="placeholder placeholder-video"><span>Peg insertion: ForeTac guided</span></div>
         <div class="caption">ForeTac Guided Policy</div>
       </div>
       <div class="video-card">
-        <div class="placeholder placeholder-video">
-          <span>Peg insertion: Base DP (no guidance)</span>
-        </div>
-        <!-- Replace with: <video autoplay muted loop playsinline><source src="static/videos/insertion_baseline.mp4" type="video/mp4"></video> -->
-        <div class="caption">Base Diffusion Policy (no guidance)</div>
+        <div class="placeholder placeholder-video"><span>Peg insertion: Base DP</span></div>
+        <div class="caption">Base Diffusion Policy</div>
       </div>
     </div>
 
     <h3>Guidance Visualization</h3>
-    <p class="task-desc">Visualizing the trust-region refinement process: how predicted tactile energy steers actions step by step.</p>
-
     <div class="video-grid single">
       <div class="video-card">
-        <div class="placeholder placeholder-video">
-          <span>Guidance process visualization<br>Action trajectory + predicted tactile + energy score over refinement steps</span>
-        </div>
-        <!-- Replace with: <video autoplay muted loop playsinline><source src="static/videos/guidance_viz.mp4" type="video/mp4"></video> -->
+        <div class="placeholder placeholder-video"><span>Guidance process visualization</span></div>
         <div class="caption">Trust-Region Refinement Visualization</div>
       </div>
     </div>
   </div>
 </section>
 
-
-
 <!-- ============ BIBTEX ============ -->
-<section id="bibtex">
+<section id="bibtex" class="section-alt">
   <div class="container">
-    <h2>BibTeX</h2>
+    <h2 class="section-title">BibTeX</h2>
     <div class="bibtex-block">
       <button class="copy-btn" onclick="copyBibtex()"><i class="fas fa-copy"></i> Copy</button>
 <pre>@article{foretac2026,
@@ -255,7 +215,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div class="container">
-    <p>ForeTac Project Page &middot; Template inspired by <a href="https://pace-insertion.github.io/" target="_blank">PACE</a></p>
+    <p>ForeTac &middot; Predictive Tactile Guidance for Contact-Rich Manipulation</p>
   </div>
 </footer>
 
@@ -269,13 +229,11 @@ function copyBibtex() {
   });
 }
 
-// Sticky header scroll effect
 const header = document.querySelector('.site-header');
 window.addEventListener('scroll', () => {
   header.classList.toggle('is-scrolled', window.scrollY > 10);
 });
 
-// Active nav link highlight
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
 window.addEventListener('scroll', () => {
