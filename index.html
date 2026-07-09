@@ -164,15 +164,15 @@
 
     <h3>Board Wiping</h3>
     <p class="task-desc">The robot must maintain consistent contact pressure while sweeping across the board. ForeTac steers actions to avoid excessive force or contact loss.</p>
-    <div class="video-grid">
-      <div class="video-card">
-        <video controls autoplay muted loop playsinline preload="auto" poster="static/videos/board_real_preview.jpg">
+    <div class="video-grid board-demo-grid">
+      <div class="video-card board-real-card">
+        <video autoplay muted loop playsinline preload="auto" poster="static/videos/board_real_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
           <source src="static/videos/board_real.mp4" type="video/mp4">
         </video>
         <div class="caption">Real Execution (4x speed)</div>
       </div>
-      <div class="video-card">
-        <video controls autoplay muted loop playsinline preload="auto" poster="static/videos/board_viz_preview.jpg">
+      <div class="video-card board-viz-card">
+        <video autoplay muted loop playsinline preload="auto" poster="static/videos/board_viz_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
           <source src="static/videos/board_viz.mp4" type="video/mp4">
         </video>
         <div class="caption">Tactile Foresight + Adaptive Guidance</div>
