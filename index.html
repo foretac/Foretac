@@ -156,7 +156,7 @@
 
     <h3>Offline Guidance Diagnostics</h3>
     <p class="section-lead">
-      We analyze the blackboard stride-3 policy offline to verify that score-gradient guidance improves the learned contact-quality score during late denoising, while keeping updates bounded and localized in action space.
+      We analyze the blackboard stride-3 policy offline to evaluate whether score-gradient guidance improves the learned contact-quality score during late denoising, while keeping updates bounded and localized in action space.
     </p>
 
     <div class="diagnostic-notes">
@@ -168,6 +168,7 @@
       <img src="static/images/board_stride3_guidance_diagnostics_overview.png" alt="Offline guidance diagnostics for blackboard stride-3 policy">
     </div>
     <p class="fig-caption"><strong>Figure 5.</strong> Offline guidance diagnostics for blackboard wiping. A: score improvement after guidance. B: raw gradient norm, scaled gradient norm, and applied update norm. C: action-dimension guidance heatmap averaged over 128 validation windows, showing localized correction on a small subset of action dimensions. D: cosine alignment between the policy denoising direction and the guidance direction.</p>
+    <p class="diagnostic-takeaway"><strong>Takeaway.</strong> The offline analysis supports that guidance improves the learned contact-quality score mainly through small, bounded, and action-local corrections, rather than by globally reshaping or reranking full trajectories.</p>
   </div>
 </section>
 

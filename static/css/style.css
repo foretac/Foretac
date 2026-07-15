@@ -409,6 +409,21 @@ h3 {
   color: var(--orange-dark);
 }
 
+.diagnostic-takeaway {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #F8FAFC;
+  border: 1px solid var(--border);
+  color: var(--gray-600);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.diagnostic-takeaway strong {
+  color: var(--orange-dark);
+}
+
 .fig-caption {
   font-size: 13px;
   color: var(--text-muted);
