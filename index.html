@@ -156,16 +156,11 @@
 
     <h3>Offline Guidance Diagnostics</h3>
     <p class="section-lead">
-      We analyze the blackboard stride-3 policy offline to evaluate whether score-gradient guidance improves the learned contact-quality score during late denoising, while keeping updates bounded and localized in action space.
+      We analyze the blackboard policy offline to evaluate whether score-gradient guidance improves the learned contact-quality score during late denoising, while keeping updates bounded and localized in action space. The diagnostic uses offline denoising logs and 128 validation windows.
     </p>
 
-    <div class="diagnostic-notes">
-      <p><strong>Data.</strong> Score and norm curves use stride-3 DDPM denoising logs; the heatmap averages 128 validation windows; alignment is a 3-window rollout audit.</p>
-      <p><strong>Units.</strong> A is unitless score delta, B is norm in normalized action/score space, C is lambda-scaled action gradient, and D is cosine similarity.</p>
-    </div>
-
     <div class="content-card diagnostic-figure-card">
-      <img src="static/images/board_stride3_guidance_diagnostics_overview.png" alt="Offline guidance diagnostics for blackboard stride-3 policy">
+      <img src="static/images/board_guidance_diagnostics_overview.png" alt="Offline guidance diagnostics for blackboard policy">
     </div>
     <p class="fig-caption"><strong>Figure 5.</strong> Offline guidance diagnostics for blackboard wiping. A: score improvement after guidance. B: raw gradient norm, scaled gradient norm, and applied update norm. C: action-dimension guidance heatmap averaged over 128 validation windows, showing localized correction on a small subset of action dimensions. D: cosine alignment between the policy denoising direction and the guidance direction.</p>
     <p class="diagnostic-takeaway"><strong>Takeaway.</strong> The offline analysis supports that guidance improves the learned contact-quality score mainly through small, bounded, and action-local corrections, rather than by globally reshaping or reranking full trajectories.</p>
