@@ -1,22 +1,191 @@
 {
-  "board_real": "/home/chenshuai/Project/TactileACT-cs/tmp_vtm_ProjectPage/static/videos/board_real.mp4",
-  "board_viz": "/home/chenshuai/Project/TactileACT-cs/tmp_vtm_ProjectPage/static/videos/board_viz.mp4",
-  "preview_real": "/home/chenshuai/Project/TactileACT-cs/tmp_vtm_ProjectPage/static/videos/board_real_preview.jpg",
-  "preview_viz": "/home/chenshuai/Project/TactileACT-cs/tmp_vtm_ProjectPage/static/videos/board_viz_preview.jpg",
-  "fps": 24.0,
-  "frames": 748,
-  "size": [
-    1280,
-    720
-  ],
-  "speed_label": "4x speed",
-  "browser_video_codec": "h264 avc1 yuv420p",
-  "board_viz_layout": "HD readable GT/Pred marker panels with enlarged force, score, and guidance traces",
-  "source_trial": "caheiban_260609/20260708_180826_port8781_episode_6",
-  "step_count": 865,
-  "board_viz_resolution": [
-    1920,
-    1080
-  ],
-  "board_viz_codec": "h264 avc1 yuv420p crf17"
+  "board": {
+    "name": "board",
+    "frames": 748,
+    "fps": 24.0,
+    "real_video_frames": 748,
+    "real_video_fps": 24.0,
+    "real_video_duration_sec": 31.166666666666668,
+    "sync_to_episode_steps": false,
+    "steps": 865,
+    "phases": [
+      [
+        "Approach",
+        0,
+        135
+      ],
+      [
+        "Contact",
+        135,
+        186
+      ],
+      [
+        "Wiping",
+        186,
+        753
+      ],
+      [
+        "Release",
+        753,
+        864
+      ]
+    ],
+    "episode": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/caheiban_260609/20260708_180826_port8781_episode_6",
+    "speed_label": "4x speed",
+    "top_panel": {
+      "source": "/media/chenshuai/EXTERNAL_USB/pih_dataset/260609/wipe_pos_straight_z124_125_150_20260609/episode_6.hdf5",
+      "dataset": "observations/tac/left/img"
+    },
+    "bottom_panel": {
+      "source": "/home/chenshuai/Project/TactileACT-cs/outputs/foresight_retrain_20260708/trial_marker_videos/caheiban_260609/20260708_180826_port8781_episode_6/marker_prediction_tplus01.npz",
+      "key": "pred",
+      "marker_vmax_p98": 10.560443725585937,
+      "displacement_scale": 4.990320612411198,
+      "source_panel_size": 620,
+      "render_style": "deformed_grid_turbo_homepage_dark_arrow"
+    },
+    "layout": "homepage task viz layout, 1920x1080, h264 yuv420p"
+  },
+  "vase": {
+    "name": "vase",
+    "frames": 502,
+    "fps": 24.0,
+    "real_video_frames": 502,
+    "real_video_fps": 24.0,
+    "real_video_duration_sec": 20.916666666666668,
+    "sync_to_episode_steps": false,
+    "steps": 429,
+    "phases": [
+      [
+        "Approach",
+        0,
+        18
+      ],
+      [
+        "Contact",
+        18,
+        43
+      ],
+      [
+        "Wiping",
+        43,
+        332
+      ],
+      [
+        "Release",
+        332,
+        428
+      ]
+    ],
+    "episode": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/huaping_260630/20260708_170659_port8782_episode_14",
+    "speed_label": "4x speed",
+    "top_panel": {
+      "source": "/media/chenshuai/EXTERNAL_USB/pih_dataset/260629_v8j_card/260630_v8j_huaping/peg_in_hole_0630/episode_14.hdf5",
+      "dataset": "observations/tac/left/img"
+    },
+    "bottom_panel": {
+      "source": "/home/chenshuai/Project/TactileACT-cs/outputs/foresight_retrain_20260708/trial_marker_videos/huaping_260630/20260708_170659_port8782_episode_14/marker_prediction_tplus01.npz",
+      "key": "pred",
+      "marker_vmax_p98": 8.648957252502441,
+      "displacement_scale": 6.09322007976766,
+      "source_panel_size": 620,
+      "render_style": "deformed_grid_turbo_homepage_dark_arrow"
+    },
+    "layout": "homepage task viz layout, 1920x1080, h264 yuv420p"
+  },
+  "card": {
+    "name": "card",
+    "frames": 242,
+    "fps": 24.0,
+    "real_video_frames": 242,
+    "real_video_fps": 24.0,
+    "real_video_duration_sec": 10.083333333333334,
+    "sync_to_episode_steps": false,
+    "steps": 318,
+    "phases": [
+      [
+        "Approach",
+        0,
+        108
+      ],
+      [
+        "Contact",
+        108,
+        127
+      ],
+      [
+        "Wiping",
+        127,
+        274
+      ],
+      [
+        "Release",
+        274,
+        317
+      ]
+    ],
+    "episode": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/card_260707/20260708_164131_port8783_episode_21",
+    "speed_label": "4x speed",
+    "top_panel": {
+      "source": "/media/chenshuai/czy_data22/pih_dataset/260707_v8j_card/peg_in_hole_0707/success/episode_21.hdf5",
+      "dataset": "observations/tac/left/img"
+    },
+    "bottom_panel": {
+      "source": "/home/chenshuai/Project/TactileACT-cs/outputs/foresight_retrain_20260708/trial_marker_videos/card_260707/20260708_164131_port8783_episode_21/marker_prediction_tplus01.npz",
+      "key": "pred",
+      "marker_vmax_p98": 4.132067012786864,
+      "displacement_scale": 12.753907387493358,
+      "source_panel_size": 620,
+      "render_style": "deformed_grid_turbo_homepage_dark_arrow"
+    },
+    "layout": "homepage task viz layout, 1920x1080, h264 yuv420p"
+  },
+  "chip": {
+    "name": "chip",
+    "frames": 223,
+    "fps": 15.787610619469026,
+    "real_video_frames": 339,
+    "real_video_fps": 24.0,
+    "real_video_duration_sec": 14.125,
+    "sync_to_episode_steps": true,
+    "steps": 223,
+    "phases": [
+      [
+        "Approach",
+        0,
+        59
+      ],
+      [
+        "Grasp",
+        59,
+        73
+      ],
+      [
+        "Transfer",
+        73,
+        180
+      ],
+      [
+        "Place",
+        180,
+        222
+      ]
+    ],
+    "episode": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/jiashupian_260709/20260710_164508_port8784_episode_1",
+    "speed_label": "4x speed",
+    "top_panel": {
+      "source": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/jiashupian_260709/20260710_164508_port8784_episode_1/trace_full.hdf5",
+      "dataset": "observations/tac/left/img"
+    },
+    "bottom_panel": {
+      "source": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/jiashupian_260709/20260710_164508_port8784_episode_1/trace_full.hdf5",
+      "dataset": "observations/tac/left/marker_offset",
+      "marker_vmax_p98": 0.34348513603210445,
+      "display_vmax": 0.55,
+      "displacement_scale": 95.81818181818181,
+      "source_panel_size": 620,
+      "render_style": "deformed_grid_turbo_homepage_dark_arrow"
+    },
+    "layout": "homepage task viz layout, 1920x1080, h264 yuv420p"
+  }
 }

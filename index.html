@@ -153,6 +153,17 @@
       <div class="placeholder"><span>Foresight metrics<br>Latent MAE | Cosine Similarity | Marker Reconstruction Error<br>Across prediction horizons H=4, 8, 16</span></div>
     </div>
     <p class="fig-caption"><strong>Figure 4.</strong> Tactile foresight prediction accuracy across different horizons.</p>
+
+    <h3>Guidance Diagnostics</h3>
+    <p class="section-lead">
+      We analyze the blackboard policy to evaluate whether score-gradient guidance improves the learned contact-quality score during late denoising, while keeping updates bounded and localized in action space. The diagnostic uses denoising logs and 128 validation windows.
+    </p>
+
+    <div class="content-card diagnostic-figure-card">
+      <img src="static/images/board_guidance_diagnostics_overview.png" alt="Guidance diagnostics for blackboard policy">
+    </div>
+    <p class="fig-caption"><strong>Figure 5.</strong> Guidance diagnostics for blackboard wiping. A: score improvement after guidance. B: raw gradient norm, scaled gradient norm, and applied update norm. C: action-dimension guidance heatmap averaged over 128 validation windows, showing localized correction on a small subset of action dimensions. D: cosine alignment between the policy denoising direction and the guidance direction.</p>
+    <p class="diagnostic-takeaway"><strong>Takeaway.</strong> The diagnostic analysis supports that guidance improves the learned contact-quality score mainly through small, bounded, and action-local corrections, rather than by globally reshaping or reranking full trajectories.</p>
   </div>
 </section>
 
@@ -217,20 +228,27 @@
     <p class="task-desc">Grasping fragile chips requires delicate force control to avoid crushing. ForeTac predicts contact outcomes and prevents excessive grip force.</p>
     <div class="video-grid">
       <div class="video-card">
-        <div class="placeholder placeholder-video"><span>Chip grasping: real robot execution</span></div>
-        <div class="caption">Real Execution</div>
+        <video autoplay muted loop playsinline preload="auto" poster="static/videos/chip_real_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+          <source src="static/videos/chip_real.mp4" type="video/mp4">
+        </video>
+        <div class="caption">Real Execution (4x speed)</div>
       </div>
       <div class="video-card">
-        <div class="placeholder placeholder-video"><span>Chip grasping: real-time inference visualization</span></div>
-        <div class="caption">Inference Visualization</div>
+        <video autoplay muted loop playsinline preload="auto" poster="static/videos/chip_viz_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+          <source src="static/videos/chip_viz.mp4" type="video/mp4">
+        </video>
+        <div class="caption">Tactile Foresight + Adaptive Guidance</div>
       </div>
     </div>
 
     <h3>Foresight Prediction Visualization</h3>
     <p class="task-desc">Visualizing how the foresight model predicts future tactile states: predicted marker displacement fields vs. ground-truth observations.</p>
-    <div class="video-grid single">
+    <div class="video-grid single foresight-summary-grid">
       <div class="video-card">
-        <div class="placeholder placeholder-video"><span>Foresight prediction: predicted vs. actual tactile evolution</span></div>
+        <video autoplay muted loop playsinline preload="auto" poster="static/videos/foresight_prediction_board_episode6_tplus16_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+          <source src="static/videos/foresight_prediction_board_episode6_tplus16.webm" type="video/webm">
+          <source src="static/videos/foresight_prediction_board_episode6_tplus16.mp4" type="video/mp4">
+        </video>
         <div class="caption">Tactile Foresight Prediction Quality</div>
       </div>
     </div>
@@ -290,6 +308,5 @@ window.addEventListener('scroll', () => {
 });
 </script>
 
-<script data-goatcounter="https://foretac.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
