@@ -289,6 +289,28 @@ ffmpeg -i INPUT_RAW.mp4 \
 
 同一轮修改还根据最终实验矩阵更新了 Results 章节。使用 1280x900 桌面 viewport 和 390x844 移动 viewport 检查表格：单元格无重叠，横向滚动限制在表格容器内，移动页面本身没有横向溢出。
 
+### 6.5 线上加载与交互验证
+
+GitHub Pages 更新到功能提交后，使用全新 Chrome profile 对公网页面逐组测试：
+
+- Board 首次进入 `playing` 约 0.80 秒，持续播放期间无 waiting。
+- Vase 首次进入 `playing` 约 0.83 秒，弱网发生短暂 waiting 后可同步恢复。
+- Card 在进入视口前已由 observer 预加载，进入时可直接播放。
+- Chip 首次进入 `playing` 约 0.90 秒，弱网短暂缓冲后可同步恢复。
+- 四组最终均为 `readyState=4`、`seeking=false`、`error=null`、spinner 消失。
+- 弱网恢复后的最大同步误差为 2.778 ms，没有再次发生事件风暴。
+
+GitHub Pages 对网页视频返回正确的 `video/mp4`、`Accept-Ranges: bytes` 和 `206 Partial Content`。线上 `board_real.mp4` 大小为 4,644,749 字节，其 `_raw` 原始副本为 11,652,263 字节，确认网页引用的是优化版且原始文件可访问。
+
+循环和点击交互使用完整可 seek 的本地文件进行严格边界测试：
+
+- 4 个同步对点击任一侧后，两侧均暂停且时间停止；再次点击后约 50 ms 内同时恢复。
+- 将每对视频定位到结尾前 0.2 秒，4 组均触发结束处理、统一归零并继续同步播放。
+- 独立 foresight 视频同样通过点击暂停、点击继续和结束循环测试。
+- 循环后所有视频均为 `readyState=4`、`paused=false`、spinner 消失、`error=null`。
+
+PACE 的普通视频通过原生 `loop` 循环，但同步对同样在 `ended` 时统一重启。ForeTac 保留统一结束重启，不能给同步视频直接添加原生 `loop`，否则会绕开成对状态和 viewport 暂停。PACE 没有点击暂停 handler；ForeTac 当前交互更完整。ForeTac 的状态化 spinner、IntersectionObserver、固定 16:9 尺寸和移动端行为也优于 PACE，因此未移植 PACE 的常驻底层 spinner、非标准 video `loading="lazy"` 或禁右键等低价值机制。
+
 ## 7. Git 同步记录
 
 开始修改前执行了远端检查：
@@ -306,5 +328,10 @@ ffmpeg -i INPUT_RAW.mp4 \
 9. 确认 JavaScript 才是直接根因后，曾恢复原始视频并移除 `_raw` 重复副本，以完成不依赖转码的隔离复测；该中间状态未作为最终媒体方案发布。
 10. 用户反馈公网加载仍慢后，量化比较 PACE 与 ForeTac 媒体负载，确认性能层面应优化完整的 8 个任务视频。
 11. 最终重新创建 8 个 `_raw` 原始副本，并生成 720p、24 fps、短 GOP 网页版本；本轮同时按用户给定实验矩阵更新 Results 章节。
+12. 功能提交 `38a9b69` 完成 Results 重组和全部任务视频优化。推送前发现 co-worker 新增 `e8f5837` 和 `8591889`，因此暂停推送并检查主表标签。
+13. 按用户确认，主实验采用 co-worker 的 DP、DP+tactile、π0.5、RDT、ForeAR、Ours 列表；通过合并提交 `5756ded` 保留双方历史和其他 Results 新增内容。
+14. `5756ded` 已同步到 GitLab `ProjectPage` 和 GitHub `foretac.github.io/main`；两个远端指向相同提交，GitHub Pages 构建和线上播放验证通过。本轮未推送 GitHub `Foretac` 项目仓库。
+15. 提交 `53d0e9c` 将 Ablation Study 的 ForeTac (Full) 移到最后一行，使主实验、结构消融和重建对比均保持 Ours 最后一行。
+16. 对 4 个同步视频对和独立 foresight 视频完成点击暂停/继续及结束循环测试；现有行为符合要求，无需额外修改播放状态机。
 
-待本次媒体提交和发布完成后，在此补充 GitLab `ProjectPage` 和 GitHub `foretac.github.io/main` 的最终提交哈希及在线验证结果。
+本文档的跟进提交将继续同步到 GitLab `ProjectPage` 和 GitHub `foretac.github.io/main`。
