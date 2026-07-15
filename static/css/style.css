@@ -529,6 +529,14 @@ h3 {
   line-height: 1.5;
 }
 
+.results-table-card {
+  overflow-x: auto;
+}
+
+.main-results-table {
+  min-width: 1180px;
+}
+
 .comp-table th,
 .comp-table td {
   padding: 12px 14px;
@@ -548,7 +556,21 @@ h3 {
   top: 0;
 }
 
+.comp-table .metric-header th {
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  text-align: center;
+  color: var(--text-muted);
+  background: #F8FAFC;
+}
+
 .comp-table td:first-child { font-weight: 600; white-space: nowrap; }
+
+.main-results-table th:not(:first-child),
+.main-results-table td:not(:first-child) {
+  text-align: center;
+  white-space: nowrap;
+}
 
 .comp-table .year {
   font-size: 10px;
@@ -583,6 +605,17 @@ h3 {
 
 .comp-table .row-ours td {
   border-bottom: 2px solid var(--orange);
+}
+
+.comp-table .row-ours-primary {
+  background: linear-gradient(90deg, rgba(234,88,12,0.08), rgba(124,58,237,0.08));
+}
+
+.comp-table .tbd {
+  color: var(--gray-400);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
 }
 
 /* ============ BIBTEX ============ */
