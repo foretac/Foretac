@@ -153,6 +153,21 @@
       <div class="placeholder"><span>Foresight metrics<br>Latent MAE | Cosine Similarity | Marker Reconstruction Error<br>Across prediction horizons H=4, 8, 16</span></div>
     </div>
     <p class="fig-caption"><strong>Figure 4.</strong> Tactile foresight prediction accuracy across different horizons.</p>
+
+    <h3>Offline Guidance Diagnostics</h3>
+    <p class="section-lead">
+      We analyze the blackboard stride-3 policy offline to verify that score-gradient guidance improves the learned contact-quality score during late denoising, while keeping updates bounded and localized in action space.
+    </p>
+
+    <div class="diagnostic-notes">
+      <p><strong>Data.</strong> Score and norm curves use stride-3 DDPM denoising logs; the heatmap averages 128 validation windows; alignment is a 3-window rollout audit.</p>
+      <p><strong>Units.</strong> A is unitless score delta, B is norm in normalized action/score space, C is lambda-scaled action gradient, and D is cosine similarity.</p>
+    </div>
+
+    <div class="content-card diagnostic-figure-card">
+      <img src="static/images/board_stride3_guidance_diagnostics_overview.png" alt="Offline guidance diagnostics for blackboard stride-3 policy">
+    </div>
+    <p class="fig-caption"><strong>Figure 5.</strong> Offline guidance diagnostics for blackboard wiping. A: score improvement after guidance. B: raw gradient norm, scaled gradient norm, and applied update norm. C: action-dimension guidance heatmap averaged over 128 validation windows, showing localized correction on a small subset of action dimensions. D: cosine alignment between the policy denoising direction and the guidance direction.</p>
   </div>
 </section>
 

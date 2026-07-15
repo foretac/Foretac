@@ -383,6 +383,32 @@ h3 {
 
 .content-card img { width: 100%; display: block; }
 
+.diagnostic-figure-card {
+  max-width: 960px;
+}
+
+.diagnostic-notes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 8px 0 22px;
+}
+
+.diagnostic-notes p {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--orange);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--text-muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.diagnostic-notes strong {
+  color: var(--orange-dark);
+}
+
 .fig-caption {
   font-size: 13px;
   color: var(--text-muted);
@@ -564,6 +590,7 @@ footer {
 @media (max-width: 768px) {
   .hero-title { font-size: 48px; }
   .pillars { grid-template-columns: 1fr; }
+  .diagnostic-notes { grid-template-columns: 1fr; }
   .video-grid { grid-template-columns: 1fr; }
   .video-grid.board-demo-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
