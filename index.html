@@ -175,15 +175,15 @@
 
     <h3>Board Wiping</h3>
     <p class="task-desc">The robot must maintain consistent contact pressure while sweeping across the board. ForeTac steers actions to avoid excessive force or contact loss.</p>
-    <div class="video-grid board-demo-grid">
-      <div class="video-card board-real-card">
-        <video autoplay muted loop playsinline preload="auto" poster="static/videos/board_real_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+    <div class="video-grid board-demo-grid sync-video-pair" data-sync-pair>
+      <div class="video-card board-real-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/board_real_preview.jpg" data-sync-video>
           <source src="static/videos/board_real.mp4" type="video/mp4">
         </video>
         <div class="caption">Real Execution (4x speed)</div>
       </div>
-      <div class="video-card board-viz-card">
-        <video autoplay muted loop playsinline preload="auto" poster="static/videos/board_viz_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+      <div class="video-card board-viz-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/board_viz_preview.jpg" data-sync-video>
           <source src="static/videos/board_viz.mp4" type="video/mp4">
         </video>
         <div class="caption">Tactile Foresight + Adaptive Guidance</div>
@@ -192,15 +192,15 @@
 
     <h3>Vase Wiping</h3>
     <p class="task-desc">Wiping a curved vase surface requires adaptive contact force control. ForeTac predicts contact consequences on complex geometry and adjusts accordingly.</p>
-    <div class="video-grid">
-      <div class="video-card">
-        <video autoplay muted loop playsinline preload="auto" poster="static/videos/vase_real_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+    <div class="video-grid sync-video-pair" data-sync-pair>
+      <div class="video-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/vase_real_preview.jpg" data-sync-video>
           <source src="static/videos/vase_real.mp4" type="video/mp4">
         </video>
         <div class="caption">Real Execution (4x speed)</div>
       </div>
-      <div class="video-card">
-        <video autoplay muted loop playsinline preload="auto" poster="static/videos/vase_viz_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+      <div class="video-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/vase_viz_preview.jpg" data-sync-video>
           <source src="static/videos/vase_viz.mp4" type="video/mp4">
         </video>
         <div class="caption">Tactile Foresight + Adaptive Guidance</div>
@@ -209,15 +209,15 @@
 
     <h3>Card Swiping</h3>
     <p class="task-desc">Swiping a card through a reader requires precise alignment and sustained contact. ForeTac guides the action to maintain proper insertion angle and force.</p>
-    <div class="video-grid">
-      <div class="video-card">
-        <video autoplay muted loop playsinline preload="auto" poster="static/videos/card_real_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+    <div class="video-grid sync-video-pair" data-sync-pair>
+      <div class="video-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/card_real_preview.jpg" data-sync-video>
           <source src="static/videos/card_real.mp4" type="video/mp4">
         </video>
         <div class="caption">Real Execution (4x speed)</div>
       </div>
-      <div class="video-card">
-        <video autoplay muted loop playsinline preload="auto" poster="static/videos/card_viz_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+      <div class="video-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/card_viz_preview.jpg" data-sync-video>
           <source src="static/videos/card_viz.mp4" type="video/mp4">
         </video>
         <div class="caption">Tactile Foresight + Adaptive Guidance</div>
@@ -226,15 +226,15 @@
 
     <h3>Chip Grasping</h3>
     <p class="task-desc">Grasping fragile chips requires delicate force control to avoid crushing. ForeTac predicts contact outcomes and prevents excessive grip force.</p>
-    <div class="video-grid">
-      <div class="video-card">
-        <video autoplay muted loop playsinline preload="auto" poster="static/videos/chip_real_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+    <div class="video-grid sync-video-pair" data-sync-pair>
+      <div class="video-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/chip_real_preview.jpg" data-sync-video>
           <source src="static/videos/chip_real.mp4" type="video/mp4">
         </video>
         <div class="caption">Real Execution (4x speed)</div>
       </div>
-      <div class="video-card">
-        <video autoplay muted loop playsinline preload="auto" poster="static/videos/chip_viz_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+      <div class="video-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/chip_viz_preview.jpg" data-sync-video>
           <source src="static/videos/chip_viz.mp4" type="video/mp4">
         </video>
         <div class="caption">Tactile Foresight + Adaptive Guidance</div>
@@ -244,8 +244,8 @@
     <h3>Foresight Prediction Visualization</h3>
     <p class="task-desc">Visualizing how the foresight model predicts future tactile states: predicted marker displacement fields vs. ground-truth observations.</p>
     <div class="video-grid single foresight-summary-grid">
-      <div class="video-card">
-        <video autoplay muted loop playsinline preload="auto" poster="static/videos/foresight_prediction_board_episode6_tplus16_preview.jpg" onclick="this.paused ? this.play() : this.pause()">
+      <div class="video-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/foresight_prediction_board_episode6_tplus16_preview.jpg" data-standalone-video>
           <source src="static/videos/foresight_prediction_board_episode6_tplus16.webm" type="video/webm">
           <source src="static/videos/foresight_prediction_board_episode6_tplus16.mp4" type="video/mp4">
         </video>
@@ -305,6 +305,180 @@ window.addEventListener('scroll', () => {
     link.classList.remove('active');
     if (link.getAttribute('href') === '#' + current) link.classList.add('active');
   });
+});
+
+function setVideoLoading(video, loading) {
+  const card = video.closest('.video-card');
+  if (!card) return;
+  card.classList.toggle('is-loading', loading);
+  card.setAttribute('aria-busy', loading ? 'true' : 'false');
+}
+
+function waitUntilPlayable(video) {
+  if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const cleanup = () => {
+      video.removeEventListener('canplay', onReady);
+      video.removeEventListener('error', onError);
+    };
+    const onReady = () => { cleanup(); resolve(); };
+    const onError = () => { cleanup(); reject(video.error); };
+    video.addEventListener('canplay', onReady, { once: true });
+    video.addEventListener('error', onError, { once: true });
+  });
+}
+
+document.querySelectorAll('.video-card video').forEach(video => {
+  setVideoLoading(video, video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA);
+  ['loadstart', 'waiting', 'stalled', 'seeking'].forEach(eventName => {
+    video.addEventListener(eventName, () => setVideoLoading(video, true));
+  });
+  ['canplay', 'playing', 'seeked'].forEach(eventName => {
+    video.addEventListener(eventName, () => setVideoLoading(video, false));
+  });
+  video.addEventListener('error', () => {
+    setVideoLoading(video, false);
+    video.closest('.video-card')?.classList.add('is-error');
+  });
+});
+
+document.querySelectorAll('[data-sync-pair]').forEach(pair => {
+  const videos = Array.from(pair.querySelectorAll('[data-sync-video]'));
+  if (videos.length !== 2) return;
+
+  let shouldPlay = true;
+  let playbackRequest = 0;
+  let mediaActivated = false;
+
+  const pauseTogether = () => videos.forEach(video => video.pause());
+
+  async function playTogether({ restart = false } = {}) {
+    const requestId = ++playbackRequest;
+    pauseTogether();
+    try {
+      await Promise.all(videos.map(waitUntilPlayable));
+      if (!shouldPlay || requestId !== playbackRequest) return;
+      if (restart) {
+        videos.forEach(video => { video.currentTime = 0; });
+      } else {
+        videos[1].currentTime = videos[0].currentTime;
+      }
+      await Promise.all(videos.map(video => video.play()));
+    } catch (error) {
+      if (requestId === playbackRequest) {
+        console.warn('Synchronized video playback could not start.', error);
+      }
+    }
+  }
+
+  videos.forEach(video => {
+    video.addEventListener('ended', () => {
+      shouldPlay = true;
+      pauseTogether();
+      playTogether({ restart: true });
+    });
+
+    ['waiting', 'stalled'].forEach(eventName => {
+      video.addEventListener(eventName, () => {
+        if (!shouldPlay) return;
+        pauseTogether();
+        playTogether();
+      });
+    });
+
+    video.addEventListener('click', event => {
+      event.preventDefault();
+      const isPlaying = videos.some(item => !item.paused && !item.ended);
+      shouldPlay = !isPlaying;
+      if (shouldPlay) playTogether();
+      else pauseTogether();
+    });
+  });
+
+  window.setInterval(() => {
+    if (!shouldPlay || videos.some(video => video.paused || video.seeking)) return;
+    if (Math.abs(videos[0].currentTime - videos[1].currentTime) > 0.12) {
+      videos[1].currentTime = videos[0].currentTime;
+    }
+  }, 500);
+
+  const activatePair = () => {
+    shouldPlay = true;
+    if (!mediaActivated) {
+      mediaActivated = true;
+      videos.forEach(video => {
+        video.preload = 'auto';
+        video.load();
+      });
+      playTogether({ restart: true });
+    } else {
+      playTogether();
+    }
+  };
+
+  const deactivatePair = () => {
+    shouldPlay = false;
+    playbackRequest += 1;
+    pauseTogether();
+  };
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) activatePair();
+        else if (mediaActivated) deactivatePair();
+      });
+    }, { rootMargin: '320px 0px', threshold: 0.01 });
+    observer.observe(pair);
+  } else {
+    activatePair();
+  }
+});
+
+document.querySelectorAll('[data-standalone-video]').forEach(video => {
+  let activated = false;
+  let shouldPlay = false;
+
+  const playVideo = async () => {
+    shouldPlay = true;
+    if (!activated) {
+      activated = true;
+      video.preload = 'auto';
+      video.load();
+    }
+    try {
+      await waitUntilPlayable(video);
+      if (shouldPlay) await video.play();
+    } catch (error) {
+      console.warn('Video playback could not start.', error);
+    }
+  };
+
+  const pauseVideo = () => {
+    shouldPlay = false;
+    video.pause();
+  };
+
+  video.addEventListener('ended', () => {
+    video.currentTime = 0;
+    if (shouldPlay) playVideo();
+  });
+  video.addEventListener('click', () => {
+    if (video.paused) playVideo();
+    else pauseVideo();
+  });
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) playVideo();
+        else if (activated) pauseVideo();
+      });
+    }, { rootMargin: '320px 0px', threshold: 0.01 });
+    observer.observe(video);
+  } else {
+    playVideo();
+  }
 });
 </script>
 
