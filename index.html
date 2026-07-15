@@ -154,16 +154,16 @@
     </div>
     <p class="fig-caption"><strong>Figure 4.</strong> Tactile foresight prediction accuracy across different horizons.</p>
 
-    <h3>Offline Guidance Diagnostics</h3>
+    <h3>Guidance Diagnostics</h3>
     <p class="section-lead">
-      We analyze the blackboard policy offline to evaluate whether score-gradient guidance improves the learned contact-quality score during late denoising, while keeping updates bounded and localized in action space. The diagnostic uses offline denoising logs and 128 validation windows.
+      We analyze the blackboard policy to evaluate whether score-gradient guidance improves the learned contact-quality score during late denoising, while keeping updates bounded and localized in action space. The diagnostic uses denoising logs and 128 validation windows.
     </p>
 
     <div class="content-card diagnostic-figure-card">
-      <img src="static/images/board_guidance_diagnostics_overview.png" alt="Offline guidance diagnostics for blackboard policy">
+      <img src="static/images/board_guidance_diagnostics_overview.png" alt="Guidance diagnostics for blackboard policy">
     </div>
-    <p class="fig-caption"><strong>Figure 5.</strong> Offline guidance diagnostics for blackboard wiping. A: score improvement after guidance. B: raw gradient norm, scaled gradient norm, and applied update norm. C: action-dimension guidance heatmap averaged over 128 validation windows, showing localized correction on a small subset of action dimensions. D: cosine alignment between the policy denoising direction and the guidance direction.</p>
-    <p class="diagnostic-takeaway"><strong>Takeaway.</strong> The offline analysis supports that guidance improves the learned contact-quality score mainly through small, bounded, and action-local corrections, rather than by globally reshaping or reranking full trajectories.</p>
+    <p class="fig-caption"><strong>Figure 5.</strong> Guidance diagnostics for blackboard wiping. A: score improvement after guidance. B: raw gradient norm, scaled gradient norm, and applied update norm. C: action-dimension guidance heatmap averaged over 128 validation windows, showing localized correction on a small subset of action dimensions. D: cosine alignment between the policy denoising direction and the guidance direction.</p>
+    <p class="diagnostic-takeaway"><strong>Takeaway.</strong> The diagnostic analysis supports that guidance improves the learned contact-quality score mainly through small, bounded, and action-local corrections, rather than by globally reshaping or reranking full trajectories.</p>
   </div>
 </section>
 
