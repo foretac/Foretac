@@ -28,7 +28,7 @@
   --text-light: #F1F5F9;
   --text-muted: #64748B;
   --border: #E2E8F0;
-  --max-w: 1200px;
+  --max-w: 960px;
   --nav-height: 64px;
 
   --font-sans: 'Inter', -apple-system, sans-serif;
@@ -317,8 +317,6 @@ h3 {
 .section-dark h3 { color: var(--orange); }
 
 .abstract-text {
-  max-width: 920px;
-  margin: 0 0 18px;
   font-size: 15px;
   line-height: 1.85;
   color: var(--gray-600);
@@ -326,17 +324,9 @@ h3 {
 }
 
 .section-lead {
-  max-width: 960px;
-  margin: 0 0 24px;
   font-size: 14px;
   color: var(--text-muted);
-}
-
-.task-desc {
-  max-width: 960px;
-  margin-bottom: 14px;
-  color: var(--text-muted);
-  font-size: 14px;
+  margin-bottom: 24px;
 }
 
 /* ============ PILLARS ============ */
@@ -398,8 +388,7 @@ h3 {
 }
 
 .diagnostic-takeaway {
-  max-width: 960px;
-  margin: 10px 0 0;
+  margin-top: 10px;
   padding: 12px 14px;
   border-radius: 8px;
   background: #F8FAFC;
@@ -414,10 +403,9 @@ h3 {
 }
 
 .fig-caption {
-  max-width: 960px;
   font-size: 13px;
   color: var(--text-muted);
-  margin: 12px 0 0;
+  margin-top: 12px;
   line-height: 1.6;
 }
 
@@ -546,7 +534,7 @@ h3 {
 }
 
 .main-results-table {
-  min-width: 1150px;
+  min-width: 1180px;
 }
 
 .ablation-results-table { min-width: 820px; }
