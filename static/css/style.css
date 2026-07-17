@@ -168,7 +168,7 @@ body {
 }
 
 .title-tac {
-  background: linear-gradient(135deg, var(--orange), #FBBF24, var(--orange));
+  background: linear-gradient(135deg, var(--orange), var(--purple), var(--orange));
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

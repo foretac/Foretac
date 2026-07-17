@@ -1,153 +1,134 @@
-# ForeTac 项目网页
+# ForeTac Project Website
 
-**ForeTac: Steering Robot Actions with Predicted Contact Consequences**
+Project website for **ForeTac: Steering Robot Actions with Predicted Contact Consequences**.
 
-- 在线地址：https://foretac.github.io/
-- GitLab 分支：`git.n.xiaomi.com:chenzhiyuan3/vtm.git` → `ProjectPage`
-- GitHub 仓库：`git@github-foretac:foretac/foretac.github.io.git` → `main`
+- Website: <https://foretac.github.io/>
+- GitHub Pages repository: <https://github.com/foretac/foretac.github.io>
+- Project repository: <https://github.com/foretac/Foretac>
 
----
+ForeTac steers robot actions using predicted contact consequences. Its inference pipeline combines a frozen TacVAE encoder, a tactile foresight transformer, a contact-quality energy model, and trust-region action refinement. The website presents the method, quantitative results, diagnostics, and real-robot demonstrations for board wiping, vase wiping, card swiping, and chip grasping.
 
-## 本地预览
+## Local Preview
+
+Serve the repository over HTTP so that browser media behavior matches deployment more closely:
 
 ```bash
-cd ~/projects/foretac_web
+cd /path/to/foretac_web
 python -m http.server 8000
-# 浏览器打开 http://localhost:8000
 ```
 
----
+Then open <http://localhost:8000>. Opening `index.html` directly is also supported, but an HTTP preview is preferred when validating video loading and byte-range requests.
 
-## 推送部署
+## Repository Structure
 
-```bash
-cd ~/projects/foretac_web
-
-# 1. 检查 GitLab 远程是否有新改动（共用仓库，必须先检查）
-git fetch origin
-git log ProjectPage..origin/ProjectPage --oneline
-# 如果有输出 → 远程被改动过，需要先处理冲突
-
-# 2. 提交本地改动
-git add -A && git commit -m "描述"
-
-# 3. 推送到两个远程
-git push origin ProjectPage        # GitLab
-git push github ProjectPage:main   # GitHub (自动部署 Pages)
-```
-
----
-
-## 目录结构
-
-```
+```text
 foretac_web/
-├── index.html              主页面（HTML + 内联 JS）
-├── .nojekyll               禁用 Jekyll（GitHub Pages 需要）
-├── .gitlab-ci.yml          GitLab Pages CI 配置
-├── README.md               本文件
-└── static/
-    ├── css/
-    │   └── style.css       样式表
-    ├── images/             图片/SVG 素材
-    │   ├── teaser.svg              ✅ 已完成（暗色橙紫流程图）
-    │   ├── architecture.svg        ✅ 已完成（推理架构图）
-    │   ├── training_pipeline.svg   ✅ 已完成（四阶段训练图）
-    │   ├── guidance_mechanism.svg  ✅ 已完成（trust-region 机制图）
-    │   ├── main_results.png        ❌ 待补充
-    │   ├── ablation.png            ❌ 待补充
-    │   └── foresight_quality.png   ❌ 待补充
-    └── videos/             视频素材（全部待补充）
-        ├── board_real.mp4
-        ├── board_viz.mp4
-        ├── vase_real.mp4
-        ├── vase_viz.mp4
-        ├── card_real.mp4
-        ├── card_viz.mp4
-        ├── chip_real.mp4
-        ├── chip_viz.mp4
-        └── foresight_pred.mp4
+|-- index.html                         Main page and video playback logic
+|-- static/
+|   |-- css/style.css                  Layout and visual styles
+|   |-- images/                        Method, diagnostics, and results assets
+|   `-- videos/                        Web videos, previews, and raw backups
+|-- tools/                             Media rendering and plotting utilities
+|-- .nojekyll                          Disables Jekyll on GitHub Pages
+|-- .gitlab-ci.yml                     GitLab Pages configuration
+`-- README.md
 ```
 
----
+The main image assets are:
 
-## 需要补充的视频
+- `teaser.svg`, `architecture.svg`, `training_pipeline.svg`, and `guidance_mechanism.svg`
+- `board_guidance_diagnostics_overview.png`
+- `foresight_prediction_quality_horizons.png` and its metrics JSON
 
-所有视频放在 `static/videos/` 目录下。
+Main-comparison and ablation results are rendered as responsive HTML tables in `index.html`. Their unfinished measurements are marked `TBD`; they are not pending PNG files.
 
-### 任务 Demo 视频（4 个任务 × 2 = 8 个文件）
+## Video Assets
 
-每个任务一行两列：左侧是真实机器人执行视频，右侧是实时推理可视化。
+Each real-robot task uses a synchronized pair:
 
-| 文件名 | 内容 | 说明 |
-|--------|------|------|
-| `board_real.mp4` | 擦黑板：真实机器人执行 | 录制 ForeTac 引导下的完整 rollout |
-| `board_viz.mp4` | 擦黑板：实时推理可视化 | 画面包含 marker 位移 + 预测触觉 + energy score 实时变化 |
-| `vase_real.mp4` | 擦花瓶：真实机器人执行 | 同上 |
-| `vase_viz.mp4` | 擦花瓶：实时推理可视化 | 同上 |
-| `card_real.mp4` | 刷卡：真实机器人执行 | 同上 |
-| `card_viz.mp4` | 刷卡：实时推理可视化 | 同上 |
-| `chip_real.mp4` | 夹薯片：真实机器人执行 | 同上 |
-| `chip_viz.mp4` | 夹薯片：实时推理可视化 | 同上 |
+| Task | Real execution | Inference visualization |
+| --- | --- | --- |
+| Board wiping | `board_real.mp4` | `board_viz.mp4` |
+| Vase wiping | `vase_real.mp4` | `vase_viz.mp4` |
+| Card swiping | `card_real.mp4` | `card_viz.mp4` |
+| Chip grasping | `chip_real.mp4` | `chip_viz.mp4` |
 
-### 预测可视化视频（1 个文件）
+The standalone foresight visualization uses:
 
-| 文件名 | 内容 | 说明 |
-|--------|------|------|
-| `foresight_pred.mp4` | Foresight 预测质量 | 展示 predicted vs actual marker displacement field 随时间演化 |
+- `foresight_prediction_board_episode6_tplus16.webm`
+- `foresight_prediction_board_episode6_tplus16.mp4` as a browser fallback
+- `foresight_prediction_board_episode6_tplus16_preview.jpg` as its poster
 
-### 可选：Teaser 视频（备选方案）
+### Playback Behavior
 
-| 文件名 | 内容 | 说明 |
-|--------|------|------|
-| `teaser.mp4` | 方法流程动画 | 从左到右逐步展示 Obs→Policy→Foresight→Energy→Guide→Execute |
+- A task pair starts only after both videos are playable.
+- Both sides pause, resume, restart, and resynchronize together.
+- Clicking either video pauses or resumes the pair.
+- Videos loop after reaching the end.
+- Media is activated near the viewport instead of loading every video eagerly.
+- A spinner is shown during initial loading, seeking, and buffering.
 
-如果提供了 `teaser.mp4`，可以替换当前的静态 SVG teaser。
+The standalone foresight video also loops and supports click-to-pause/resume.
 
----
+### Web and Raw Files
 
-## 视频规格要求
+The task videos referenced by `index.html` are web-optimized files. Their exact pre-optimization sources are retained beside them with the `_raw.mp4` suffix, for example:
 
-| 属性 | 要求 |
-|------|------|
-| 格式 | MP4, H.264 编码 |
-| 分辨率 | 720p (1280×720) 或 1080p (1920×1080) |
-| 时长 | 10-30 秒，能展示完整一次 rollout |
-| 帧率 | 30fps |
-| 音频 | 无（网页播放时 muted） |
-| 文件大小 | 每个尽量 < 20MB（网页加载速度） |
+```text
+board_real.mp4       Web version used by the page
+board_real_raw.mp4   Original source retained for future re-encoding
+```
 
-### 录制建议
+Do not point the webpage at `_raw` files. When replacing a task pair:
 
-- **real 视频**：固定机位录制机器人执行全程，确保画面稳定
-- **viz 视频**：用 serving 代码的可视化输出录屏，包含：
-  - 实时 marker offset 箭头图
-  - Foresight 预测的未来触觉 latent 可视化
-  - Energy score 数值/曲线
-  - Trust-region refinement 前后的 action 对比（可选）
-- **foresight_pred 视频**：双栏对比——左侧 predicted marker field，右侧 ground-truth marker field，随时间步推进
+1. Preserve each new source as the corresponding `*_raw.mp4` file.
+2. Generate the web files from those raw sources.
+3. Keep the left and right outputs at exactly the same duration and frame rate.
+4. Regenerate their `*_preview.jpg` posters.
+5. Test initial playback, buffering recovery, click pause/resume, looping, and synchronization.
 
-### 视频压缩命令（如果文件过大）
+Detailed investigation and verification results are recorded in [`static/videos/video_loading_optimization_record.md`](static/videos/video_loading_optimization_record.md).
+
+## Task Video Encoding
+
+Current task videos use the following web profile:
+
+| Property | Value |
+| --- | --- |
+| Container / codec | MP4 / H.264 High Profile, Level 4.0 |
+| Resolution | 1280x720 |
+| Frame rate | Constant 24 fps |
+| Pixel format | `yuv420p` |
+| Quality | CRF 23 |
+| Rate control | 1200 kbps max rate, 2400 kb buffer |
+| Keyframes | GOP 48, approximately one keyframe every 2 seconds |
+| Streaming | MP4 Fast Start enabled |
+| Audio | Removed |
+
+Reference command:
 
 ```bash
-ffmpeg -i input.mp4 -vcodec libx264 -crf 23 -preset medium -an -vf scale=1280:720 output.mp4
+ffmpeg -i INPUT_RAW.mp4 \
+  -vf "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,fps=24" \
+  -c:v libx264 -preset medium -crf 23 \
+  -profile:v high -level:v 4.0 -pix_fmt yuv420p \
+  -maxrate 1200k -bufsize 2400k \
+  -g 48 -keyint_min 48 -sc_threshold 0 \
+  -movflags +faststart -an OUTPUT_WEB.mp4
 ```
 
----
+Pair duration must be normalized before or during encoding; applying the command independently does not guarantee synchronized endpoints when the two sources have different durations.
 
-## 需要补充的图片
+## Maintenance Checks
 
-| 文件名 | 内容 | 何时补充 |
-|--------|------|----------|
-| `main_results.png` | 主对比表/柱状图（6 个方法 × 4 个任务） | 实验跑完后 |
-| `ablation.png` | 消融实验表 | 实验跑完后 |
-| `foresight_quality.png` | Foresight 预测精度图（latent MAE / cosine sim） | 实验跑完后 |
+Before publishing a website update:
 
----
+1. Inspect `git status` and the actual diff.
+2. Fetch every shared remote and check whether collaborators added commits.
+3. Stage only the intended paths; avoid blanket staging commands.
+4. Preview through a local HTTP server.
+5. Check desktop and mobile layouts for overflow or overlap.
+6. Exercise all video pairs and the standalone video through loading, pause/resume, buffering, and loop transitions.
+7. Confirm that every publication target points to the same reviewed commit.
 
-## 修改记录
-
-- 2026-07-08：更新 README，匹配实际任务（擦黑板/擦花瓶/刷卡/夹薯片）
-- 2026-07-08：全面视觉重设计（深色 hero + 橙紫主题）
-- 2026-07-02：添加对比表到飞书文档
-- 2026-06-25：初版创建
+Remote names and internal publication procedures are intentionally kept out of this public README because they depend on each collaborator's local Git and SSH configuration.
