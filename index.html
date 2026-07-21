@@ -422,15 +422,38 @@
       </div>
     </div>
 
+    <h3>Generalization Test 1: Visual Perturbation</h3>
+    <p class="task-desc">The card-swiping policy is evaluated under visual disturbance while the tactile foresight signal remains aligned with contact dynamics.</p>
+    <div class="video-grid sync-video-pair" data-sync-pair>
+      <div class="video-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/generalization_visual_perturb_real_preview.jpg" data-sync-video>
+          <source src="static/videos/generalization_visual_perturb_real.mp4" type="video/mp4">
+        </video>
+        <div class="caption">Real Execution (4x speed)</div>
+      </div>
+      <div class="video-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/generalization_visual_perturb_viz_preview.jpg" data-sync-video>
+          <source src="static/videos/generalization_visual_perturb_viz.mp4" type="video/mp4">
+        </video>
+        <div class="caption">Tactile Foresight + Adaptive Guidance</div>
+      </div>
+    </div>
+
     <h3>Foresight Prediction Visualization</h3>
     <p class="task-desc">Visualizing how the foresight model predicts future tactile states: predicted marker displacement fields vs. ground-truth observations.</p>
-    <div class="video-grid single foresight-summary-grid">
+    <div class="video-grid foresight-summary-grid sync-video-pair" data-sync-pair>
       <div class="video-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/foresight_prediction_board_episode6_tplus16_preview.jpg" data-standalone-video>
+        <video muted playsinline preload="metadata" poster="static/videos/board_real_preview.jpg" data-sync-video>
+          <source src="static/videos/board_real.mp4" type="video/mp4">
+        </video>
+        <div class="caption">Real Execution: Board Wiping</div>
+      </div>
+      <div class="video-card is-loading">
+        <video muted playsinline preload="metadata" poster="static/videos/foresight_prediction_board_episode6_tplus16_preview.jpg" data-sync-video>
           <source src="static/videos/foresight_prediction_board_episode6_tplus16.webm" type="video/webm">
           <source src="static/videos/foresight_prediction_board_episode6_tplus16.mp4" type="video/mp4">
         </video>
-        <div class="caption">Tactile Foresight Prediction Quality</div>
+        <div class="caption">Predicted vs. Ground-Truth Tactile Foresight</div>
       </div>
     </div>
   </div>

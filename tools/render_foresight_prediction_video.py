@@ -16,6 +16,7 @@ matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.gridspec import GridSpec
 
 
@@ -29,10 +30,19 @@ DEFAULT_OUT = ROOT / "tmp_vtm_ProjectPage/static/videos/foresight_prediction_boa
 DEFAULT_POSTER = ROOT / "tmp_vtm_ProjectPage/static/videos/foresight_prediction_board_episode6_tplus16_preview.jpg"
 
 PHASES = (
-    ("Approach", 0, 120, "#fff7ed"),
-    ("Contact", 120, 170, "#fef3c7"),
-    ("Wiping", 170, 760, "#ecfdf5"),
-    ("Release", 760, 864, "#fdf2f8"),
+    ("Approach", 0, 135, "#fff7ed"),
+    ("Contact", 135, 186, "#fef3c7"),
+    ("Wiping", 186, 753, "#ecfdf5"),
+    ("Release", 753, 864, "#fdf2f8"),
+)
+
+MARKER_CMAP = LinearSegmentedColormap.from_list(
+    "marker_white_yellow_blue",
+    ["#ffffff", "#fff7cc", "#fde68a", "#60a5fa", "#1e3a8a"],
+)
+ERROR_CMAP = LinearSegmentedColormap.from_list(
+    "error_white_to_dark_red",
+    ["#fffafa", "#fee2e2", "#fca5a5", "#dc2626", "#7f1d1d"],
 )
 
 
@@ -49,11 +59,12 @@ def rolling_mean(values: np.ndarray, window: int = 15) -> np.ndarray:
     return np.convolve(padded, kernel, mode="valid")
 
 
-def quiver_scale(marker: np.ndarray, *, error: bool = False) -> float:
+def quiver_scale(marker: np.ndarray, *, error: bool = False, reference_vmax: float | None = None) -> float:
     vmax = float(np.nanmax(marker_mag(marker))) if marker.size else 1.0
     if error:
         return max(vmax * 2.8, 3.0)
-    return max(vmax * 1.9, 11.5)
+    vmax = float(reference_vmax) if reference_vmax is not None else vmax
+    return max(vmax * 1.08, 7.5)
 
 
 def plot_marker_panel(
@@ -64,6 +75,7 @@ def plot_marker_panel(
     *,
     vmax: float,
     error: bool = False,
+    scale_reference: float | None = None,
 ) -> object:
     rows, cols = marker.shape[:2]
     x, y = np.meshgrid(np.arange(cols), np.arange(rows))
@@ -77,13 +89,14 @@ def plot_marker_panel(
         cmap=cmap,
         angles="xy",
         scale_units="xy",
-        scale=quiver_scale(marker, error=error),
-        width=0.0062,
-        headwidth=4.5,
-        headlength=6.0,
-        headaxislength=5.0,
+        scale=quiver_scale(marker, error=error, reference_vmax=scale_reference),
+        width=0.0058 if error else 0.0070,
+        headwidth=4.4 if error else 5.0,
+        headlength=5.8 if error else 6.7,
+        headaxislength=4.8 if error else 5.8,
         minlength=0.05,
         pivot="tail",
+        alpha=0.96,
     )
     q.set_clim(0.0, vmax)
     ax.set_title(
@@ -188,9 +201,30 @@ def render_frame(
     cax_diff = fig.add_subplot(gs[0, 5])
     ax_curve = fig.add_subplot(gs[1, :])
 
-    q_gt = plot_marker_panel(ax_gt, gt_i, "GT future", "viridis", vmax=marker_vmax)
-    q_pred = plot_marker_panel(ax_pred, pred_i, "Predicted future", "viridis", vmax=marker_vmax)
-    q_diff = plot_marker_panel(ax_diff, diff_i, "Error (pred - GT)", "Reds", vmax=diff_vmax, error=True)
+    q_gt = plot_marker_panel(
+        ax_gt,
+        gt_i,
+        "GT future",
+        MARKER_CMAP,
+        vmax=marker_vmax,
+        scale_reference=marker_vmax,
+    )
+    q_pred = plot_marker_panel(
+        ax_pred,
+        pred_i,
+        "Predicted future",
+        MARKER_CMAP,
+        vmax=marker_vmax,
+        scale_reference=marker_vmax,
+    )
+    q_diff = plot_marker_panel(
+        ax_diff,
+        diff_i,
+        "Error (pred - GT)",
+        ERROR_CMAP,
+        vmax=diff_vmax,
+        error=True,
+    )
 
     for q, cax in ((q_gt, cax_gt), (q_pred, cax_pred), (q_diff, cax_diff)):
         cb = fig.colorbar(q, cax=cax)
@@ -221,6 +255,7 @@ def render_video(
     stride: int,
     dpi: int,
     poster_step: int,
+    target_frames: int | None = None,
 ) -> None:
     data = np.load(npz_path)
     gt = data["gt"].astype(np.float32)
@@ -230,16 +265,21 @@ def render_video(
     target_ts = data["target_ts"].astype(np.int64)
     smooth_l2 = rolling_mean(err_l2, 15)
 
-    marker_vmax = float(np.percentile(marker_mag(np.concatenate([gt, pred], axis=0)), 99.0))
-    diff_vmax = float(np.percentile(marker_mag(pred - gt), 99.0))
+    marker_vmax = float(np.percentile(marker_mag(np.concatenate([gt, pred], axis=0)), 98.5))
+    diff_vmax = 3.0
     y_max = float(np.percentile(err_l2, 99.0) * 1.08)
     marker_vmax = max(marker_vmax, 1e-6)
     diff_vmax = max(diff_vmax, 1e-6)
     y_max = max(y_max, 1e-6)
 
-    frame_indices = list(range(0, len(gt), max(1, int(stride))))
-    if frame_indices[-1] != len(gt) - 1:
-        frame_indices.append(len(gt) - 1)
+    if target_frames is not None and int(target_frames) > 1:
+        frame_indices = np.rint(
+            np.linspace(0, len(gt) - 1, int(target_frames))
+        ).astype(int).tolist()
+    else:
+        frame_indices = list(range(0, len(gt), max(1, int(stride))))
+        if frame_indices[-1] != len(gt) - 1:
+            frame_indices.append(len(gt) - 1)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     poster_path.parent.mkdir(parents=True, exist_ok=True)
@@ -319,6 +359,7 @@ def main() -> None:
     parser.add_argument("--stride", type=int, default=1)
     parser.add_argument("--dpi", type=int, default=100)
     parser.add_argument("--poster-step", type=int, default=420)
+    parser.add_argument("--target-frames", type=int, default=None)
     args = parser.parse_args()
     render_video(
         args.npz,
@@ -328,6 +369,7 @@ def main() -> None:
         stride=args.stride,
         dpi=args.dpi,
         poster_step=args.poster_step,
+        target_frames=args.target_frames,
     )
 
 

@@ -25,6 +25,15 @@ TASKS = {
     "vase": "Vase Wiping",
     "card": "Card Swiping",
     "chip": "Chip Grasping",
+    "generalization_visual_perturb": "Generalization Test 1: Visual Perturbation",
+}
+
+SPEED_LABELS = {
+    "generalization_visual_perturb": "4x speed",
+}
+
+SPEED_MULTIPLIERS = {
+    "generalization_visual_perturb": 4,
 }
 
 
@@ -56,7 +65,7 @@ def crop_center_ratio(frame, ratio=4 / 3):
     return frame[y0 : y0 + crop_h, :]
 
 
-def render_frame(frame, title):
+def render_frame(frame, title, speed_label="4x speed"):
     frame = cv2.resize(frame, (W, H), interpolation=cv2.INTER_AREA)
 
     bg = cv2.GaussianBlur(frame, (0, 0), 28)
@@ -72,7 +81,7 @@ def render_frame(frame, title):
     put(bg, title, (48, 56), 0.82, (22, 22, 28), 2)
 
     filled_rect_alpha(bg, (1104, 24, 1252, 66), (219, 164, 25), 0.96)
-    put(bg, "4x speed", (1178, 54), 0.78, (255, 255, 255), 2, "center")
+    put(bg, speed_label, (1178, 54), 0.78, (255, 255, 255), 2, "center")
     return bg
 
 
@@ -106,6 +115,8 @@ def encode(raw: Path, out: Path):
 
 def render_video(name: str, source: Path):
     title = TASKS[name]
+    speed_label = SPEED_LABELS.get(name, "4x speed")
+    speed_multiplier = max(1, int(SPEED_MULTIPLIERS.get(name, 1)))
     out = OUT / f"{name}_real.mp4"
     preview = OUT / f"{name}_real_preview.jpg"
 
@@ -118,15 +129,20 @@ def render_video(name: str, source: Path):
     writer = cv2.VideoWriter(str(raw), cv2.VideoWriter_fourcc(*"mp4v"), fps, (W, H))
     preview_frame = None
     i = 0
+    source_i = 0
     while True:
         ok, frame = cap.read()
         if not ok:
             break
-        rendered = render_frame(frame, title)
+        if source_i % speed_multiplier != 0:
+            source_i += 1
+            continue
+        rendered = render_frame(frame, title, speed_label)
         writer.write(rendered)
-        if frames and i == frames // 2:
+        if frames and source_i >= frames // 2 and preview_frame is None:
             preview_frame = rendered.copy()
         i += 1
+        source_i += 1
     cap.release()
     writer.release()
     if i == 0:

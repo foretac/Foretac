@@ -187,5 +187,53 @@
       "render_style": "deformed_grid_turbo_homepage_dark_arrow"
     },
     "layout": "homepage task viz layout, 1920x1080, h264 yuv420p"
+  },
+  "generalization_visual_perturb": {
+    "name": "generalization_visual_perturb",
+    "frames": 712,
+    "fps": 30.0,
+    "real_video_frames": 712,
+    "real_video_fps": 30.0,
+    "real_video_duration_sec": 23.733333333333334,
+    "sync_to_episode_steps": false,
+    "steps": 428,
+    "phases": [
+      [
+        "Approach",
+        0,
+        118
+      ],
+      [
+        "Contact",
+        118,
+        143
+      ],
+      [
+        "Wiping",
+        143,
+        420
+      ],
+      [
+        "Release",
+        420,
+        427
+      ]
+    ],
+    "episode": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/card_260707/20260710_175728_port8783_episode_4",
+    "speed_label": "4x speed",
+    "top_panel": {
+      "source": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/card_260707/20260710_175728_port8783_episode_4/trace_full.hdf5",
+      "dataset": "observations/tac/left/img"
+    },
+    "bottom_panel": {
+      "source": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/card_260707/20260710_175728_port8783_episode_4/trace_full.hdf5",
+      "dataset": "observations/tac/left/marker_offset",
+      "marker_vmax_p98": 9.032566204071044,
+      "display_vmax": 9.032566204071044,
+      "displacement_scale": 5.834443812462479,
+      "source_panel_size": 620,
+      "render_style": "deformed_grid_turbo_homepage_dark_arrow"
+    },
+    "layout": "homepage task viz layout, 1920x1080, h264 yuv420p"
   }
 }
