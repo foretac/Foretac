@@ -402,7 +402,7 @@ def render_marker_panel(marker: np.ndarray, panel_size: int, displacement_scale:
     heat_color = cv2.applyColorMap(heat_img, cv2.COLORMAP_TURBO)
     panel = cv2.addWeighted(panel, 0.86, heat_color, 0.14, 0)
 
-    draw_poly_grid(panel, base, (214, 220, 228), 1)
+    draw_poly_grid(panel, base, (166, 176, 190), 1)
 
     for iy in range(marker.shape[0]):
         for ix in range(marker.shape[1]):
@@ -422,7 +422,9 @@ def render_marker_panel(marker: np.ndarray, panel_size: int, displacement_scale:
             color_idx = int(np.clip(heat[iy, ix] * 255, 0, 255))
             color = cv2.applyColorMap(np.array([[color_idx]], dtype=np.uint8), cv2.COLORMAP_TURBO)[0, 0]
             color_tuple = tuple(int(v) for v in color)
-            cv2.circle(panel, base_pt, 2, (160, 166, 176), -1, cv2.LINE_AA)
+            cv2.circle(panel, base_pt, 5, (255, 255, 255), -1, cv2.LINE_AA)
+            cv2.circle(panel, base_pt, 5, (88, 98, 114), 1, cv2.LINE_AA)
+            cv2.circle(panel, base_pt, 1, (48, 56, 70), -1, cv2.LINE_AA)
             cv2.circle(panel, cur_pt, 6, (255, 255, 255), -1, cv2.LINE_AA)
             cv2.circle(panel, cur_pt, 4, color_tuple, -1, cv2.LINE_AA)
 

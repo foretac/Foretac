@@ -80,6 +80,15 @@ def plot_marker_panel(
     rows, cols = marker.shape[:2]
     x, y = np.meshgrid(np.arange(cols), np.arange(rows))
     mag = marker_mag(marker)
+    ax.scatter(
+        x.ravel(),
+        y.ravel(),
+        s=5 if error else 6,
+        facecolors="#ffffff",
+        edgecolors="#64748b",
+        linewidths=0.42,
+        zorder=2,
+    )
     q = ax.quiver(
         x,
         y,
@@ -97,6 +106,7 @@ def plot_marker_panel(
         minlength=0.05,
         pivot="tail",
         alpha=0.96,
+        zorder=3,
     )
     q.set_clim(0.0, vmax)
     ax.set_title(
@@ -110,9 +120,11 @@ def plot_marker_panel(
     ax.set_xticks(np.arange(cols))
     ax.set_yticks(np.arange(rows))
     ax.tick_params(labelsize=10, length=3, color="#334155")
-    ax.grid(True, color="#e5e7eb", linewidth=0.8)
+    ax.set_facecolor("#fbfcfe")
+    ax.grid(True, color="#b8c2d1", linewidth=0.95)
     for spine in ax.spines.values():
         spine.set_linewidth(1.0)
+        spine.set_edgecolor("#94a3b8")
         spine.set_color("#111827")
     return q
 

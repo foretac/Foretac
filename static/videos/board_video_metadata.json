@@ -180,9 +180,69 @@
     "bottom_panel": {
       "source": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/jiashupian_260709/20260710_164508_port8784_episode_1/trace_full.hdf5",
       "dataset": "observations/tac/left/marker_offset",
-      "marker_vmax_p98": 0.34348513603210445,
-      "display_vmax": 0.55,
-      "displacement_scale": 95.81818181818181,
+      "marker_vmax_p98": 0.2578791785240173,
+      "display_vmax": 0.34,
+      "displacement_scale": 155.0,
+      "source_panel_size": 620,
+      "render_style": "deformed_grid_turbo_homepage_stabilized_marker",
+      "visual_preprocess": {
+        "baseline_frames": 50,
+        "temporal_smooth": 9,
+        "deadband": 0.06733121626451612,
+        "gate_by_gripper": true,
+        "gate_first_nonzero": 59,
+        "gate_last_nonzero": 182,
+        "idle_raw_scale": 0.0,
+        "idle_motion_gain": 0.22,
+        "active_gain": 1.12,
+        "display_vmax": 0.34
+      }
+    },
+    "layout": "homepage task viz layout, 1920x1080, h264 yuv420p"
+  },
+  "generalization_visual_perturb": {
+    "name": "generalization_visual_perturb",
+    "frames": 712,
+    "fps": 30.0,
+    "real_video_frames": 712,
+    "real_video_fps": 30.0,
+    "real_video_duration_sec": 23.733333333333334,
+    "sync_to_episode_steps": false,
+    "steps": 428,
+    "phases": [
+      [
+        "Approach",
+        0,
+        118
+      ],
+      [
+        "Contact",
+        118,
+        143
+      ],
+      [
+        "Wiping",
+        143,
+        420
+      ],
+      [
+        "Release",
+        420,
+        427
+      ]
+    ],
+    "episode": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/card_260707/20260710_175728_port8783_episode_4",
+    "speed_label": "4x speed",
+    "top_panel": {
+      "source": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/card_260707/20260710_175728_port8783_episode_4/trace_full.hdf5",
+      "dataset": "observations/tac/left/img"
+    },
+    "bottom_panel": {
+      "source": "/home/chenshuai/Project/TactileACT-cs/outputs/multitask_replay_records/card_260707/20260710_175728_port8783_episode_4/trace_full.hdf5",
+      "dataset": "observations/tac/left/marker_offset",
+      "marker_vmax_p98": 9.032566204071044,
+      "display_vmax": 9.032566204071044,
+      "displacement_scale": 5.834443812462479,
       "source_panel_size": 620,
       "render_style": "deformed_grid_turbo_homepage_dark_arrow"
     },
