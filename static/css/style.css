@@ -551,17 +551,25 @@ h3 {
   line-height: 1.5;
 }
 
-.results-table-block {
-  width: min(1040px, 100%);
-  margin: 36px auto 0;
+.results-subsection {
+  margin: 36px 0 0;
 }
 
-.results-table-block h3 {
+.results-subsection h3 {
   margin-top: 0;
 }
 
-.results-table-block .section-lead {
+.results-subsection .section-lead {
   margin-bottom: 16px;
+}
+
+.results-table-block {
+  width: min(1040px, 100%);
+  margin: 16px auto 0;
+}
+
+.results-table-block--wide {
+  width: 100%;
 }
 
 .results-table-card {

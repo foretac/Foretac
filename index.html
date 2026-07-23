@@ -135,11 +135,12 @@
   <div class="container">
     <h2 class="section-title">Results</h2>
 
-    <div class="results-table-block">
+    <div class="results-subsection">
       <h3>Main Comparison</h3>
       <p class="section-lead">We compare Ours against DP, DP+tactile, π0.5, RDP, and ForeAR across five contact-rich tasks.</p>
-      <div class="content-card results-table-card">
-        <table class="comp-table main-results-table">
+      <div class="results-table-block results-table-block--wide">
+        <div class="content-card results-table-card">
+          <table class="comp-table main-results-table">
         <thead>
           <tr class="task-header">
             <th rowspan="2">Method</th>
@@ -212,15 +213,17 @@
             <td class="tbd">TBD</td><td class="tbd">TBD</td>
           </tr>
         </tbody>
-        </table>
+          </table>
+        </div>
+        <p class="fig-caption"><strong>Table 1.</strong> Success rate and safe success rate comparison. Safe success counts trials that complete the task while avoiding unsafe contact, emergency stops, or damaging interactions.</p>
       </div>
-      <p class="fig-caption"><strong>Table 1.</strong> Success rate and safe success rate comparison. Safe success counts trials that complete the task while avoiding unsafe contact, emergency stops, or damaging interactions.</p>
     </div>
 
-    <div class="results-table-block">
+    <div class="results-subsection">
       <h3>Ablation Study</h3>
-      <div class="content-card results-table-card">
-        <table class="comp-table ablation-results-table">
+      <div class="results-table-block">
+        <div class="content-card results-table-card">
+          <table class="comp-table ablation-results-table">
         <thead>
           <tr>
             <th>Variant</th>
@@ -263,16 +266,18 @@
             <td class="tbd">TBD</td><td class="tbd">TBD</td><td class="tbd">TBD</td>
           </tr>
         </tbody>
-        </table>
+          </table>
+        </div>
+        <p class="fig-caption"><strong>Table 2.</strong> Ablation study showing the contribution of each component.</p>
       </div>
-      <p class="fig-caption"><strong>Table 2.</strong> Ablation study showing the contribution of each component.</p>
     </div>
 
-    <div class="results-table-block">
+    <div class="results-subsection">
       <h3>Latent Reconstruction Quality</h3>
       <p class="section-lead">TacVAE compresses tactile marker displacement histories into compact latent maps, then decodes them back to marker displacement fields before downstream foresight prediction.</p>
-      <div class="content-card results-table-card">
-        <table class="comp-table tactile-results-table">
+      <div class="results-table-block results-table-block--wide">
+        <div class="content-card results-table-card">
+          <table class="comp-table tactile-results-table">
         <thead>
           <tr class="task-header">
             <th rowspan="2">Encoder</th>
@@ -329,9 +334,10 @@
             <td>0.038</td><td>0.998</td>
           </tr>
         </tbody>
-        </table>
+          </table>
+        </div>
+        <p class="fig-caption"><strong>Table 3.</strong> Latent reconstruction quality across the five task datasets. Norm. MAE measures normalized marker-field reconstruction error, while cosine similarity measures directional consistency of the reconstructed tactile deformation. Chip-grasping reconstruction evaluation is pending.</p>
       </div>
-      <p class="fig-caption"><strong>Table 3.</strong> Latent reconstruction quality across the five task datasets. Norm. MAE measures normalized marker-field reconstruction error, while cosine similarity measures directional consistency of the reconstructed tactile deformation. Chip-grasping reconstruction evaluation is pending.</p>
     </div>
 
     <h3>Foresight Prediction Quality</h3>
