@@ -8,7 +8,8 @@ For the complete file-selection and re-encoding rules, see [`视频使用指导.
 - `source_*_real_raw.mp4`: preserved source copies when available.
 - `hero_*_tile.mp4`: the four independently playable 640x360 clips used in the opening montage.
 - `hero_montage_no_title.mp4`: the 12-second four-tile montage without title overlays. This is the Hero video source.
-- `foretac_overview.mp4`: the 45-second Overview film. Its first five seconds show the clean montage without a title or translucent panel; subsequent sections retain their presentation text.
+- `foretac_overview-1007.mp4`: the current webpage Overview film, approximately 9 minutes 7 seconds long.
+- `foretac_overview.mp4`: the older 45-second Overview export retained as a separate asset; it is not the current webpage source.
 - `foretac_overview_poster.jpg`: a clean montage frame, without a title or translucent panel.
 - `foretac_overview_embedded.pptx`: a seven-slide 16:9 editable reconstruction, with a clean video-only opening slide.
 - `foretac_overview_editable_cover.pptx`: the same deck with an optional cover. The translucent rectangle and three text boxes are independent native PowerPoint objects above the clean video.
@@ -17,7 +18,7 @@ For the complete file-selection and re-encoding rules, see [`视频使用指导.
 - `source_foretac_guidance_fig4_r12.png`: current manuscript Figure 4 used by the film and both PPT decks.
 - `source_board_guidance_panels_v3.png`: preserved older diagnostic figure; not used by the current builds.
 
-The page references the copies in this folder for the Hero and Overview players. The task demonstration videos remain in `static/videos/` because they are also used by the synchronized task rows.
+The page references the copies in this folder for the Hero and Overview players. The task demonstration videos remain in `static/videos/` because they are also used by the synchronized task rows. The editable PPT files are retained unchanged and are not regenerated from `foretac_overview-1007.mp4`.
 
 ## Editing and Rebuilding
 

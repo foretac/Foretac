@@ -45,10 +45,11 @@ Main results and the structural ablation remain visible in `index.html`; reconst
 
 ## Video Assets
 
-The Overview section embeds `static/videos/overview/foretac_overview.mp4`, a 45-second film aligned
-with the manuscript submission figures, the corrected four-task
-Hero montage, H=16 foresight visualization, and current SR/CSR results. The
-complete source and derived media for this film and the opening montage live
+The Overview section embeds `static/videos/overview/foretac_overview-1007.mp4`,
+the current approximately 9-minute-7-second film. The older
+`foretac_overview.mp4` is retained as a separate 45-second export and is not
+the current page source. The complete source and derived media for the Overview
+assets and the opening montage live
 under `static/videos/overview/`, including the four independently playable
 opening tiles and `hero_montage_no_title.mp4`. It is
 an independent native-controls player; its progress bar is not intercepted by
@@ -62,7 +63,8 @@ editable translucent rectangle and text. Headings and result values are
 editable; figures remain images. This is an editable reconstruction, not a
 timed export of the film. See [the media README](static/videos/overview/README.md)
 for editing limits and rebuild commands.
-`tools/build_v3_media.sh` reproduces the Hero, overview film, and poster files
+`tools/build_v3_media.sh` reproduces the Hero, legacy 45-second overview film,
+and poster files
 from the checked-in assets; `tools/make_overview_ppt.py` rebuilds the PPTX.
 
 The older 117-second promotional export is retained only as
@@ -77,14 +79,15 @@ Each real-robot task uses a synchronized pair:
 | Board wiping | `board_real.mp4` | `board_viz.mp4` |
 | Vase wiping | `vase_real.mp4` | `vase_viz.mp4` |
 | Card swiping | `card_real.mp4` | `card_viz.mp4` |
-| Chip grasping | `chip_real.mp4` | `chip_viz.mp4` |
+| Chip grasping | `chip_real_1x4x.mp4` | `chip_viz_1x4x.mp4` |
 
 The demonstrations also include the visual-perturbation generalization pair
 (`generalization_visual_perturb_real.mp4` and
-`generalization_visual_perturb_viz.mp4`) and the final foresight prediction
+`generalization_visual_perturb_viz.mp4`). The final foresight prediction
 visualization (`foresight_prediction_board_episode6_tplus16.webm` with MP4
-fallback). These pairs use the same synchronized loop and click-to-pause
-behavior as the four main tasks.
+fallback) is an independent t+16 diagnostic from the same Board episode; its
+reference execution and prediction diagnostic use native video controls and are
+not treated as a synchronized task pair.
 
 The standalone foresight visualization and the diagnostic figures are retained
 as local assets for reference. The embedded overview film labels the foresight
@@ -98,30 +101,31 @@ from the task-level SR/CSR claims.
 - Clicking either video pauses or resumes the pair.
 - Videos loop after reaching the end.
 - Media is activated near the viewport instead of loading every video eagerly.
+- Reduced-motion preferences disable automatic playback; clicking either panel still starts the pair.
 - A spinner is shown during initial loading, seeking, and buffering.
 - On narrow screens the Hero keeps the complete 16:9 four-task montage in a dark letterbox so the moving video region is not confused with a static poster.
 - On very wide screens the Hero preserves the complete four-tile montage in the foreground and fills the side areas with a synchronized, softly blurred copy of the same video; intermediate desktop widths use centered cover cropping.
 
-Board, Vase, and Card marker panels are rendered from predicted marker fields. Chip uses measured marker offsets from the recorded tactile trace. The score/scale curves in these rendered videos are illustrative diagnostics and are not additional deployment metrics.
+The five task visualizations contain synchronized tactile images and marker offsets, Score and Force curves, and phase annotations. Their media and posters match the approved v2 demo bundle.
 
 ### Web and Raw Files
 
-The task videos referenced by `index.html` are web-optimized files. Their exact pre-optimization sources are retained beside them with the `_raw.mp4` suffix, for example:
+The task videos referenced by `index.html` are the approved web-ready v2 files. Older pre-optimization versions remain beside them with the `_raw.mp4` suffix, for example:
 
 ```text
 board_real.mp4       Web version used by the page
-board_real_raw.mp4   Original source retained for future re-encoding
+board_real_raw.mp4   Historical source retained for reference
 ```
 
 Do not point the webpage at `_raw` files. When replacing a task pair:
 
-1. Preserve each new source as the corresponding `*_raw.mp4` file.
-2. Generate the web files from those raw sources.
+1. Preserve the approved source bundle and its verification records locally.
+2. Copy the matching real execution and visualization from the same task folder.
 3. Keep the left and right outputs at exactly the same duration; normalize frame rate when the source permits and record any source-cadence exception.
 4. Regenerate their `*_preview.jpg` posters.
 5. Test initial playback, buffering recovery, click pause/resume, looping, and synchronization.
 
-Detailed investigation and verification results are recorded in [`static/videos/video_loading_optimization_record.md`](static/videos/video_loading_optimization_record.md).
+Detailed investigation and verification results are retained in the local workspace operation log under `midocx/`; source-path-bearing audit metadata is kept out of the public web tree.
 
 ## Task Video Encoding
 
@@ -131,7 +135,7 @@ Current task videos use the following web profile:
 | --- | --- |
 | Container / codec | MP4 / H.264 High Profile, Level 4.0 |
 | Resolution | Real views: 1280x720; visualization views: 1920x1080 |
-| Frame rate | 24 fps for normalized web files; `chip_viz.mp4` retains its source cadence of 3947/250 (about 15.79 fps) |
+| Frame rate | Board/Vase/Card and Chip real: 24 fps; Chip visualization: 3947/250 (about 15.79 fps); Visual Perturbation: 30 fps |
 | Pixel format | `yuv420p` |
 | Quality | CRF 23 |
 | Rate control | 1200 kbps max rate, 2400 kb buffer |
