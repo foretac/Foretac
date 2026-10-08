@@ -25,7 +25,7 @@ TASKS = {
     "vase": "Vase Wiping",
     "card": "Card Swiping",
     "chip": "Chip Grasping",
-    "generalization_visual_perturb": "Generalization Test 1: Visual Perturbation",
+    "generalization_visual_perturb": "Visual Perturbation Demo",
 }
 
 SPEED_LABELS = {

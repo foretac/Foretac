@@ -363,3 +363,203 @@ PACE 的普通视频通过原生 `loop` 循环，但同步对同样在 `ended` �
 - 1280 px 下三张 Results 表均无需横向滚动。
 - 390 px 下正文约 342 px，视频单列，三张表独立横滚且没有元素重叠。
 - 所有章节的标题、正文和媒体边界无重叠或截断。
+
+### 6.8 终版媒体统一到 ProjectPage-v3（2026-09-22）
+
+- 终版页面实际播放的 Hero、Overview、四个任务双视频和 foresight 视频均改为从 `/home/chenzhiyuan/projects/foretac_web-v3/static/videos/` 复制的版本。
+- 覆盖了 v3 与终版同名但编码不同的 `board_real`、`vase_real`、`chip_real`、`chip_viz` 及其预览图；其余引用媒体也逐一用 SHA256 核对。
+- 终版旧有的 Generalization 播放段在 v3 中没有对应媒体，已从页面移除，避免混用非 v3 视频。旧文件和 `_raw` 文件仍作为未引用的本地副本保留。
+- 调亮顶部 Hero 视频蒙版：桌面和移动端均降低海军蓝 scrim 的不透明度，同时保留标题文字对比度。
+- 终版页面重新检查后，所有可见视频来源均指向 v3 媒体，Hero 画面可见度改善；原 8123 和 8124 工作树未修改。
+
+## 2026-09-23 依据 foretac_v3 重建 8125 页面与视频交互复测
+
+### 本次问题与排查
+
+1. 对照 `/home/chenzhiyuan/projects/foretac_manuscript/foretac_v3/main.tex` 逐项检索网页，发现旧页面仍含旧标题、Socket/five-task 叙事、SSR/Safe Success/Contact Failure、TBD 消融行、Trust-Region/Energy Model 术语和过时的五任务 overview 片段。
+2. 检查现有媒体引用，确认四组任务视频仍是有效 MP4；本轮没有再次转码，也没有删除已有 `_raw` 副本。旧 `foretac_overview.mp4` 保留在本地但不再被 HTML 引用，避免发布与 v3 不一致的旁白。
+3. 浏览器边界测试发现同步视频若同时使用原生 `loop`，可能绕过 `ended` 同步处理；且在尾帧 `readyState` 降低后先等待 `canplay` 会使循环停在尾帧。
+
+### 实施内容
+
+- 重写 `index.html`：标题、摘要、方法、四任务、SR/CSR、主结果、消融、重建、action conditioning、horizon、scorer transfer、guidance diagnostics、`pi_0.5` 和计算成本均按 v3 稿件对齐。
+- 删除页面中的 Socket、五任务、SSR/Safe Success、Contact Failure、TBD 和 Trust-Region/Energy Model 旧表述；主结果方法为 DP、RDT、DP + Tactile Concat、RDP、ForeTac，ForeTac 保持最后一行。
+- 引入论文当前概念图、方法图和 Fig. 4 诊断图到 `static/images/`；图片设置稳定尺寸、`decoding` 和下折 `loading` 属性。
+- 重建 `static/css/style.css`：全局内容边界 1200px，正文约 74ch，媒体/表格保留宽版；补充移动端汉堡菜单、skip link、表格滚动、错误提示和响应式 Hero。
+- 成对视频移除原生 `loop`，由 JS 统一处理结束归零、同步播放、点击暂停/继续、缓冲恢复和视口激活；增加键盘 Enter/Space 操作。
+
+### 验证结果
+
+- `git diff --check`、内联 JavaScript `node --check` 和静态资源存在性检查通过。
+- Chrome 1440x1000、390x844 以及长页截图检查通过：Hero、方法图、结果表、四组视频和 BibTeX 无明显重叠；移动端无页面级横向溢出。
+- Firefox WebDriver 检查：移动视口 `scrollWidth == clientWidth`；结果表容器分别在自身内部滚动；标题为 `ForeTac: Predictive Contact Guidance for Generative Robot Policies`；无媒体错误节点。
+- 四组任务视频首次进入均达到 `readyState=4` 并同时播放；点击任一侧后两侧均暂停，离开/返回视口不会覆盖用户暂停状态，再次点击同步恢复，复测同步误差约 5--6 ms。
+- 将四组视频定位到结束前约 0.12 秒后复测，均能统一回到开头继续播放，最终 `paused=false`、`ended=false`、`error=null`、spinner 消失。
+- `ffprobe` 检查确认任务视频均为 H.264；四组 nominal duration 分别为 31.1667、20.9167、10.0833、14.125 s。`chip_viz` 的编码时长与 `chip_real` 相差约 0.35 ms，不影响统一重启和同步播放。
+
+本次仅修改本地 `foretac_web-final` 工作区及本记录，未执行 commit 或 push。
+
+## 2026-09-23 Hero、宣传片与稿件图片同步优化
+
+### 用户反馈与排查
+
+1. 8125 Hero 顶部黑板和花瓶画面中，擦拭区域被裁到矩形上缘，首屏主要看到静止物体；检查 1280x720 四宫格成片、源视频时间轴和 CSS 后确认问题来自两层原因：新版成片从各路视频 0 秒开始，黑板/花瓶动作尚未进入；页面 Hero 约 16:9 但使用 `object-fit: cover`，桌面视口还会再次裁掉上下边缘。
+2. 对比历史 `build_hero_background.py` 与 Git 历史成片，确认旧版本曾使用 Board/Vase/Card/Chip 的时间偏移 `5/3/1/2` 秒，并裁除顶部 76px 标签栏。原始桌面素材路径已不存在，因此用当前网页任务视频按该已核对的 filter 重建，保留 card/chip 的可见内容。
+3. 8124 宣传视频原页面虽有 `controls`，但 8125 没有播放器；进一步用 Chrome 检查发现本地 `python -m http.server` 对 Range 请求返回 `200` 而不是 `206 Content-Range`。因此 `metadata` 预加载时拖到未缓冲位置会停在 0 秒，这是服务器 Range 能力问题，不是原生 controls 缺失。
+4. 对 117 秒宣传片逐帧抽样并检索 v3 稿件，发现其中仍有当前稿件已删除的 safe success/SSR、trust-region 和旧 0--2 px 叙述。旧的 45 秒版本只包含当前四任务、概念、方法、同步视频和 SR/CSR 结果，故选择 45 秒版本作为网页播放器素材；117 秒文件保留为本地 legacy 副本，不在 HTML 引用。
+5. 核对 `/home/chenzhiyuan/projects/foretac_manuscript/foretac_v3/fig-submission/`，确认三张权威 PNG 的实际内容分别为：Fig.1 概念图、Fig.2 方法架构、Fig3 实验平台与四任务，而不是按文件名机械对应网页旧图。
+
+### 实施
+
+- 旧 Hero 成片和海报分别备份为 `foretac_hero_loop_before_layout.mp4`、`foretac_hero_poster_before_layout.jpg`。
+- 用已验证的时间偏移和顶部标签栏裁切重建 Hero；为顶部两路增加居中的缩放和背景填充，使擦拭器/擦块不贴边，同时保持 1280x720、H.264、24 fps、faststart。新海报取新成片首帧。
+- 将 `foretac_overview.mp4` 改为 45 秒、1920x1080、H.264 faststart 版本；原 117 秒版本保存为 `foretac_overview_legacy_117s.mp4` 及对应海报。
+- 在 Overview（Abstract 前）增加独立宣传片 `<video controls playsinline preload="auto">`。播放器不加入任务视频同步状态机或自定义点击拦截，保留浏览器原生进度条；4.6 MB 文件使用 `preload=auto`，使无 Range 的本地服务器在完整缓冲后也能拖动。
+- 从 `fig-submission` 复制原始图片到 `static/images/manuscript/`，并生成 2400px WebP 浏览器副本：Fig.1 用于概念/Overview，Fig.2 用于 Method，Fig3 用于 Results 任务总览；原始 PNG 保留以便追溯。
+- 将方法图从原 Overview 位置移入 Method，将四任务总览图放在 Results 开头；页面文字继续以 `foretac_v3/main.tex` 为唯一事实源。
+
+### 验证
+
+- `ffprobe`：Hero 仍为 1280x720、12 s、H.264、24 fps；宣传片为 1920x1080、45 s、H.264，`moov` 位于文件开头。
+- Chrome 1440x900 和 390x844 截图：Hero 顶部黑板/花瓶主体与擦拭区域可见，移动端无页面横向溢出；Overview 播放器位于 Abstract 前且布局稳定。
+- Chrome CDP 检查：Overview 原生 `controls=true`、duration=45、seekable=[0,45]；在本地服务器完整缓冲后设置 `currentTime=30` 成功，事件序列包含 `seeking/seeked`。任务视频仍为 8 个成对视频，未出现媒体错误节点。
+- `git diff --check` 通过。本轮只修改本地 `foretac_web-final` 工作区和记录文档，未 commit、未 push。
+
+## 2026-09-24 依据 v3 终稿事实边界修正 8125（本地）
+
+### 复核发现
+
+1. 逐帧复核 `foretac_overview.mp4` 后确认其末页仍标注 `SR / SSR`，且中段保留旧版 score/scale 画面和 legacy guidance 术语；这些内容不符合当前 `foretac_v3/main.tex` 的 `SR / CSR`、两面板 Fig. 4 和当前 guidance 表述。
+2. `board_guidance_evidence.png` 是旧版诊断图，尺寸为 3076x1692；当前稿件 Fig. 4 是 `board_guidance_panels_r7_20260923.png` 的两面板版本（2799x1080）。
+3. 网页 flow-matching 表并非独立的 Table VIII，而是论文 Table I 的第二个 block；计算成本表对应论文 Table VIII。网页原先写成 Table VIII/Table IX，编号错误。
+4. 任务视频渲染脚本对 score/scale 使用启发式诊断信号；Chip 右侧 marker panel 来自实测 `marker_offset`，不能统称为真实部署的 foresight/guidance 输出。
+
+### 修正
+
+- 移除 `foretac_overview.mp4` 播放器及其加载脚本引用。45 秒和 117 秒宣传片均保留为本地未发布素材，待按 v3 事实重新导出后再嵌入。
+- 主结果表补入论文 Table I 的 `pi_0.5` / `pi_0.5 + ForeTac` block，并将主方法命名统一为 `DP + ForeTac`；消融行统一为论文的 `ForeTac`。
+- 将 flow-matching 说明改为“Table I 第二个 block”，将计算成本说明改为 `Table VIII`。
+- 将网页诊断图替换为 `static/images/board_guidance_panels_v3.png`，并同步更新 alt、caption 和统计范围。
+- 将演示区说明改为：Board/Vase/Card 为 predicted marker visualization，Chip 为 measured marker visualization；曲线只作为 illustrative diagnostics，不作为额外部署指标。
+- 更新 README，使标题、方法术语、图资产、媒体来源和当前指标与 v3 一致。
+
+### 验证
+
+- `node --check`、`git diff --check` 和本地资源引用检查通过。
+- 重新核对 `main.aux`：I=main results（含 flow block），II=ablation，III=reconstruction，IV=action conditioning，V=horizon，VI=recorded ranking，VII=scorer transfer，VIII=efficiency；网页说明已与此一致。
+- 未执行 commit、push 或删除任何历史媒体；当前变更仅在本地 `foretac_web-final`。
+
+## 2026-09-24 移动端 Hero 动态区域复核（本地）
+
+### 发现与修正
+
+- Chrome 移动视口复核发现，Hero 使用 `object-fit: contain` 后，16:9 视频带之外仍会显示桌面 poster 背景；该区域不会随视频时间变化，容易造成“整块画面都在播放”的误解。
+- 在 `@media (max-width: 768px)` 中将 `.hero-video` 的背景改为纯 `var(--navy)`，保留完整四象限视频带，并让标题、摘要和按钮落在明确的深色静态区域。桌面端仍使用满幅动态视频和原有 poster 回退。
+
+### 验证
+
+- Chrome CDP 视口 `1440x900` 与 `390x844`：页面 `scrollWidth == clientWidth`（分别为 1425 与 390），视频总数 9（1 个 Hero + 8 个任务视频），同步任务对 4 组，Overview 视频为 0。
+- 逐组滚动激活后，9 个视频均为 `readyState=4`，`error=null`，加载 spinner 数量为 0，错误状态节点数量为 0。
+- 点击任一任务视频：左右视频同时暂停，再次点击同时恢复；两次检查的播放时间差分别约 `0.00001 s` 和 `0.00006 s`。
+- 将四组视频定位到尾帧附近后等待循环：每组均回到约 1.0 s、`paused=false`、`ended=false`，左右时间差为 0。
+- 复查桌面 Results/Demos、移动 Results/Demos 截图：正文、表格、图注和视频卡无重叠，表格仅在自身容器内横向滚动；移动端 Hero 四个任务象限可辨认。
+- 本轮修改 `static/css/style.css`、`README.md` 和本记录，未执行 commit、push 或删除历史媒体。
+
+## 2026-09-24 宣传片 Foresight 页按 v3 事实边界重导出（本地）
+
+### 复核与处理
+
+- 逐帧检查 `static/videos/foresight_prediction_board_episode6_tplus16.mp4`，确认原始画面烧录了单个 episode 的 `t`/`t+H`、L2、逐帧 `max`/`mean` 以及 episode-level raw/smoothed L2 曲线。
+- 对照 `foretac_v3/main.tex` 的预测时域实验：论文只报告跨 9,631 个 held-out Board windows 的 H=1/4/8/12/16 聚合结果，不报告上述单集数值。因此这些诊断数值不作为网页宣传片中的可解释主结果。
+- 在 `tools/build_v3_media.sh` 中重建第 5 页：遮盖原始标题和单帧统计，裁掉 episode-level 曲线，仅保留 `GT future`、`Predicted future`、`Error (pred - GT)` 三个定性面板；页眉改为 `Action-conditioned tactile foresight` 与 `Ground-truth future - predicted future - error (qualitative, H=16)`。
+- 重新生成 `static/videos/foretac_overview.mp4` 及海报；117 秒旧片继续作为 `foretac_overview_legacy_117s.mp4` 本地副本，不作为当前页面素材。
+
+### 验证
+
+- `ffprobe`：成片为 45.000 s、1920x1080、H.264、30 fps，`moov` 位于文件开头（faststart）。
+- 抽查成片第 5 页约 25--31 s 的首帧、中段和末帧：未见单集 `L2`、`max/mean` 或 episode-level 误差曲线，只见三面板定性预测过程；H=16 仅作为可视化条件标识。
+- 当前变更仅在本地，尚未 commit 或 push；发布前需再次检查共享远程仓库并同步成片、海报和记录。
+
+## 2026-09-24 终版网页媒体与事实一致性审计（本地）
+
+- 重新运行 `tools/build_v3_media.sh`，确认第 5 页遮罩后的定性 foresight 画面仍只展示三面板，没有单集 `L2`、`max/mean` 或 episode-level 曲线。
+- 对照 `foretac_v3/main.tex` 和网页逐项检查主结果、消融、TacVAE 重建、action conditioning、prediction horizon、scorer transfer、Fig. 4 guidance diagnostics、flow-matching 和 efficiency；未发现旧的 SSR、Trust-Region、Energy Model、Socket、五任务或 TBD 公开表述残留。
+- 对所有 HTML 媒体引用执行静态资源存在性检查，28 个本地资源引用全部存在；`board_guidance_panels_v3.png` 已作为当前 Fig. 4 资源保留。当前页面共有 10 个 `<video>` 元素（Hero、Overview 和 8 个任务视频）。
+- `ffprobe` 复核：Hero 为 12 s/1280x720/H.264/24 fps，Overview 为 45 s/1920x1080/H.264/30 fps/faststart；八个任务视频的左右时长分别严格匹配。
+- 额外记录媒体元数据例外：七个任务文件为 24 fps，`chip_viz.mp4` 与其 `_raw` 源保留 3947/250（约 15.79 fps）的原始 cadence，但与 `chip_real.mp4` 时长一致，网页同步逻辑按媒体时间轴工作，不依赖相同帧率。
+- 重新生成后的成片、海报和构建脚本仍只存在本地工作树；本轮没有 commit、push 或删除历史副本。
+
+### 6.9 Hero Fast Start 元数据修正
+
+- 复核二进制 atom 位置时发现，脚本最后对 Hero 使用 `-c copy` 会把中间文件的 `+faststart` 状态丢掉，导致最终 `foretac_hero_loop.mp4` 的 `moov` 位于文件尾。
+- 已在 `tools/build_v3_media.sh` 的最终复制步骤加入 `-movflags +faststart`，并重新生成 Hero 与海报。
+- 复核结果：Hero 和 Overview 的 `moov` 均位于 `mdat` 之前；两者仍分别为 12 s/24 fps 和 45 s/30 fps。
+- Overview 使用浏览器原生 `loop`，仍保留原生 controls 和进度条拖动，且不接入任务双视频同步状态机。
+- README 已区分普通本地 HTTP 预览与真正的 Range/206 验证，避免把 Python simple server 的完整文件传输误当成部署端分段传输能力。
+
+### 6.10 公开文案复核
+
+- 将网页和 README 中的内部版本措辞 `v3-consistent` 改为面向读者的中性表述；Overview 说明明确指向论文已报告的 SR/CSR 结果。
+- 将证据条的无障碍标签从 `Verified evidence` 改为 `Headline results`，避免在实验事实表尚未冻结置信区间和统计检验前作出过强的验证承诺。
+
+## 2026-09-24 Hero 四宫格等尺寸修正（本地）
+
+### 问题定位
+
+- 用户复核发现宽屏 Hero 中上排黑板/花瓶看起来占据更大区域，而下排刷卡/夹薯片只露出一部分。
+- 对 1920x1080 截图和 CSS 逐项检查后确认，问题不是四宫格成片的 tile 尺寸：原始成片为四个 640x360 象限；真正原因是 `.hero-video` 使用 `object-fit: cover` 与 `object-position: center top`。在 1920 宽屏中，视频被放大到 1920x1080 后从顶部对齐，超出 Hero 高度的部分全部从底部裁掉，因此下排被截断。
+- 同时发现上排曾使用“缩小前景 + 模糊背景填充”的 filter，上排清晰内容高度只有约 322px，和下排的 360px 视觉尺度不一致。
+
+### 处理方案
+
+- `tools/build_v3_media.sh` 将黑板和花瓶源视频去掉 76px 标签条及两侧边缘，裁成 1144x644 的 16:9 视野，再统一缩放为 640x360；刷卡和薯片使用同样的 640x360 输出尺寸。
+- 移除上排专用的模糊背景/前景叠加逻辑，避免上排清晰内容与下排产生不同的视觉比例。
+- `static/css/style.css` 将桌面 Hero 的 `object-position` 改为 `center center`，使 cover 裁切在上下对称分配；移动端继续使用完整的 `contain` 视频带。
+
+### 验证
+
+- 重新生成 `foretac_hero_loop.mp4` 和 poster；Hero 仍为 1280x720、12s、H.264、24fps，`moov` 位于 `mdat` 之前。
+- Chrome 截图复核 1920x1080、1440x900 和 390x844：四个象限的可视高度一致，宽屏下排不再只露出一部分，页面无水平溢出。
+- `bash -n tools/build_v3_media.sh`、内联 JavaScript 语法检查和 `git diff --check` 均通过。
+- 本次仅修改本地网页工作区，尚未 commit 或 push。
+
+## 2026-09-24 Hero 全宽填充与顶部导航字号调整（本地）
+
+### 问题与方案
+
+- `contain` 方案已经保证四个物体完整，但 1920px 等超宽屏会在前景视频两侧留下留白。
+- 采用同源双层视频：背景层用 `cover`、模糊和低透明度铺满 Hero，前景层继续用 `contain` 保留完整四宫格。前景视频的 `contain` 留白设为透明，避免遮住背景层。
+- 对照 8124，8125 原导航为 13px/500，视频背景上辨识度偏低；调整为 14px/600，保留当前简洁间距而不照搬 8124 的排版。
+
+### 排查与修复
+
+- 第一次截图中超宽屏两侧仍接近纯色。检查后确认前景 `.hero-video` 的 `background: var(--navy)` 覆盖了背景视频；将 `min-width: 1600px` 和移动端前景背景改为 `transparent` 后，模糊背景正常透出。
+- Hero 脚本现在同步两层视频的播放、暂停、循环和时间位置；点击仅绑定前景层，背景层设为 `aria-hidden` 和 `tabindex=-1`。
+
+### 验证
+
+- `git diff --check` 通过。
+- 内联 JavaScript 通过 `new Function(...)` 语法检查。
+- Chrome headless 截图：`/tmp/foretac-final-dual2-1920.png`、`/tmp/foretac-final-dual2-1440.png`、`/tmp/foretac-final-dual2-390.png` 均生成成功。
+- 1920×1080：四个前景物体完整可见，两侧由同源动态模糊视频填充；1440×900：保持原有全宽构图；390×844：移动端导航折叠，标题、按钮和视频没有重叠。
+- 本地 HTTP 服务 `http://10.169.12.108:8125/` 当前仅用于预览；本次未执行 commit 或 push。
+
+## 2026-09-24 Hero 宽屏完整显示与顶部内容重心修正（本地）
+
+### 追加问题
+
+- 继续观察 1920px 宽屏时，黑板/花瓶的擦拭区域仍贴近 Hero 上边缘，右下角薯片场景也容易被浏览器裁切；仅将 `object-position` 置中只能让裁切对称，不能保证四格内容完整显示。
+- 进一步抽查发现：在 1920x1080 视口中 Hero 高度上限为 820px，`object-fit: cover` 会把 1280x720 四宫格放大到 1920x1080，并从上下各裁掉约 87 个源像素。
+
+### 修正
+
+- 对黑板和花瓶源视频改用 `crop=996:560:142:76`：保留顶部动作区域、去除顶部标签和更多底部空白，再统一缩放到 640x360；下方刷卡和薯片仍为 640x360，四格尺寸不变。
+- 在 `min-width: 1600px` 下将 Hero 视频改为 `object-fit: contain`，以深色背景承载两侧留白，确保四个 640x360 象限完整显示；1600px 以下保留原有满幅 cover 布局，移动端继续使用 contain。
+- 重新生成 Hero 视频和 poster；Overview 视频同时由构建脚本重新生成，内容和编码参数保持不变。
+
+### 验证
+
+- Chrome 截图复核 1920x1080、1440x900 和 390x844：黑板、花瓶、刷卡、薯片四个矩形均完整可见；宽屏下右下角不再被截断，顶部擦拭器/接触区域位于各自 tile 内部。
+- Hero 仍为 1280x720、12s、H.264、24fps；Hero 与 Overview 的 `moov` 均位于 `mdat` 之前。
+- 局域网 8125 服务返回的 `index.html` 与本地 SHA256 一致；本地资源引用、内联 JavaScript、`bash -n tools/build_v3_media.sh` 和 `git diff --check` 均通过。
+- 本次仅修改本地网页工作区，尚未 commit 或 push。

@@ -3,24 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ForeTac: Steering Robot Actions with Predicted Contact Consequences</title>
-  <meta name="description" content="ForeTac predicts the tactile consequences of candidate actions and converts predictions into differentiable energy guidance for safer, contact-aware robot manipulation.">
-  <meta name="keywords" content="Tactile, Foresight, Guidance, Diffusion Policy, Contact-Rich Manipulation, Robot Learning">
+  <title>ForeTac: Predictive Contact Guidance for Generative Robot Policies</title>
+  <meta name="description" content="ForeTac predicts action-conditioned tactile consequences and guides frozen generative robot policies toward physically appropriate contact.">
+  <meta name="keywords" content="ForeTac, tactile foresight, predictive contact guidance, robot manipulation, Diffusion Policy, pi0.5">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="canonical" href="https://foretac.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://foretac.github.io/">
+  <meta property="og:title" content="ForeTac: Predictive Contact Guidance for Generative Robot Policies">
+  <meta property="og:description" content="Action-conditioned tactile foresight guides frozen generative robot policies before undesirable contact outcomes unfold.">
+  <meta property="og:image" content="https://foretac.github.io/static/videos/overview/hero_montage_no_title_poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ForeTac: Predictive Contact Guidance for Generative Robot Policies">
+  <meta name="twitter:description" content="Predictive tactile guidance for contact-rich robot manipulation.">
+  <meta name="twitter:image" content="https://foretac.github.io/static/videos/overview/hero_montage_no_title_poster.jpg">
+  <link rel="icon" href="static/videos/overview/hero_montage_no_title_poster.jpg" type="image/jpeg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="static/css/style.css?v=467d2cdb">
 </head>
 <body>
 
-<!-- ============ HEADER NAV ============ -->
+<a class="skip-link" href="#main-content">Skip to content</a>
+
 <header class="site-header" id="top">
   <div class="container">
-    <nav class="site-nav">
-      <a class="site-brand" href="#top">
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="site-brand" href="#top" aria-label="ForeTac home">
         <span class="brand-fore">Fore</span><span class="brand-tac">Tac</span>
       </a>
-      <ul class="nav-links">
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-menu">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
+      <ul class="nav-links" id="primary-menu">
+        <li><a href="#overview">Overview</a></li>
         <li><a href="#abstract">Abstract</a></li>
         <li><a href="#method">Method</a></li>
         <li><a href="#results">Results</a></li>
@@ -31,701 +48,383 @@
   </div>
 </header>
 
-<!-- ============ HERO (DARK) ============ -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="container hero-content">
-    <span class="venue">Under Review</span>
-
-    <div class="hero-title-wrap">
-      <h1 class="hero-title">
-        <span class="title-fore">Fore</span><span class="title-tac">Tac</span>
-      </h1>
-      <div class="hero-bar"></div>
-    </div>
-
-    <p class="hero-subtitle">Steering Robot Actions with Predicted Contact Consequences</p>
-    <p class="hero-desc">Predictive tactile guidance for contact-rich robot manipulation</p>
-
-    <p class="authors"><a href="#">Anonymous Authors</a></p>
-    <p class="affiliations">Anonymous Institution</p>
-
-    <div class="btn-row">
-      <a class="btn btn-primary" href="javascript:void(0)" title="Coming soon"><i class="fas fa-file-pdf"></i> Paper</a>
-      <a class="btn btn-primary" href="javascript:void(0)" title="Coming soon"><i class="fas fa-arrow-up-right-from-square"></i> arXiv</a>
-      <a class="btn btn-glass" href="javascript:void(0)" title="Coming soon"><i class="fab fa-github"></i> Code (coming soon)</a>
-    </div>
-
-    <!-- Teaser -->
-    <div class="teaser">
-      <img src="static/images/teaser.svg" alt="ForeTac overview: Predict → Score → Guide">
-    </div>
-  </div>
-</section>
-
-<!-- ============ ABSTRACT ============ -->
-<section id="abstract">
-  <div class="container">
-    <h2 class="section-title">Abstract</h2>
-    <p class="abstract-text">
-      Contact-rich manipulation demands policies that anticipate contact consequences before committing to actions. We present <strong>ForeTac</strong>, a framework that steers robot actions with predicted contact consequences. ForeTac learns an action-conditioned tactile foresight model that predicts future contact states from candidate action chunks, and a contact quality energy model that scores predicted outcomes for physical plausibility.
-    </p>
-    <p class="abstract-text">
-      At inference time, the energy model provides gradient signals for bounded trust-region refinement of the generated action chunk&mdash;correcting it toward contact-safe trajectories without retraining the base policy. Additionally, the same foresight model can regularize policy training by penalizing actions that produce unfavorable predicted contact.
-    </p>
-    <p class="abstract-text">
-      We evaluate ForeTac on real-robot contact-rich tasks including board wiping, vase wiping, card swiping, and chip grasping, comparing against visual diffusion policies, reactive tactile fusion, and state-of-the-art tactile prediction methods. ForeTac reduces contact failures while maintaining task success, demonstrating that predicted tactile consequences are an effective and efficient action guidance signal.
-    </p>
-  </div>
-</section>
-
-<!-- ============ KEY IDEA ============ -->
-<section id="key-idea" class="section-alt">
-  <div class="container">
-    <h2 class="section-title">Key Idea</h2>
-    <div class="pillars">
-      <div class="pillar pillar--orange">
-        <div class="pillar-icon"><i class="fas fa-eye"></i></div>
-        <h4>Predict</h4>
-        <p>Action-conditioned tactile foresight model predicts future contact states from candidate action chunks.</p>
+<main id="main-content">
+  <section class="hero is-loading" id="hero" aria-labelledby="hero-title">
+    <video class="hero-video hero-video-backdrop" autoplay muted loop playsinline preload="metadata" poster="static/videos/overview/hero_montage_no_title_poster.jpg" tabindex="-1" aria-hidden="true">
+      <source src="static/videos/overview/hero_montage_no_title.mp4" type="video/mp4">
+    </video>
+    <video class="hero-video hero-video-foreground" autoplay muted loop playsinline preload="metadata" poster="static/videos/overview/hero_montage_no_title_poster.jpg" tabindex="0" aria-label="ForeTac four-task montage">
+      <source src="static/videos/overview/hero_montage_no_title.mp4" type="video/mp4">
+    </video>
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <span class="hero-loading" aria-hidden="true"></span>
+    <div class="container hero-content">
+      <span class="venue">Under Review</span>
+      <div class="hero-title-wrap">
+        <h1 class="hero-title" id="hero-title"><span class="title-fore">Fore</span><span class="title-tac">Tac</span></h1>
+        <div class="hero-bar"></div>
       </div>
-      <div class="pillar pillar--purple">
-        <div class="pillar-icon"><i class="fas fa-bolt"></i></div>
-        <h4>Score</h4>
-        <p>Contact quality energy model evaluates predicted tactile outcomes&mdash;higher score means safer, more effective contact.</p>
-      </div>
-      <div class="pillar pillar--green">
-        <div class="pillar-icon"><i class="fas fa-route"></i></div>
-        <h4>Guide</h4>
-        <p>Energy gradient drives bounded trust-region refinement of the action chunk at inference time, without retraining the policy.</p>
+      <p class="hero-subtitle">Predictive Contact Guidance for Generative Robot Policies</p>
+      <p class="hero-desc">Steering Robot Actions with Predicted Contact Consequences</p>
+      <p class="authors"><span>Anonymous Authors</span></p>
+      <p class="affiliations">Anonymous Institution</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#overview"><i class="fas fa-arrow-down" aria-hidden="true"></i> Explore</a>
+        <a class="btn btn-primary" href="#hero" title="Paper coming soon"><i class="fas fa-file-pdf" aria-hidden="true"></i> Paper</a>
+        <a class="btn btn-glass" href="#hero"><i class="fab fa-github" aria-hidden="true"></i> Code (Coming soon)</a>
       </div>
     </div>
-  </div>
-</section>
+    <a class="scroll-cue" href="#overview" aria-label="Continue to the ForeTac overview"><span>Explore</span><i class="fas fa-arrow-down" aria-hidden="true"></i></a>
+  </section>
 
-<!-- ============ METHOD ============ -->
-<section id="method">
-  <div class="container">
-    <h2 class="section-title">Method Overview</h2>
-    <p class="section-lead">
-      ForeTac is a three-stage framework: <em>predict</em> future tactile consequences, <em>score</em> them with a learned energy model, and <em>guide</em> the action via bounded gradient ascent.
-    </p>
-
-    <div class="content-card">
-      <img src="static/images/architecture.svg" alt="ForeTac Architecture">
+  <section id="overview" class="section-alt overview-section">
+    <div class="container">
+      <h2 class="section-title">Overview</h2>
+      <p class="section-lead reading-width">ForeTac turns action-conditioned tactile foresight into a contact-quality signal for generative action formation.</p>
+      <div class="overview-player is-loading" aria-busy="true">
+        <video id="overview-video" controls controlsList="nodownload" disablepictureinpicture loop playsinline preload="auto" poster="static/videos/overview/foretac_overview_poster.jpg" aria-label="ForeTac overview film">
+          <source src="static/videos/overview/foretac_overview.mp4" type="video/mp4">
+        </video>
+        <span class="overview-loading" aria-hidden="true"></span>
+        <span class="media-error" hidden>Video unavailable</span>
+      </div>
+      <p class="fig-caption overview-caption"><strong>Overview film.</strong> The film introduces the four-task benchmark, action-conditioned tactile foresight, predictive guidance diagnostics, and the SR/CSR results reported in the paper.</p>
+      <figure class="content-card figure-frame teaser-figure">
+        <picture>
+          <source srcset="static/images/manuscript/foretac_teaser_fig1.webp" type="image/webp">
+          <img src="static/images/manuscript/foretac_teaser_fig1.png" alt="Conceptual illustration of human anticipatory contact adjustment and ForeTac predictive robot contact guidance" loading="lazy" decoding="async" width="6059" height="3288">
+        </picture>
+        <figcaption class="fig-caption"><strong>Predictive contact guidance.</strong> Human contact adjustment anticipates physical outcomes; ForeTac closes the analogous robot loop by predicting future touch and guiding action formation.</figcaption>
+      </figure>
     </div>
-    <p class="fig-caption"><strong>Figure 1.</strong> ForeTac architecture. The base Diffusion Policy generates a clean action chunk. The Foresight Transformer predicts its future tactile consequences. The Contact Quality Energy Model scores these predictions. Trust-region gradient ascent refines the action toward higher contact quality.</p>
+  </section>
 
-    <h3>Training Pipeline</h3>
-    <div class="content-card">
-      <img src="static/images/training_pipeline.svg" alt="Training Pipeline">
+  <section id="abstract">
+    <div class="container">
+      <h2 class="section-title">Abstract</h2>
+      <div class="reading-width abstract-copy">
+        <p>Contact-rich manipulation requires generative robot policies to produce actions that are not only task-consistent but also physically appropriate throughout interaction. Small differences between visually similar actions can cause contact loss, jamming, slippage, or irreversible damage, while tactile feedback may arrive only after a critical transition has occurred. The central challenge is therefore to anticipate the contact consequence of an evolving action, evaluate whether that consequence is desirable, and influence action formation before an undesirable interaction unfolds.</p>
+        <p>We present <strong>ForeTac</strong>, a predictive contact-guidance framework organized as a <em>represent &rarr; predict &rarr; evaluate &rarr; guide</em> loop. ForeTac encodes the current tactile state, predicts the tactile consequences of a candidate action sequence, and evaluates the predicted trajectory with a contact-quality objective learned from recorded successful and failed physical interactions. The resulting contact-quality gradient is backpropagated through the tactile predictor to guide generative action formation while all model parameters remain fixed during inference.</p>
+        <p>We evaluate ForeTac on four real-robot tasks covering planar and curved-surface wiping, card swiping, and fragile-object grasping, together with an additional evaluation using a flow-matching policy. Across these tasks, ForeTac raises average task success rate from 36.3% to 71.3% and average contact success rate (CSR) from 20.0% to 66.3% compared with vision-only Diffusion Policy. Component analyses support the tactile representation and action-conditioned foresight, and show that predicted touch preserves contact-quality ordering.</p>
+      </div>
     </div>
-    <p class="fig-caption"><strong>Figure 2.</strong> Four-stage training pipeline. Each stage builds on frozen modules from previous stages.</p>
+  </section>
 
-    <h3>Inference-Time Guidance</h3>
-    <div class="content-card">
-      <img src="static/images/guidance_mechanism.svg" alt="Guidance Mechanism">
+  <section class="section-alt evidence-section" aria-label="Headline results">
+    <div class="container evidence-strip">
+      <div><strong>71.3%</strong><span>average SR</span></div>
+      <div><strong>66.3%</strong><span>average CSR</span></div>
+      <div><strong>+17.5 pp</strong><span>CSR over RDP</span></div>
+      <div><strong>4</strong><span>real-robot tasks</span></div>
     </div>
-    <p class="fig-caption"><strong>Figure 3.</strong> Trust-region guided refinement. The energy gradient provides a direction of improvement; each step is projected back into a bounded trust region around the original action.</p>
-  </div>
-</section>
+  </section>
 
-<!-- ============ RESULTS ============ -->
-<section id="results" class="section-alt">
-  <div class="container">
-    <h2 class="section-title">Results</h2>
+  <section id="key-idea">
+    <div class="container">
+      <h2 class="section-title">Key Idea</h2>
+      <div class="pillars four-pillars">
+        <article class="pillar pillar--orange"><div class="pillar-icon"><i class="fas fa-fingerprint" aria-hidden="true"></i></div><h3>Represent</h3><p>TacVAE encodes an eight-frame marker-displacement history into compact tactile latent maps.</p></article>
+        <article class="pillar pillar--purple"><div class="pillar-icon"><i class="fas fa-eye" aria-hidden="true"></i></div><h3>Predict</h3><p>Foresight predicts a temporally aligned 16-step tactile latent trajectory from the current context and candidate action.</p></article>
+        <article class="pillar pillar--green"><div class="pillar-icon"><i class="fas fa-scale-balanced" aria-hidden="true"></i></div><h3>Evaluate</h3><p>A task-specific objective learned from desired contact and recorded failure modes scores the predicted future.</p></article>
+        <article class="pillar pillar--blue"><div class="pillar-icon"><i class="fas fa-route" aria-hidden="true"></i></div><h3>Guide</h3><p>The quality gradient propagates through Foresight into the evolving generative sampling state; parameters stay fixed.</p></article>
+      </div>
+    </div>
+  </section>
 
-    <div class="results-subsection">
-      <h3>Main Comparison</h3>
-      <p class="section-lead">We compare Ours against DP, DP+tactile, π0.5, RDP, and ForeAR across five contact-rich tasks.</p>
-      <div class="results-table-block results-table-block--wide">
-        <div class="content-card results-table-card">
-          <table class="comp-table main-results-table">
-        <thead>
-          <tr class="task-header">
-            <th rowspan="2">Method</th>
-            <th colspan="2">Board</th>
-            <th colspan="2">Vase</th>
-            <th colspan="2">Card</th>
-            <th colspan="2">Chip</th>
-            <th colspan="2">Socket</th>
-          </tr>
-          <tr class="metric-header">
-            <th>Success ↑</th>
-            <th>Safe Success ↑</th>
-            <th>Success ↑</th>
-            <th>Safe Success ↑</th>
-            <th>Success ↑</th>
-            <th>Safe Success ↑</th>
-            <th>Success ↑</th>
-            <th>Safe Success ↑</th>
-            <th>Success ↑</th>
-            <th>Safe Success ↑</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>DP</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>DP+tactile</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>π0.5</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>RDP</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>ForeAR</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr class="row-ours row-ours-primary">
-            <td>Ours</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-        </tbody>
-          </table>
+  <section id="method" class="section-alt">
+    <div class="container">
+      <h2 class="section-title">Method</h2>
+      <p class="section-lead reading-width">The scorer is part of predictive contact guidance. It receives predicted tactile latents rather than the action directly, so the differentiable path is candidate action → Foresight → contact-quality objective → sampling-state update.</p>
+      <div class="method-facts">
+        <article><span class="fact-label">TacVAE</span><p>Eight frames of 9×9×2 marker displacement become a 16×3×3 latent map. The decoder is used for reconstruction supervision and diagnostics, not online scoring.</p></article>
+        <article><span class="fact-label">Foresight</span><p>A 3-layer, 8-head Transformer conditions on tactile tokens, proprioception, and the candidate action. The default horizon is 16 future latent states.</p></article>
+        <article><span class="fact-label">Quality objective</span><p>Each task has one desired-contact class and three recorded failure modes. A good-versus-bad logit margin supplies the quality signal.</p></article>
+        <article><span class="fact-label">Inference</span><p>Diffusion Policy and flow-matching π<sub>0.5</sub> remain frozen. Only the current generative sampling state is updated before ordinary sampling continues.</p></article>
+      </div>
+      <figure class="content-card figure-frame wide-figure method-figure">
+        <picture>
+          <source srcset="static/images/manuscript/foretac_method_fig2.webp" type="image/webp">
+          <img src="static/images/manuscript/foretac_method_fig2.png" alt="ForeTac architecture showing TacVAE pretraining, action-conditioned tactile foresight, contact-quality scoring, and inference-time predictive guidance" loading="lazy" decoding="async" width="9163" height="4162">
+        </picture>
+        <figcaption class="fig-caption"><strong>Method architecture.</strong> TacVAE provides a frozen tactile representation; the action-conditioned Foresight Transformer predicts a future latent trajectory; a contact-quality scorer evaluates it; and its quality gradient updates only the generative sampling state.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="results" class="section-alt">
+    <div class="container">
+      <h2 class="section-title">Results</h2>
+      <p class="section-lead reading-width">All main task results use four real-robot tasks and 20 trials per task. SR measures task-specific geometric completion; CSR additionally requires the predefined physical contact criteria.</p>
+      <figure class="content-card figure-frame task-overview-figure">
+        <picture>
+          <source srcset="static/images/manuscript/foretac_tasks_fig3.webp" type="image/webp">
+          <img src="static/images/manuscript/foretac_tasks_fig3.png" alt="Realman RM75 experimental platform and four real-robot tasks: board wiping, vase wiping, card swiping, and chip grasping" loading="eager" decoding="async" width="5213" height="1444">
+        </picture>
+        <figcaption class="fig-caption"><strong>Real-robot benchmark.</strong> The four tasks span sustained planar contact, changing surface geometry, constrained sliding, and fragile-object grasping.</figcaption>
+      </figure>
+
+      <div class="results-subsection">
+        <h3>Main Results</h3>
+        <p class="section-lead reading-width">Within the evaluated methods and protocols, predictive contact guidance improves both completion and physically acceptable execution over vision-only, current-tactile, and reactive tactile baselines. The flow-matching backbone is evaluated in the second block of Table I.</p>
+        <div class="results-table-block results-table-block--wide">
+          <div class="content-card results-table-card">
+            <table class="comp-table main-results-table">
+              <caption class="sr-only">Main real-robot results: task success rate and contact success rate in percent.</caption>
+              <thead>
+                <tr class="task-header"><th rowspan="2" scope="col">Tactile use</th><th rowspan="2" scope="col">Method</th><th colspan="2" scope="colgroup">Board</th><th colspan="2" scope="colgroup">Vase</th><th colspan="2" scope="colgroup">Card</th><th colspan="2" scope="colgroup">Chip</th><th colspan="2" scope="colgroup">Average</th></tr>
+                <tr class="metric-header"><th scope="col">SR ↑</th><th scope="col">CSR ↑</th><th scope="col">SR ↑</th><th scope="col">CSR ↑</th><th scope="col">SR ↑</th><th scope="col">CSR ↑</th><th scope="col">SR ↑</th><th scope="col">CSR ↑</th><th scope="col">SR ↑</th><th scope="col">CSR ↑</th></tr>
+              </thead>
+              <tbody>
+                <tr class="table-group"><th colspan="12" scope="rowgroup">Primary comparison</th></tr>
+                <tr><td class="text-cell" rowspan="2">No touch</td><td class="text-cell">DP</td><td>50</td><td>25</td><td>55</td><td>35</td><td>10</td><td>0</td><td>30</td><td>20</td><td>36.3</td><td>20.0</td></tr>
+                <tr><td class="text-cell">RDT</td><td>65</td><td>55</td><td>65</td><td>55</td><td>20</td><td>5</td><td>50</td><td>45</td><td>50.0</td><td>40.0</td></tr>
+                <tr><td class="text-cell" rowspan="2">Current touch</td><td class="text-cell">DP + Tactile Concat</td><td>60</td><td>50</td><td>60</td><td>50</td><td>35</td><td>30</td><td>40</td><td>35</td><td>48.8</td><td>41.3</td></tr>
+                <tr><td class="text-cell">RDP</td><td>70</td><td>60</td><td>65</td><td>55</td><td>45</td><td>35</td><td>55</td><td>45</td><td>58.8</td><td>48.8</td></tr>
+                <tr class="row-ours row-ours-primary"><td class="text-cell">Predictive touch</td><td class="text-cell"><strong>DP + ForeTac</strong></td><td><strong>85</strong></td><td><strong>80</strong></td><td><strong>70</strong></td><td><strong>65</strong></td><td><strong>55</strong></td><td><strong>50</strong></td><td><strong>75</strong></td><td><strong>70</strong></td><td><strong>71.3</strong></td><td><strong>66.3</strong></td></tr>
+                <tr class="table-group"><th colspan="12" scope="rowgroup">Flow-matching evaluation</th></tr>
+                <tr><td class="text-cell">No touch</td><td class="text-cell">π<sub>0.5</sub></td><td>55</td><td>45</td><td>60</td><td>45</td><td>25</td><td>20</td><td>45</td><td>35</td><td>46.3</td><td>36.3</td></tr>
+                <tr class="row-ours"><td class="text-cell">Predictive touch</td><td class="text-cell"><strong>π<sub>0.5</sub> + ForeTac</strong></td><td><strong>80</strong></td><td><strong>75</strong></td><td><strong>70</strong></td><td><strong>65</strong></td><td><strong>50</strong></td><td><strong>45</strong></td><td><strong>70</strong></td><td><strong>65</strong></td><td><strong>67.5</strong></td><td><strong>62.5</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="fig-caption"><strong>Table I.</strong> SR is the fraction of trials completing the task-specific geometric objective. CSR additionally requires predefined physical contact criteria, so CSR ≤ SR. Each task uses 20 trials; averages weight the four tasks equally. The second block evaluates the flow-matching π<sub>0.5</sub> backbone.</p>
         </div>
-        <p class="fig-caption"><strong>Table 1.</strong> Success rate and safe success rate comparison. Safe success counts trials that complete the task while avoiding unsafe contact, emergency stops, or damaging interactions.</p>
+        <p class="result-callout"><strong>Key result.</strong> DP + ForeTac improves average SR/CSR over DP by 35.0/46.3 percentage points and over RDP by 12.5/17.5 percentage points. With the flow-matching backbone, ForeTac improves average SR/CSR by 21.3/26.3 points.</p>
       </div>
-    </div>
 
-    <div class="results-subsection">
-      <h3>Ablation Study</h3>
-      <div class="results-table-block">
-        <div class="content-card results-table-card">
-          <table class="comp-table ablation-results-table">
-        <thead>
-          <tr>
-            <th>Variant</th>
-            <th>Success Rate &uarr;</th>
-            <th>Safe Success Rate &uarr;</th>
-            <th>Contact Failure &darr;</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>w/o Prediction<span class="note">current-contact guidance with the same scorer and refinement procedure</span></td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>w/o Score<span class="note">remove learned contact-quality scoring</span></td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>w/o Guidance<span class="note">remove gradient-based action refinement</span></td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>Prediction + Score + Reranking<span class="note">select among sampled actions without gradient guidance</span></td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>Prediction as Policy Input<span class="note">concatenate predicted tactile features to the policy input</span></td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>Joint Prediction-Policy Training<span class="note">jointly optimize the prediction module and policy</span></td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>Only [Component TBD]<span class="note">single-component control to be specified</span></td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr class="row-ours row-ours-primary">
-            <td>ForeTac (Full)<span class="note">prediction + score + trust-region guidance</span></td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-        </tbody>
-          </table>
+      <div class="results-subsection">
+        <h3>Ablation Study</h3>
+        <p class="section-lead reading-width">The complete pipeline outperforms replacing the current tactile input encoder, using prediction only as an auxiliary loss, or applying predicted-contact quality only after generation through reranking.</p>
+        <div class="results-table-block">
+          <div class="content-card results-table-card">
+            <table class="comp-table ablation-results-table">
+              <caption class="sr-only">Ablation results reported as task success rate and contact success rate.</caption>
+              <thead><tr><th scope="col">Variant</th><th scope="col">Board</th><th scope="col">Vase</th><th scope="col">Card</th><th scope="col">Chip</th><th scope="col">Average</th></tr></thead>
+              <tbody>
+                <tr><td>ForeTac w/ ResNet<span class="note">Frozen ResNet-18 with a learned linear adapter; TacVAE latents remain prediction targets.</span></td><td>55/55</td><td>55/40</td><td>35/10</td><td>55/50</td><td>50.0/38.8</td></tr>
+                <tr><td>Prediction Auxiliary Loss<span class="note">prediction retained only as a training objective</span></td><td>60/55</td><td>65/55</td><td>40/35</td><td>55/50</td><td>55.0/48.8</td></tr>
+                <tr><td>ForeTac w/ Predictive Reranking<span class="note">Fixed candidate budget with the same frozen Foresight and scorer; no gradient into sampling.</span></td><td>65/60</td><td>65/60</td><td>45/35</td><td>60/55</td><td>58.8/52.5</td></tr>
+                <tr class="row-ours row-ours-primary"><td><strong>ForeTac</strong></td><td><strong>85/80</strong></td><td><strong>70/65</strong></td><td><strong>55/50</strong></td><td><strong>75/70</strong></td><td><strong>71.3/66.3</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="fig-caption"><strong>Table II.</strong> Cells report SR/CSR (%) over 20 trials per task. The full method is always shown last.</p>
         </div>
-        <p class="fig-caption"><strong>Table 2.</strong> Ablation study showing the contribution of each component.</p>
       </div>
-    </div>
 
-    <div class="results-subsection">
-      <h3>Latent Reconstruction Quality</h3>
-      <p class="section-lead">TacVAE compresses tactile marker displacement histories into compact latent maps, then decodes them back to marker displacement fields before downstream foresight prediction.</p>
-      <div class="results-table-block results-table-block--wide">
-        <div class="content-card results-table-card">
-          <table class="comp-table tactile-results-table">
-        <thead>
-          <tr class="task-header">
-            <th rowspan="2">Encoder</th>
-            <th colspan="2">Board</th>
-            <th colspan="2">Vase</th>
-            <th colspan="2">Card</th>
-            <th colspan="2">Chip</th>
-            <th colspan="2">Socket</th>
-          </tr>
-          <tr class="metric-header">
-            <th>Norm. MAE ↓</th>
-            <th>Cos ↑</th>
-            <th>Norm. MAE ↓</th>
-            <th>Cos ↑</th>
-            <th>Norm. MAE ↓</th>
-            <th>Cos ↑</th>
-            <th>Norm. MAE ↓</th>
-            <th>Cos ↑</th>
-            <th>Norm. MAE ↓</th>
-            <th>Cos ↑</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>PCA</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>PointNet-AE</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td>Conv-AE / ConvVAE</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-          </tr>
-          <tr class="row-ours row-ours-primary">
-            <td>TacVAE (Ours)</td>
-            <td>0.039</td><td>0.998</td>
-            <td>0.110</td><td>0.986</td>
-            <td>0.039</td><td>0.998</td>
-            <td class="tbd">TBD</td><td class="tbd">TBD</td>
-            <td>0.038</td><td>0.998</td>
-          </tr>
-        </tbody>
-          </table>
+      <details class="result-details results-secondary-details" open>
+        <summary>Additional quantitative analyses</summary>
+        <div class="results-subsection">
+          <h3>Component Analysis</h3>
+          <p class="section-lead reading-width">Selected paper-backed analyses examine representation fidelity, action conditioning, prediction horizon, scorer transfer, and the physical guidance signal.</p>
+
+        <details class="result-details" open>
+          <summary>Tactile reconstruction</summary>
+          <p class="detail-lead">TacVAE is compared with PCA, PointNet-AE, and Conv-AE on the same held-out marker-displacement windows using normalized marker MAE and active-marker cosine similarity. Metrics use training-split channel statistics and are averaged over markers and frames, then windows. Lower MAE and higher cosine similarity are better.</p>
+          <div class="results-table-block results-table-block--wide">
+            <div class="content-card results-table-card">
+              <table class="comp-table tactile-results-table">
+                <caption class="sr-only">Tactile reconstruction across representation methods.</caption>
+                <thead><tr class="task-header"><th rowspan="2" scope="col">Encoder</th><th colspan="2" scope="colgroup">Board</th><th colspan="2" scope="colgroup">Vase</th><th colspan="2" scope="colgroup">Card</th><th colspan="2" scope="colgroup">Chip</th></tr><tr class="metric-header"><th>MAE ↓</th><th>Cos. ↑</th><th>MAE ↓</th><th>Cos. ↑</th><th>MAE ↓</th><th>Cos. ↑</th><th>MAE ↓</th><th>Cos. ↑</th></tr></thead>
+                <tbody>
+                  <tr><td>PCA</td><td>0.040</td><td>0.995</td><td>0.035</td><td><strong>0.995</strong></td><td>0.036</td><td>0.980</td><td>0.026</td><td>0.965</td></tr>
+                  <tr><td>PointNet-AE</td><td>0.048</td><td>0.956</td><td><strong>0.027</strong></td><td>0.955</td><td>0.044</td><td>0.992</td><td>0.032</td><td><strong>0.990</strong></td></tr>
+                  <tr><td>Conv-AE</td><td>0.055</td><td>0.997</td><td>0.042</td><td>0.994</td><td>0.104</td><td><strong>0.999</strong></td><td>0.036</td><td>0.959</td></tr>
+                  <tr class="row-ours row-ours-primary"><td><strong>TacVAE</strong></td><td><strong>0.039</strong></td><td><strong>0.998</strong></td><td>0.037</td><td>0.975</td><td><strong>0.031</strong></td><td><strong>0.999</strong></td><td><strong>0.015</strong></td><td>0.899</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="fig-caption"><strong>Table III.</strong> TacVAE attains the lowest reconstruction MAE on three of four tasks; cosine similarity ranges from 0.899 to 0.999.</p>
+          </div>
+        </details>
+
+        <details class="result-details" open>
+          <summary>Action conditioning and prediction horizon</summary>
+          <div class="detail-grid">
+            <div><h4>Action-conditioning validation</h4><div class="table-scroll" tabindex="0" role="region" aria-label="Analysis table"><table class="comp-table compact-table"><thead><tr><th>Configuration</th><th>Latent MAE</th><th>Marker error</th></tr></thead><tbody><tr><td>Aligned candidate action</td><td>0.0589</td><td>0.2832 px</td></tr><tr><td>Action-masked control</td><td>0.0941</td><td>0.5209 px</td></tr></tbody></table></div><p class="fig-caption">20,055 windows from 23 held-out Board episodes. Masking the action increases both errors, supporting action-conditioned prediction.</p></div>
+            <div><h4>Effective foresight horizon and control utility</h4><div class="table-scroll" tabindex="0" role="region" aria-label="Analysis table"><table class="comp-table compact-table"><thead><tr><th>L</th><th>Latent MAE</th><th>Latent cos.</th><th>Marker error</th><th>SR</th><th>CSR</th></tr></thead><tbody><tr><td>1</td><td>0.167</td><td>0.9993</td><td>0.213 px</td><td>60%</td><td>50%</td></tr><tr><td>4</td><td>0.188</td><td>0.9989</td><td>0.297 px</td><td>65%</td><td>50%</td></tr><tr><td>8</td><td>0.230</td><td>0.9965</td><td>0.317 px</td><td>75%</td><td>65%</td></tr><tr><td>12</td><td>0.261</td><td>0.9952</td><td>0.352 px</td><td>80%</td><td>65%</td></tr><tr class="row-ours"><td>16</td><td>0.274</td><td>0.9953</td><td>0.377 px</td><td><strong>85%</strong></td><td><strong>80%</strong></td></tr></tbody></table></div><p class="fig-caption">The 16-step predictor and scorer remain fixed. Only the first L predicted states are valid for scoring and guidance; the remaining states are masked. Prediction errors are averaged over the first L steps on matched held-out Board windows. Rollout SR/CSR improves across the evaluated prefixes.</p></div>
+          </div>
+        </details>
+
+        <details class="result-details" open>
+          <summary>Contact-quality ordering and transfer</summary>
+          <div class="detail-grid">
+            <div><h4>Recorded future touch</h4><div class="table-scroll" tabindex="0" role="region" aria-label="Analysis table"><table class="comp-table compact-table"><thead><tr><th>Task</th><th>Correct / pairs</th><th>Accuracy</th></tr></thead><tbody><tr><td>Board</td><td>1856 / 1980</td><td>93.7%</td></tr><tr><td>Vase</td><td>936 / 1012</td><td>92.5%</td></tr><tr><td>Card</td><td>1292 / 1408</td><td>91.8%</td></tr><tr><td>Chip</td><td>1062 / 1240</td><td>85.6%</td></tr><tr><td>Pooled</td><td>5146 / 5640</td><td>91.2%</td></tr></tbody></table></div><p class="fig-caption">Preference-order accuracy on positive–negative pairs from held-out recorded future tactile trajectories. Pairs are formed within the same task and contact phase.</p></div>
+            <div><h4>Recorded → predicted touch</h4><div class="table-scroll" tabindex="0" role="region" aria-label="Analysis table"><table class="comp-table compact-table"><thead><tr><th>Task</th><th>Recorded</th><th>Predicted</th><th>ρ</th></tr></thead><tbody><tr><td>Board</td><td>93.7%</td><td>95.1%</td><td>0.9368</td></tr><tr><td>Vase</td><td>92.5%</td><td>91.1%</td><td>0.9728</td></tr><tr><td>Card</td><td>91.8%</td><td>94.2%</td><td>0.9321</td></tr><tr><td>Chip</td><td>85.6%</td><td>89.5%</td><td>0.9326</td></tr><tr><td>Pooled</td><td>91.2%</td><td>92.9%</td><td>--</td></tr></tbody></table></div><p class="fig-caption">The same frozen scorer and evaluation pairs are used for recorded and predicted inputs. Both columns report preference-order accuracy; ρ is rank correlation between the two score sets.</p></div>
+          </div>
+        </details>
+
+        <details class="result-details diagnostic-details" open>
+          <summary>Offline guidance diagnostics</summary>
+          <figure class="content-card figure-frame diagnostic-frame"><img src="static/images/manuscript/foretac_guidance_fig4_r12.png" alt="Two-panel offline diagnostics of predictive contact guidance: paired scorer-margin changes and mean absolute scaled quality-gradient magnitude" loading="lazy" decoding="async" width="2799" height="1080"><figcaption class="fig-caption"><strong>Figure 4.</strong> Offline diagnostics of predictive contact guidance. Panel (a) shows raw scorer-margin changes for 305 paired same-state guidance updates from 61 replanning events; 293 (96.1%) are positive. The vertical axis is clipped for display; all 305 updates enter the percentage. Panel (b) shows mean absolute quality-gradient magnitude scaled by λ=0.003 over 1,024 class-balanced held-out windows, indexed by the seven arm joints and future action step.</figcaption></figure>
+        </details>
         </div>
-        <p class="fig-caption"><strong>Table 3.</strong> Latent reconstruction quality across the five task datasets. Norm. MAE measures normalized marker-field reconstruction error, while cosine similarity measures directional consistency of the reconstructed tactile deformation. Chip-grasping reconstruction evaluation is pending.</p>
-      </div>
+      </details>
+
+      <details class="result-details cost-details" open>
+        <summary>Computational cost</summary>
+        <p class="detail-lead">Batch-one replanning latency on an RTX 4090 with a 16-step tactile prediction horizon and 30 DP sampling steps. Values are mean ± standard deviation over 200 timed replans after 50 warm-ups, with CUDA synchronization before and after each timed region.</p>
+        <div class="results-table-block">
+          <div class="content-card results-table-card"><table class="comp-table cost-table"><caption class="sr-only">Computational cost and replanning latency.</caption><thead><tr><th>Configuration</th><th>Added (M)</th><th>Total (M)</th><th>Latency (ms)</th></tr></thead><tbody><tr><td>DP</td><td>0</td><td>338.043</td><td>132.46 ± 1.39</td></tr><tr><td>DP + Foresight</td><td>34.069</td><td>372.113</td><td>134.98 ± 1.21</td></tr><tr><td>DP + Foresight + Scorer</td><td>34.922</td><td>372.965</td><td>135.35 ± 0.86</td></tr><tr class="row-ours"><td><strong>ForeTac</strong></td><td>34.922</td><td>372.965</td><td><strong>261.26 ± 5.16</strong></td></tr></tbody></table></div>
+          <p class="fig-caption"><strong>Table VIII.</strong> Added parameters are measured relative to DP. The intermediate configurations run each added module once per replan. Full ForeTac repeats prediction, scoring, and backpropagation at ten guided sampling steps. Timing includes observation encoding and all enabled model computations.</p>
+        </div>
+      </details>
     </div>
+  </section>
 
-    <h3>Foresight Prediction Quality</h3>
-    <p class="section-lead">The foresight model predicts future TacVAE latents, and the predicted latents are decoded back to marker displacement fields for evaluation.</p>
-    <div class="content-card">
-      <img src="static/images/foresight_prediction_quality_horizons.png" alt="Foresight prediction quality across horizons with decoded marker prediction error">
+  <section id="demos">
+    <div class="container">
+      <h2 class="section-title">Real-Robot Demonstrations</h2>
+      <p class="section-lead reading-width">Each row pairs a real execution with a synchronized tactile/marker visualization. Board, Vase, and Card use predicted marker fields; Chip uses measured marker offsets. The overlaid curves are visualization-only; they do not report the deployed scorer output or guidance scale. Videos loop continuously and can be paused or resumed by clicking either panel.</p>
+
+      <article class="task-demo"><h3>Board Wiping</h3><p class="task-desc">Sustained planar contact requires maintaining useful pressure while sweeping across the board.</p><div class="video-grid sync-video-pair" data-sync-pair><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/board_real_preview.jpg" data-sync-video tabindex="0" aria-label="Board wiping real execution"><source src="static/videos/board_real.mp4" type="video/mp4"></video><div class="caption">Real execution</div></div><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/board_viz_preview.jpg" data-sync-video tabindex="0" aria-label="Board wiping tactile and predicted marker visualization"><source src="static/videos/board_viz.mp4" type="video/mp4"></video><div class="caption">Tactile + predicted marker visualization</div></div></div></article>
+      <article class="task-demo"><h3>Vase Wiping</h3><p class="task-desc">Changing surface geometry requires contact transfer without losing the desired interaction.</p><div class="video-grid sync-video-pair" data-sync-pair><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/vase_real_preview.jpg" data-sync-video tabindex="0" aria-label="Vase wiping real execution"><source src="static/videos/vase_real.mp4" type="video/mp4"></video><div class="caption">Real execution</div></div><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/vase_viz_preview.jpg" data-sync-video tabindex="0" aria-label="Vase wiping tactile and predicted marker visualization"><source src="static/videos/vase_viz.mp4" type="video/mp4"></video><div class="caption">Tactile + predicted marker visualization</div></div></div></article>
+      <article class="task-demo"><h3>Card Swiping</h3><p class="task-desc">Constrained sliding tests alignment and continuous contact through the reader.</p><div class="video-grid sync-video-pair" data-sync-pair><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/card_real_preview.jpg" data-sync-video tabindex="0" aria-label="Card swiping real execution"><source src="static/videos/card_real.mp4" type="video/mp4"></video><div class="caption">Real execution</div></div><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/card_viz_preview.jpg" data-sync-video tabindex="0" aria-label="Card swiping tactile and predicted marker visualization"><source src="static/videos/card_viz.mp4" type="video/mp4"></video><div class="caption">Tactile + predicted marker visualization</div></div></div></article>
+      <article class="task-demo"><h3>Fragile Chip Grasping</h3><p class="task-desc">The operating range is narrow: insufficient force causes slip or drop, while excessive force may damage the chip.</p><div class="video-grid sync-video-pair" data-sync-pair><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/chip_real_1x4x_preview.jpg" data-sync-video tabindex="0" aria-label="Chip grasping real execution"><source src="static/videos/chip_real_1x4x.mp4" type="video/mp4"></video><div class="caption">Real execution</div></div><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/chip_viz_1x4x_preview.jpg" data-sync-video tabindex="0" aria-label="Chip grasping tactile and measured marker visualization"><source src="static/videos/chip_viz_1x4x.mp4" type="video/mp4"></video><div class="caption">Tactile + measured marker visualization</div></div></div></article>
+      <article class="task-demo"><h3>Visual Perturbation Demo</h3><p class="task-desc">Card swiping under visual disturbance, shown alongside recorded tactile observations.</p><div class="video-grid sync-video-pair" data-sync-pair><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/generalization_visual_perturb_real_preview.jpg" data-sync-video tabindex="0" aria-label="Card swiping under visual perturbation, real execution"><source src="static/videos/generalization_visual_perturb_real.mp4" type="video/mp4"></video><div class="caption">Real execution under visual perturbation</div></div><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/generalization_visual_perturb_viz_preview.jpg" data-sync-video tabindex="0" aria-label="Card swiping under visual perturbation, tactile and predicted marker visualization"><source src="static/videos/generalization_visual_perturb_viz.mp4" type="video/mp4"></video><div class="caption">Tactile + predicted marker visualization</div></div></div></article>
+      <article class="task-demo"><h3>Foresight Prediction Visualization</h3><p class="task-desc">Predicted marker displacement fields are compared with ground-truth tactile observations.</p><div class="video-grid foresight-summary-grid sync-video-pair" data-sync-pair><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/board_real_preview.jpg" data-sync-video tabindex="0" aria-label="Board wiping real execution"><source src="static/videos/board_real.mp4" type="video/mp4"></video><div class="caption">Real execution: Board wiping</div></div><div class="video-card is-loading"><video muted playsinline preload="metadata" poster="static/videos/foresight_prediction_board_episode6_tplus16_preview.jpg" data-sync-video tabindex="0" aria-label="Predicted versus ground-truth tactile foresight"><source src="static/videos/foresight_prediction_board_episode6_tplus16.webm" type="video/webm"><source src="static/videos/foresight_prediction_board_episode6_tplus16.mp4" type="video/mp4"></video><div class="caption">Predicted vs. ground-truth tactile foresight</div></div></div></article>
     </div>
-    <p class="fig-caption"><strong>Figure 4.</strong> Tactile foresight prediction accuracy across horizons H=1, 4, 8, 12, 16, measured by latent MAE, latent cosine similarity, and decoded marker prediction error.</p>
+  </section>
 
-    <h3>Guidance Diagnostics</h3>
-    <p class="section-lead">
-      We analyze the blackboard policy to evaluate whether score-gradient guidance improves the learned contact-quality score during late denoising, while keeping updates bounded and localized in action space. The diagnostic uses denoising logs and 128 validation windows.
-    </p>
-
-    <div class="content-card diagnostic-figure-card">
-      <img src="static/images/board_guidance_diagnostics_overview.png" alt="Guidance diagnostics for blackboard policy">
-    </div>
-    <p class="fig-caption"><strong>Figure 5.</strong> Guidance diagnostics for blackboard wiping. A: score improvement after guidance. B: raw gradient norm, scaled gradient norm, and applied update norm. C: action-dimension guidance heatmap averaged over 128 validation windows, showing localized correction on a small subset of action dimensions. D: cosine alignment between the policy denoising direction and the guidance direction.</p>
-    <p class="diagnostic-takeaway"><strong>Takeaway.</strong> The diagnostic analysis supports that guidance improves the learned contact-quality score mainly through small, bounded, and action-local corrections, rather than by globally reshaping or reranking full trajectories.</p>
-  </div>
-</section>
-
-<!-- ============ DEMOS ============ -->
-<section id="demos">
-  <div class="container">
-    <h2 class="section-title">Real-Robot Demonstrations</h2>
-    <p class="section-lead">ForeTac is evaluated on four contact-rich tasks. Each row shows the real robot execution (left) and real-time inference visualization with predicted contact consequences (right).</p>
-
-    <h3>Board Wiping</h3>
-    <p class="task-desc">The robot must maintain consistent contact pressure while sweeping across the board. ForeTac steers actions to avoid excessive force or contact loss.</p>
-    <div class="video-grid board-demo-grid sync-video-pair" data-sync-pair>
-      <div class="video-card board-real-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/board_real_preview.jpg" data-sync-video>
-          <source src="static/videos/board_real.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Real Execution (4x speed)</div>
-      </div>
-      <div class="video-card board-viz-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/board_viz_preview.jpg" data-sync-video>
-          <source src="static/videos/board_viz.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Tactile Foresight + Adaptive Guidance</div>
-      </div>
-    </div>
-
-    <h3>Vase Wiping</h3>
-    <p class="task-desc">Wiping a curved vase surface requires adaptive contact force control. ForeTac predicts contact consequences on complex geometry and adjusts accordingly.</p>
-    <div class="video-grid sync-video-pair" data-sync-pair>
-      <div class="video-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/vase_real_preview.jpg" data-sync-video>
-          <source src="static/videos/vase_real.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Real Execution (4x speed)</div>
-      </div>
-      <div class="video-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/vase_viz_preview.jpg" data-sync-video>
-          <source src="static/videos/vase_viz.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Tactile Foresight + Adaptive Guidance</div>
-      </div>
-    </div>
-
-    <h3>Card Swiping</h3>
-    <p class="task-desc">Swiping a card through a reader requires precise alignment and sustained contact. ForeTac guides the action to maintain proper insertion angle and force.</p>
-    <div class="video-grid sync-video-pair" data-sync-pair>
-      <div class="video-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/card_real_preview.jpg" data-sync-video>
-          <source src="static/videos/card_real.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Real Execution (4x speed)</div>
-      </div>
-      <div class="video-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/card_viz_preview.jpg" data-sync-video>
-          <source src="static/videos/card_viz.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Tactile Foresight + Adaptive Guidance</div>
-      </div>
-    </div>
-
-    <h3>Chip Grasping</h3>
-    <p class="task-desc">Grasping fragile chips requires delicate force control to avoid crushing. ForeTac predicts contact outcomes and prevents excessive grip force.</p>
-    <div class="video-grid sync-video-pair" data-sync-pair>
-      <div class="video-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/chip_real_preview.jpg" data-sync-video>
-          <source src="static/videos/chip_real.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Real Execution (4x speed)</div>
-      </div>
-      <div class="video-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/chip_viz_preview.jpg" data-sync-video>
-          <source src="static/videos/chip_viz.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Tactile Foresight + Adaptive Guidance</div>
-      </div>
-    </div>
-
-    <h3>Generalization Test 1: Visual Perturbation</h3>
-    <p class="task-desc">The card-swiping policy is evaluated under visual disturbance while the tactile foresight signal remains aligned with contact dynamics.</p>
-    <div class="video-grid sync-video-pair" data-sync-pair>
-      <div class="video-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/generalization_visual_perturb_real_preview.jpg" data-sync-video>
-          <source src="static/videos/generalization_visual_perturb_real.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Real Execution (4x speed)</div>
-      </div>
-      <div class="video-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/generalization_visual_perturb_viz_preview.jpg" data-sync-video>
-          <source src="static/videos/generalization_visual_perturb_viz.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Tactile Foresight + Adaptive Guidance</div>
-      </div>
-    </div>
-
-    <h3>Foresight Prediction Visualization</h3>
-    <p class="task-desc">Visualizing how the foresight model predicts future tactile states: predicted marker displacement fields vs. ground-truth observations.</p>
-    <div class="video-grid foresight-summary-grid sync-video-pair" data-sync-pair>
-      <div class="video-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/board_real_preview.jpg" data-sync-video>
-          <source src="static/videos/board_real.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Real Execution: Board Wiping</div>
-      </div>
-      <div class="video-card is-loading">
-        <video muted playsinline preload="metadata" poster="static/videos/foresight_prediction_board_episode6_tplus16_preview.jpg" data-sync-video>
-          <source src="static/videos/foresight_prediction_board_episode6_tplus16.webm" type="video/webm">
-          <source src="static/videos/foresight_prediction_board_episode6_tplus16.mp4" type="video/mp4">
-        </video>
-        <div class="caption">Predicted vs. Ground-Truth Tactile Foresight</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ BIBTEX ============ -->
-<section id="bibtex" class="section-alt">
-  <div class="container">
-    <h2 class="section-title">BibTeX</h2>
-    <div class="bibtex-block">
-      <button class="copy-btn" onclick="copyBibtex()"><i class="fas fa-copy"></i> Copy</button>
-<pre>@article{foretac2026,
-  title     = {ForeTac: Steering Robot Actions with Predicted Contact Consequences},
+  <section id="bibtex" class="section-alt">
+    <div class="container">
+      <h2 class="section-title">BibTeX</h2>
+      <div class="bibtex-block"><button class="copy-btn" type="button" onclick="copyBibtex()" aria-label="Copy BibTeX"><i class="fas fa-copy" aria-hidden="true"></i> Copy</button><pre>@article{foretac2026,
+  title     = {ForeTac: Predictive Contact Guidance for Generative Robot Policies},
   author    = {Anonymous},
   journal   = {Under Review},
   year      = {2026}
-}</pre>
+}</pre></div>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 
-<!-- ============ FOOTER ============ -->
-<footer>
-  <div class="container">
-    <p>ForeTac &middot; Predictive Tactile Guidance for Contact-Rich Manipulation</p>
-  </div>
-</footer>
+<footer><div class="container"><p>ForeTac · Predictive Contact Guidance for Generative Robot Policies</p></div></footer>
 
 <script>
 function copyBibtex() {
   const text = document.querySelector('.bibtex-block pre').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('.copy-btn');
-    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-    setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 2000);
-  });
+  const button = document.querySelector('.copy-btn');
+  const done = () => { button.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Copied'; window.setTimeout(() => { button.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy'; }, 1800); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(done).catch(() => {});
 }
 
 const header = document.querySelector('.site-header');
-window.addEventListener('scroll', () => {
-  header.classList.toggle('is-scrolled', window.scrollY > 10);
-});
+const menuToggle = document.querySelector('.menu-toggle');
+const nav = document.querySelector('.nav-links');
+const closeMenu = () => { nav.classList.remove('is-open'); menuToggle.setAttribute('aria-expanded', 'false'); menuToggle.setAttribute('aria-label', 'Open navigation'); menuToggle.innerHTML = '<i class="fas fa-bars" aria-hidden="true"></i>'; };
+menuToggle.addEventListener('click', () => { const open = nav.classList.toggle('is-open'); menuToggle.setAttribute('aria-expanded', String(open)); menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation'); menuToggle.innerHTML = `<i class="fas fa-${open ? 'xmark' : 'bars'}" aria-hidden="true"></i>`; });
+nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+window.addEventListener('scroll', () => header.classList.toggle('is-scrolled', window.scrollY > 10), { passive: true });
 
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(section => {
-    const top = section.offsetTop - 120;
-    if (window.scrollY >= top) current = section.getAttribute('id');
-  });
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === '#' + current) link.classList.add('active');
-  });
+window.addEventListener('scroll', () => { let current = ''; sections.forEach(section => { if (window.scrollY >= section.offsetTop - 130) current = section.id; }); navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + current)); }, { passive: true });
+
+function surfaceFor(video) { return video.closest('.video-card, .hero'); }
+function setVideoLoading(video, loading) { const surface = surfaceFor(video); if (!surface) return; surface.classList.toggle('is-loading', loading); surface.setAttribute('aria-busy', loading ? 'true' : 'false'); }
+function setVideoError(video) { const surface = surfaceFor(video); if (!surface) return; surface.classList.remove('is-loading'); surface.classList.add('is-error'); if (!surface.querySelector('.media-error')) { const message = document.createElement('span'); message.className = 'media-error'; message.textContent = 'Video unavailable'; surface.appendChild(message); } }
+function waitUntilPlayable(video) { if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) return Promise.resolve(); return new Promise((resolve, reject) => { const cleanup = () => { video.removeEventListener('canplay', ready); video.removeEventListener('error', failed); }; const ready = () => { cleanup(); resolve(); }; const failed = () => { cleanup(); reject(video.error); }; video.addEventListener('canplay', ready, { once: true }); video.addEventListener('error', failed, { once: true }); }); }
+function seekVideo(video, time) { const target = Math.max(0, Math.min(time, video.duration || time)); if (!video.seeking && Math.abs(video.currentTime - target) < 0.01) return Promise.resolve(); return new Promise((resolve, reject) => { const cleanup = () => { video.removeEventListener('seeked', done); video.removeEventListener('error', failed); }; const done = () => { cleanup(); resolve(); }; const failed = () => { cleanup(); reject(video.error); }; video.addEventListener('seeked', done, { once: true }); video.addEventListener('error', failed, { once: true }); video.currentTime = target; }); }
+
+document.querySelectorAll('video').forEach(video => {
+  video.setAttribute('controlsList', 'nodownload');
+  video.setAttribute('disablepictureinpicture', '');
+  video.addEventListener('contextmenu', event => event.preventDefault());
 });
-
-function setVideoLoading(video, loading) {
-  const card = video.closest('.video-card');
-  if (!card) return;
-  card.classList.toggle('is-loading', loading);
-  card.setAttribute('aria-busy', loading ? 'true' : 'false');
-}
-
-function waitUntilPlayable(video) {
-  if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    const cleanup = () => {
-      video.removeEventListener('canplay', onReady);
-      video.removeEventListener('error', onError);
-    };
-    const onReady = () => { cleanup(); resolve(); };
-    const onError = () => { cleanup(); reject(video.error); };
-    video.addEventListener('canplay', onReady, { once: true });
-    video.addEventListener('error', onError, { once: true });
-  });
-}
-
-function seekVideo(video, time) {
-  const targetTime = Math.max(0, Math.min(time, video.duration || time));
-  if (!video.seeking && Math.abs(video.currentTime - targetTime) < 0.001) {
-    return Promise.resolve();
-  }
-  return new Promise((resolve, reject) => {
-    const cleanup = () => {
-      video.removeEventListener('seeked', onSeeked);
-      video.removeEventListener('error', onError);
-    };
-    const onSeeked = () => { cleanup(); resolve(); };
-    const onError = () => { cleanup(); reject(video.error); };
-    video.addEventListener('seeked', onSeeked, { once: true });
-    video.addEventListener('error', onError, { once: true });
-    video.currentTime = targetTime;
-  });
-}
 
 document.querySelectorAll('.video-card video').forEach(video => {
   setVideoLoading(video, video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA);
-  ['loadstart', 'waiting', 'stalled', 'seeking'].forEach(eventName => {
-    video.addEventListener(eventName, () => setVideoLoading(video, true));
-  });
-  ['canplay', 'playing', 'seeked'].forEach(eventName => {
-    video.addEventListener(eventName, () => setVideoLoading(video, false));
-  });
-  video.addEventListener('error', () => {
-    setVideoLoading(video, false);
-    video.closest('.video-card')?.classList.add('is-error');
-  });
+  ['loadstart', 'waiting', 'stalled', 'seeking'].forEach(event => video.addEventListener(event, () => setVideoLoading(video, true)));
+  ['canplay', 'playing', 'seeked'].forEach(event => video.addEventListener(event, () => setVideoLoading(video, false)));
+  video.addEventListener('error', () => setVideoError(video));
 });
+
+const overviewPlayer = document.querySelector('.overview-player');
+const overviewVideo = document.querySelector('#overview-video');
+if (overviewPlayer && overviewVideo) {
+  const setOverviewLoading = loading => {
+    overviewPlayer.classList.toggle('is-loading', loading);
+    overviewPlayer.setAttribute('aria-busy', loading ? 'true' : 'false');
+  };
+  const setOverviewError = () => {
+    setOverviewLoading(false);
+    overviewPlayer.classList.add('is-error');
+    const message = overviewPlayer.querySelector('.media-error');
+    if (message) message.hidden = false;
+  };
+  setOverviewLoading(overviewVideo.readyState < HTMLMediaElement.HAVE_FUTURE_DATA);
+  ['loadstart', 'waiting', 'stalled', 'seeking'].forEach(event => overviewVideo.addEventListener(event, () => setOverviewLoading(true)));
+  ['loadeddata', 'canplay', 'playing', 'seeked'].forEach(event => overviewVideo.addEventListener(event, () => setOverviewLoading(false)));
+  overviewVideo.addEventListener('error', setOverviewError);
+}
 
 document.querySelectorAll('[data-sync-pair]').forEach(pair => {
-  const videos = Array.from(pair.querySelectorAll('[data-sync-video]'));
+  const videos = [...pair.querySelectorAll('[data-sync-video]')];
   if (videos.length !== 2) return;
-
-  let shouldPlay = true;
-  let playbackRequest = 0;
-  let mediaActivated = false;
-  let synchronizationInProgress = false;
-
-  const pauseTogether = () => videos.forEach(video => video.pause());
-
-  async function playTogether({ restart = false } = {}) {
-    if (synchronizationInProgress) return;
-    synchronizationInProgress = true;
-    const requestId = ++playbackRequest;
-    pauseTogether();
-    try {
-      await Promise.all(videos.map(waitUntilPlayable));
-      if (!shouldPlay || requestId !== playbackRequest) return;
-      if (restart) {
-        await Promise.all(videos.map(video => seekVideo(video, 0)));
-      } else if (Math.abs(videos[0].currentTime - videos[1].currentTime) > 0.12) {
-        await seekVideo(videos[1], videos[0].currentTime);
-      }
-      await Promise.all(videos.map(waitUntilPlayable));
-      if (!shouldPlay || requestId !== playbackRequest) return;
-      await Promise.all(videos.map(video => video.play()));
-    } catch (error) {
-      if (requestId === playbackRequest) {
-        console.warn('Synchronized video playback could not start.', error);
-      }
-    } finally {
-      synchronizationInProgress = false;
-    }
-  }
-
-  videos.forEach(video => {
-    video.addEventListener('ended', () => {
-      shouldPlay = true;
-      pauseTogether();
-      playTogether({ restart: true });
-    });
-
-    ['waiting', 'stalled'].forEach(eventName => {
-      video.addEventListener(eventName, () => {
-        if (!shouldPlay || synchronizationInProgress || video.seeking) return;
-        pauseTogether();
-        playTogether();
-      });
-    });
-
-    video.addEventListener('click', event => {
-      event.preventDefault();
-      const isPlaying = videos.some(item => !item.paused && !item.ended);
-      shouldPlay = !isPlaying;
-      if (shouldPlay) playTogether();
-      else pauseTogether();
-    });
-  });
-
-  window.setInterval(() => {
-    if (
-      !shouldPlay ||
-      synchronizationInProgress ||
-      videos.some(video => video.paused || video.seeking || video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA)
-    ) return;
-    if (Math.abs(videos[0].currentTime - videos[1].currentTime) > 0.12) {
-      playTogether();
-    }
-  }, 500);
-
-  const activatePair = () => {
-    shouldPlay = true;
-    if (!mediaActivated) {
-      mediaActivated = true;
-      videos.forEach(video => {
-        video.preload = 'auto';
-        video.load();
-      });
-      playTogether({ restart: true });
-    } else {
-      playTogether();
-    }
-  };
-
-  const deactivatePair = () => {
-    shouldPlay = false;
-    playbackRequest += 1;
-    pauseTogether();
-  };
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) activatePair();
-        else if (mediaActivated) deactivatePair();
-      });
-    }, { rootMargin: '320px 0px', threshold: 0.01 });
-    observer.observe(pair);
-  } else {
-    activatePair();
-  }
-});
-
-document.querySelectorAll('[data-standalone-video]').forEach(video => {
+  let userPaused = false;
   let activated = false;
-  let shouldPlay = false;
-
-  const playVideo = async () => {
-    shouldPlay = true;
-    if (!activated) {
-      activated = true;
-      video.preload = 'auto';
-      video.load();
-    }
+  let synchronizing = false;
+  let request = 0;
+  const pauseTogether = () => videos.forEach(video => video.pause());
+  const playTogether = async ({ restart = false } = {}) => {
+    if (userPaused || synchronizing) return;
+    synchronizing = true;
+    const id = ++request;
+    pauseTogether();
     try {
-      await waitUntilPlayable(video);
-      if (shouldPlay) await video.play();
-    } catch (error) {
-      console.warn('Video playback could not start.', error);
-    }
+      if (restart) await Promise.all(videos.map(video => seekVideo(video, 0)));
+      else {
+        await Promise.all(videos.map(waitUntilPlayable));
+        if (userPaused || id !== request) return;
+        if (Math.abs(videos[0].currentTime - videos[1].currentTime) > 0.12) await seekVideo(videos[1], videos[0].currentTime);
+      }
+      if (userPaused || id !== request) return;
+      await Promise.all(videos.map(waitUntilPlayable));
+      await Promise.all(videos.map(video => video.play()));
+    } catch (error) { if (id === request) console.warn('Synchronized video playback could not start.', error); }
+    finally { synchronizing = false; }
   };
-
-  const pauseVideo = () => {
-    shouldPlay = false;
-    video.pause();
-  };
-
-  video.addEventListener('ended', () => {
-    video.currentTime = 0;
-    if (shouldPlay) playVideo();
+  const toggle = () => { const playing = videos.some(video => !video.paused && !video.ended); userPaused = playing; if (userPaused) { request += 1; pauseTogether(); } else playTogether(); };
+  videos.forEach(video => {
+    video.addEventListener('ended', () => { if (!userPaused) playTogether({ restart: true }); });
+    video.addEventListener('click', event => { event.preventDefault(); toggle(); });
+    video.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggle(); } });
+    video.addEventListener('waiting', () => { if (!userPaused && !synchronizing) { pauseTogether(); playTogether(); } });
   });
-  video.addEventListener('click', () => {
-    if (video.paused) playVideo();
-    else pauseVideo();
-  });
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) playVideo();
-        else if (activated) pauseVideo();
-      });
-    }, { rootMargin: '320px 0px', threshold: 0.01 });
-    observer.observe(video);
-  } else {
-    playVideo();
-  }
+  window.setInterval(() => { if (!userPaused && !synchronizing && videos.every(video => !video.paused && !video.seeking && video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) && Math.abs(videos[0].currentTime - videos[1].currentTime) > 0.12) playTogether(); }, 600);
+  const activate = () => { if (!activated) { activated = true; videos.forEach(video => { video.preload = 'auto'; video.load(); }); if (!userPaused) playTogether({ restart: true }); } else if (!userPaused) playTogether(); };
+  const deactivate = () => { request += 1; pauseTogether(); };
+  if ('IntersectionObserver' in window) { const observer = new IntersectionObserver(entries => entries.forEach(entry => entry.isIntersecting ? activate() : deactivate()), { rootMargin: '280px 0px', threshold: 0.01 }); observer.observe(pair); } else activate();
 });
-</script>
 
+const hero = document.querySelector('.hero');
+const heroVideos = hero ? [...hero.querySelectorAll('.hero-video')] : [];
+const heroVideo = hero ? hero.querySelector('.hero-video-foreground') : null;
+if (hero && heroVideo && heroVideos.length) {
+  const backdropVideo = hero.querySelector('.hero-video-backdrop');
+  const setHeroLoading = () => hero.classList.toggle('is-loading', heroVideos.some(video => video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA));
+  const setHeroPlayback = playing => heroVideos.forEach(video => {
+    if (playing) video.play().catch(() => {});
+    else video.pause();
+  });
+  const syncBackdrop = () => {
+    if (!backdropVideo || backdropVideo.seeking || heroVideo.seeking) return;
+    if (Math.abs(backdropVideo.currentTime - heroVideo.currentTime) > 0.08) backdropVideo.currentTime = heroVideo.currentTime;
+  };
+  setHeroLoading();
+  heroVideos.forEach(video => {
+    ['loadstart', 'waiting', 'stalled', 'seeking'].forEach(event => video.addEventListener(event, setHeroLoading));
+    ['loadeddata', 'canplay', 'playing', 'seeked'].forEach(event => video.addEventListener(event, setHeroLoading));
+    video.addEventListener('error', () => { if (video === heroVideo) { setHeroLoading(); hero.classList.add('is-error'); } });
+  });
+  const toggleHero = () => setHeroPlayback(heroVideo.paused || heroVideo.ended);
+  heroVideo.addEventListener('click', toggleHero);
+  heroVideo.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleHero(); } });
+  window.setInterval(() => { if (!heroVideo.paused && !heroVideo.seeking) syncBackdrop(); }, 500);
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setHeroPlayback(false); heroVideos.forEach(video => video.removeAttribute('autoplay')); }
+}
+</script>
 </body>
 </html>

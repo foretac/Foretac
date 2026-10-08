@@ -133,7 +133,8 @@ TASKS = {
         },
     },
     "generalization_visual_perturb": {
-        "title": "Generalization Test 1: Visual Perturbation",
+        "title": "Visual Perturbation Demo",
+        "title_line": "Visual Perturbation Demo",
         "speed_label": "4x speed",
         "trial": ROOT / "outputs/multitask_replay_records/card_260707/20260710_175728_port8783_episode_4",
         "real": OUT / "generalization_visual_perturb_real.mp4",
@@ -752,7 +753,7 @@ def draw_dynamic_signals(img, sig, force_ax, score_ax, step):
 
 def draw_base(title, top_label, bottom_label, sig, speed_label):
     img = np.full((H, W, 3), BG, np.uint8)
-    put(img, f"{title}: tactile foresight and guidance", (54, 70), 1.1, TEXT, 3)
+    put(img, title, (54, 70), 1.1, TEXT, 3)
     rect(img, (1690, 28, 1855, 88), (219, 164, 25))
     put(img, speed_label, (1772, 68), 0.85, (255, 255, 255), 2, "center")
     for label, y, color in [
@@ -802,8 +803,9 @@ def render_task(name, task):
     else:
         out_frames = real_frames
         out_fps = real_fps
+    title_line = task.get("title_line", f'{task["title"]}: tactile foresight and guidance')
     base, force_ax, score_ax = draw_base(
-        task["title"],
+        title_line,
         task["top"]["label"],
         task["bottom"]["label"],
         sig,

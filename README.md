@@ -1,12 +1,12 @@
 # ForeTac Project Website
 
-Project website for **ForeTac: Steering Robot Actions with Predicted Contact Consequences**.
+Project website for **ForeTac: Predictive Contact Guidance for Generative Robot Policies**.
 
 - Website: <https://foretac.github.io/>
 - GitHub Pages repository: <https://github.com/foretac/foretac.github.io>
 - Project repository: <https://github.com/foretac/Foretac>
 
-ForeTac steers robot actions using predicted contact consequences. Its inference pipeline combines a frozen TacVAE encoder, a tactile foresight transformer, a contact-quality energy model, and trust-region action refinement. The website presents the method, quantitative results, diagnostics, and real-robot demonstrations for board wiping, vase wiping, card swiping, and chip grasping.
+ForeTac uses a frozen tactile representation, an action-conditioned foresight transformer, a contact-quality objective, and gradient guidance during generative action formation. The website presents the method, the current SR/CSR results, paper-backed diagnostics, and real-robot demonstrations for board wiping, vase wiping, card swiping, and fragile chip grasping.
 
 ## Local Preview
 
@@ -17,7 +17,7 @@ cd /path/to/foretac_web
 python -m http.server 8000
 ```
 
-Then open <http://localhost:8000>. Opening `index.html` directly is also supported, but an HTTP preview is preferred when validating video loading and byte-range requests.
+Then open <http://localhost:8000>. Opening `index.html` directly is also supported, but an HTTP preview is preferred for media behavior. Python's simple server may answer Range requests with `200` rather than `206`, so validate partial-content seeking against the deployment host or another Range-capable server.
 
 ## Repository Structure
 
@@ -34,30 +34,62 @@ foretac_web/
 `-- README.md
 ```
 
-The main image assets are:
+The page uses the paper submission figures copied to `static/images/manuscript/`:
 
-- `teaser.svg`, `architecture.svg`, `training_pipeline.svg`, and `guidance_mechanism.svg`
-- `board_guidance_diagnostics_overview.png`
-- `foresight_prediction_quality_horizons.png` and its metrics JSON
+- `foretac_teaser_fig1.webp` for the conceptual overview;
+- `foretac_method_fig2.webp` for the method architecture;
+- `foretac_tasks_fig3.webp` for the robot platform and four-task benchmark;
+- `foretac_guidance_fig4_r12.png` for the two-panel offline guidance diagnostic, matching the current submission Fig. 4 with panel labels and a complete color scale.
 
-Main-comparison and ablation results are rendered as responsive HTML tables in `index.html`. Their unfinished measurements are marked `TBD`; they are not pending PNG files.
+Main results and the structural ablation remain visible in `index.html`; reconstruction, prediction, scorer-transfer, guidance diagnostics, and efficiency use expandable subsections that are open by default. Readers can collapse them individually. The displayed results use SR/CSR terminology and were transcribed from `foretac_v3/main.tex`.
 
 ## Video Assets
 
+The Overview section embeds `static/videos/overview/foretac_overview.mp4`, a 45-second film aligned
+with the manuscript submission figures, the corrected four-task
+Hero montage, H=16 foresight visualization, and current SR/CSR results. The
+complete source and derived media for this film and the opening montage live
+under `static/videos/overview/`, including the four independently playable
+opening tiles and `hero_montage_no_title.mp4`. It is
+an independent native-controls player; its progress bar is not intercepted by
+the task-pair synchronization code, and its native `loop` behavior restarts the
+film after playback reaches the end. Its first five seconds and poster show
+the clean montage without a title panel. A seven-slide editable PowerPoint
+with embedded montage and foresight videos is available as
+`static/videos/overview/foretac_overview_embedded.pptx`. Its opening slide has
+no overlay. The alternate `foretac_overview_editable_cover.pptx` adds a native
+editable translucent rectangle and text. Headings and result values are
+editable; figures remain images. This is an editable reconstruction, not a
+timed export of the film. See [the media README](static/videos/overview/README.md)
+for editing limits and rebuild commands.
+`tools/build_v3_media.sh` reproduces the Hero, overview film, and poster files
+from the checked-in assets; `tools/make_overview_ppt.py` rebuilds the PPTX.
+
+The older 117-second promotional export is retained only as
+`foretac_overview_legacy_117s.mp4` (and the duplicate legacy copy is explicitly
+named with the same duration). It is not referenced by the page because it
+contains obsolete terminology and experiments.
+
 Each real-robot task uses a synchronized pair:
 
-| Task | Real execution | Inference visualization |
+| Task | Real execution | Tactile/marker visualization |
 | --- | --- | --- |
 | Board wiping | `board_real.mp4` | `board_viz.mp4` |
 | Vase wiping | `vase_real.mp4` | `vase_viz.mp4` |
 | Card swiping | `card_real.mp4` | `card_viz.mp4` |
 | Chip grasping | `chip_real.mp4` | `chip_viz.mp4` |
 
-The standalone foresight visualization uses:
+The demonstrations also include the visual-perturbation generalization pair
+(`generalization_visual_perturb_real.mp4` and
+`generalization_visual_perturb_viz.mp4`) and the final foresight prediction
+visualization (`foresight_prediction_board_episode6_tplus16.webm` with MP4
+fallback). These pairs use the same synchronized loop and click-to-pause
+behavior as the four main tasks.
 
-- `foresight_prediction_board_episode6_tplus16.webm`
-- `foresight_prediction_board_episode6_tplus16.mp4` as a browser fallback
-- `foresight_prediction_board_episode6_tplus16_preview.jpg` as its poster
+The standalone foresight visualization and the diagnostic figures are retained
+as local assets for reference. The embedded overview film labels the foresight
+clip as a qualitative H=16 visualization and keeps offline diagnostics separate
+from the task-level SR/CSR claims.
 
 ### Playback Behavior
 
@@ -67,8 +99,10 @@ The standalone foresight visualization uses:
 - Videos loop after reaching the end.
 - Media is activated near the viewport instead of loading every video eagerly.
 - A spinner is shown during initial loading, seeking, and buffering.
+- On narrow screens the Hero keeps the complete 16:9 four-task montage in a dark letterbox so the moving video region is not confused with a static poster.
+- On very wide screens the Hero preserves the complete four-tile montage in the foreground and fills the side areas with a synchronized, softly blurred copy of the same video; intermediate desktop widths use centered cover cropping.
 
-The standalone foresight video also loops and supports click-to-pause/resume.
+Board, Vase, and Card marker panels are rendered from predicted marker fields. Chip uses measured marker offsets from the recorded tactile trace. The score/scale curves in these rendered videos are illustrative diagnostics and are not additional deployment metrics.
 
 ### Web and Raw Files
 
@@ -83,7 +117,7 @@ Do not point the webpage at `_raw` files. When replacing a task pair:
 
 1. Preserve each new source as the corresponding `*_raw.mp4` file.
 2. Generate the web files from those raw sources.
-3. Keep the left and right outputs at exactly the same duration and frame rate.
+3. Keep the left and right outputs at exactly the same duration; normalize frame rate when the source permits and record any source-cadence exception.
 4. Regenerate their `*_preview.jpg` posters.
 5. Test initial playback, buffering recovery, click pause/resume, looping, and synchronization.
 
@@ -96,8 +130,8 @@ Current task videos use the following web profile:
 | Property | Value |
 | --- | --- |
 | Container / codec | MP4 / H.264 High Profile, Level 4.0 |
-| Resolution | 1280x720 |
-| Frame rate | Constant 24 fps |
+| Resolution | Real views: 1280x720; visualization views: 1920x1080 |
+| Frame rate | 24 fps for normalized web files; `chip_viz.mp4` retains its source cadence of 3947/250 (about 15.79 fps) |
 | Pixel format | `yuv420p` |
 | Quality | CRF 23 |
 | Rate control | 1200 kbps max rate, 2400 kb buffer |
@@ -128,7 +162,7 @@ Before publishing a website update:
 3. Stage only the intended paths; avoid blanket staging commands.
 4. Preview through a local HTTP server.
 5. Check desktop and mobile layouts for overflow or overlap.
-6. Exercise all video pairs and the standalone video through loading, pause/resume, buffering, and loop transitions.
+6. Exercise the Hero, the Overview native controls/seek/loop, and all task pairs through loading, pause/resume, buffering, and loop transitions.
 7. Confirm that every publication target points to the same reviewed commit.
 
 Remote names and internal publication procedures are intentionally kept out of this public README because they depend on each collaborator's local Git and SSH configuration.
