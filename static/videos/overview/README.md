@@ -8,7 +8,8 @@ For the complete file-selection and re-encoding rules, see [`视频使用指导.
 - `source_*_real_raw.mp4`: preserved source copies when available.
 - `hero_*_tile.mp4`: the four independently playable 640x360 clips used in the opening montage.
 - `hero_montage_no_title.mp4`: the 12-second four-tile montage without title overlays. This is the Hero video source.
-- `ForeTac_video_keyframes_v2 - czy1007_x264_v3.mp4`: the current webpage Overview film, approximately 9 minutes 7 seconds long.
+- `ForeTac_1008.mp4`: the current webpage Overview film, approximately 2 minutes 11 seconds long.
+- `ForeTac_video_keyframes_v2 - czy1007_x264_v3.mp4`: the previous approximately 9-minute-7-second export retained as a separate asset; it is not the current webpage source.
 - `foretac_overview-1007.mp4`: the previous approximately 9-minute-7-second export retained as a separate asset; it is not the current webpage source.
 - `foretac_overview.mp4`: the older 45-second Overview export retained as a separate asset; it is not the current webpage source.
 - `foretac_overview_poster.jpg`: a clean montage frame, without a title or translucent panel.

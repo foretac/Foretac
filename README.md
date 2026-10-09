@@ -45,11 +45,12 @@ Main results and the structural ablation remain visible in `index.html`; reconst
 
 ## Video Assets
 
-The Overview section embeds `static/videos/overview/ForeTac_video_keyframes_v2 - czy1007_x264_v3.mp4`,
-the current approximately 9-minute-7-second film. The older
-`foretac_overview-1007.mp4` and `foretac_overview.mp4` are retained as separate
-exports and are not the current page source. The complete source and derived
-media for the Overview assets and the opening montage live
+The Overview section embeds `static/videos/overview/ForeTac_1008.mp4`,
+the current approximately 2-minute-11-second film. The older
+`ForeTac_video_keyframes_v2 - czy1007_x264_v3.mp4`, `foretac_overview-1007.mp4`,
+and `foretac_overview.mp4` are retained as separate exports and are not the
+current page source. The complete source and derived media for the Overview
+assets and the opening montage live
 under `static/videos/overview/`, including the four independently playable
 opening tiles and `hero_montage_no_title.mp4`. It is
 an independent native-controls player; its progress bar is not intercepted by
